@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest'
 import {
   calculateItemSubtotal,
   calculateCartSubtotal,
+  calculateSplitPaymentsTotal,
   calculateLegalRounding,
   calculateCartTotal,
   calculateChange,
@@ -35,6 +36,38 @@ describe('pos/domain/calculations', () => {
     it('returns 0 for NaN or infinite inputs', () => {
       expect(calculateItemSubtotal(NaN, 100)).toBe(0)
       expect(calculateItemSubtotal(2, Infinity)).toBe(0)
+      expect(calculateItemSubtotal(2, 100, NaN)).toBe(0)
+    })
+
+    it('applies discount percentage correctly', () => {
+      // 2 units * $1000 = $2000, 10% off = $1800
+      expect(calculateItemSubtotal(2, 1000, 10)).toBe(1800)
+      // Clamps discount between 0 and 100
+      expect(calculateItemSubtotal(2, 1000, -10)).toBe(2000)
+      expect(calculateItemSubtotal(2, 1000, 150)).toBe(0)
+    })
+  })
+
+  describe('calculateSplitPaymentsTotal', () => {
+    it('sums positive amounts of split payments accurately', () => {
+      expect(
+        calculateSplitPaymentsTotal([
+          { amount: 5000 },
+          { amount: 3500.5 },
+          { amount: 1200 },
+        ])
+      ).toBe(9700.5)
+    })
+
+    it('ignores negative or NaN amounts and returns 0 for empty array', () => {
+      expect(calculateSplitPaymentsTotal([])).toBe(0)
+      expect(
+        calculateSplitPaymentsTotal([
+          { amount: 1000 },
+          { amount: -500 },
+          { amount: NaN },
+        ])
+      ).toBe(1000)
     })
   })
 

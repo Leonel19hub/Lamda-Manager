@@ -3,6 +3,8 @@ import {
   convertPacksToUnits,
   convertUnitsToPacks,
   validatePackInput,
+  validateSupplierForm,
+  validatePurchaseOrder,
 } from './packConversions'
 
 describe('purchases/domain/packConversions', () => {
@@ -71,6 +73,193 @@ describe('purchases/domain/packConversions', () => {
       expect(res.success).toBe(false)
       if (!res.success) {
         expect(res.error.code).toBe('INVALID_UNITS_PER_PACK')
+      }
+    })
+  })
+
+  describe('validateSupplierForm', () => {
+    it('accepts valid supplier input', () => {
+      const res = validateSupplierForm({
+        name: 'Distribuidora Arcor',
+        cuit: '30-50279317-2',
+        contactName: 'Esteban Rossi',
+        phone: '1152824000',
+        email: 'ventas@distribuidora.com',
+        address: 'Av. Amancio Alcorta 2400',
+      })
+      expect(res.success).toBe(true)
+    })
+
+    it('fails if name is missing or whitespace or less than 2 characters', () => {
+      const emptyRes = validateSupplierForm({ name: '   ' })
+      expect(emptyRes.success).toBe(false)
+      if (!emptyRes.success) {
+        expect(emptyRes.error.code).toBe('INVALID_NAME')
+      }
+
+      const shortRes = validateSupplierForm({ name: 'A' })
+      expect(shortRes.success).toBe(false)
+    })
+
+    it('validates email format if provided', () => {
+      const invalidEmail = validateSupplierForm({
+        name: 'Mercado Central',
+        email: 'correo-invalido',
+      })
+      expect(invalidEmail.success).toBe(false)
+      if (!invalidEmail.success) {
+        expect(invalidEmail.error.code).toBe('INVALID_EMAIL')
+      }
+
+      const validEmail = validateSupplierForm({
+        name: 'Mercado Central',
+        email: 'central@mercado.com.ar',
+      })
+      expect(validEmail.success).toBe(true)
+
+      const whitespaceEmail = validateSupplierForm({
+        name: 'Mercado Central',
+        email: '   ',
+      })
+      expect(whitespaceEmail.success).toBe(true)
+
+      const emptyEmail = validateSupplierForm({
+        name: 'Mercado Central',
+        email: '',
+      })
+      expect(emptyEmail.success).toBe(true)
+    })
+  })
+
+  describe('validatePurchaseOrder', () => {
+    it('accepts valid purchase order with valid items', () => {
+      const res = validatePurchaseOrder({
+        supplierId: 'sup-01',
+        branchId: 'branch-01',
+        items: [
+          {
+            productId: 'prod-01',
+            unitsReceived: 40,
+            unitCost: 1500,
+            totalCost: 60000,
+          },
+        ],
+      })
+      expect(res.success).toBe(true)
+    })
+
+    it('fails if supplierId is missing', () => {
+      const res = validatePurchaseOrder({
+        supplierId: '  ',
+        branchId: 'branch-01',
+        items: [
+          {
+            productId: 'prod-01',
+            unitsReceived: 10,
+            unitCost: 100,
+            totalCost: 1000,
+          },
+        ],
+      })
+      expect(res.success).toBe(false)
+      if (!res.success) {
+        expect(res.error.code).toBe('INVALID_SUPPLIER_ID')
+      }
+    })
+
+    it('fails if branchId is missing', () => {
+      const res = validatePurchaseOrder({
+        supplierId: 'sup-01',
+        branchId: '',
+        items: [
+          {
+            productId: 'prod-01',
+            unitsReceived: 10,
+            unitCost: 100,
+            totalCost: 1000,
+          },
+        ],
+      })
+      expect(res.success).toBe(false)
+      if (!res.success) {
+        expect(res.error.code).toBe('INVALID_BRANCH_ID')
+      }
+    })
+
+    it('fails if items array is empty or not an array', () => {
+      const res = validatePurchaseOrder({
+        supplierId: 'sup-01',
+        branchId: 'branch-01',
+        items: [],
+      })
+      expect(res.success).toBe(false)
+      if (!res.success) {
+        expect(res.error.code).toBe('EMPTY_PURCHASE_ITEMS')
+      }
+
+      const notArrayRes = validatePurchaseOrder({
+        supplierId: 'sup-01',
+        branchId: 'branch-01',
+        items: null as unknown as [],
+      })
+      expect(notArrayRes.success).toBe(false)
+      if (!notArrayRes.success) {
+        expect(notArrayRes.error.code).toBe('EMPTY_PURCHASE_ITEMS')
+      }
+    })
+
+    it('fails if any item has missing productId', () => {
+      const res = validatePurchaseOrder({
+        supplierId: 'sup-01',
+        branchId: 'branch-01',
+        items: [
+          {
+            productId: '',
+            unitsReceived: 10,
+            unitCost: 100,
+            totalCost: 1000,
+          },
+        ],
+      })
+      expect(res.success).toBe(false)
+      if (!res.success) {
+        expect(res.error.code).toBe('INVALID_PRODUCT_ID')
+      }
+    })
+
+    it('fails if any item has invalid unitsReceived or unitCost', () => {
+      const invalidUnits = validatePurchaseOrder({
+        supplierId: 'sup-01',
+        branchId: 'branch-01',
+        items: [
+          {
+            productId: 'prod-01',
+            unitsReceived: 0,
+            unitCost: 100,
+            totalCost: 0,
+          },
+        ],
+      })
+      expect(invalidUnits.success).toBe(false)
+      if (!invalidUnits.success) {
+        expect(invalidUnits.error.code).toBe('INVALID_UNITS_RECEIVED')
+      }
+
+      const invalidCost = validatePurchaseOrder({
+        supplierId: 'sup-01',
+        branchId: 'branch-01',
+        items: [
+          {
+            productId: 'prod-01',
+            unitsReceived: 10,
+            unitCost: -50,
+            totalCost: -500,
+          },
+        ],
+      })
+      expect(invalidCost.success).toBe(false)
+      if (!invalidCost.success) {
+        expect(invalidCost.error.code).toBe('INVALID_UNIT_COST')
       }
     })
   })

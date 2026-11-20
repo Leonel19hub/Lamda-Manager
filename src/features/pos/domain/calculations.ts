@@ -2,16 +2,29 @@ import type { CartItem } from '@/types'
 
 /**
  * Calculates the monetary subtotal for a single cart item.
- * Guarantees 2-decimal precision and sanitizes negative/NaN values.
+ * Guarantees 2-decimal precision, sanitizes negative/NaN values, and supports optional discount percentage.
  */
-export function calculateItemSubtotal(quantity: number, unitPrice: number): number {
-  if (isNaN(quantity) || isNaN(unitPrice) || !isFinite(quantity) || !isFinite(unitPrice)) {
+export function calculateItemSubtotal(
+  quantity: number,
+  unitPrice: number,
+  discountPercent = 0
+): number {
+  if (
+    isNaN(quantity) ||
+    isNaN(unitPrice) ||
+    !isFinite(quantity) ||
+    !isFinite(unitPrice) ||
+    isNaN(discountPercent) ||
+    !isFinite(discountPercent)
+  ) {
     return 0
   }
   if (quantity <= 0 || unitPrice <= 0) {
     return 0
   }
-  return Math.round(quantity * unitPrice * 100) / 100
+  const safeDiscount = Math.max(0, Math.min(100, discountPercent))
+  const rawSubtotal = quantity * unitPrice * (1 - safeDiscount / 100)
+  return Math.round(rawSubtotal * 100) / 100
 }
 
 /**
@@ -19,6 +32,19 @@ export function calculateItemSubtotal(quantity: number, unitPrice: number): numb
  */
 export function calculateCartSubtotal(items: readonly CartItem[]): number {
   const sum = items.reduce((acc, item) => acc + item.subtotal, 0)
+  return Math.round(sum * 100) / 100
+}
+
+/**
+ * Calculates the total of split payments.
+ */
+export function calculateSplitPaymentsTotal(
+  payments: readonly { amount: number }[]
+): number {
+  const sum = payments.reduce((acc, p) => {
+    if (isNaN(p.amount) || !isFinite(p.amount) || p.amount <= 0) return acc
+    return acc + p.amount
+  }, 0)
   return Math.round(sum * 100) / 100
 }
 
@@ -61,7 +87,7 @@ export function calculateChange(total: number, amountPaid: number): number {
 
 /**
  * Merges a new item into cart:
- * If the item is sold by unit and already exists, increments quantity.
+ * If the item is sold by unit and already exists (and has same discount), increments quantity.
  * Weighed items or distinct items are appended without mutation.
  */
 export function mergeOrAddItem(
@@ -70,13 +96,20 @@ export function mergeOrAddItem(
 ): CartItem[] {
   if (newItem.saleType === 'unit') {
     const existingIndex = items.findIndex(
-      (i) => i.productId === newItem.productId && i.saleType === 'unit'
+      (i) =>
+        i.productId === newItem.productId &&
+        i.saleType === 'unit' &&
+        (i.discountPercent || 0) === (newItem.discountPercent || 0)
     )
 
     if (existingIndex !== -1) {
       const existing = items[existingIndex]
       const mergedQuantity = Math.round((existing.quantity + newItem.quantity) * 1000) / 1000
-      const mergedSubtotal = calculateItemSubtotal(mergedQuantity, existing.unitPrice)
+      const mergedSubtotal = calculateItemSubtotal(
+        mergedQuantity,
+        existing.unitPrice,
+        existing.discountPercent || 0
+      )
 
       const updated = [...items]
       updated[existingIndex] = {

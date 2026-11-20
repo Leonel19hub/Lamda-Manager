@@ -32,3 +32,21 @@ export function calculateSellPrice(cost: number, marginPct: number): number {
   const sell = cost / (1 - marginPct / 100)
   return Math.round(sell * 100) / 100
 }
+
+/**
+ * Calculates unit cost from a wholesale pack or box.
+ * Example: Cajón de 20 kg at $19,000 -> $950/kg.
+ */
+export function calculateCostFromPack(packCost: number, unitsPerPack: number): number {
+  if (
+    isNaN(packCost) ||
+    isNaN(unitsPerPack) ||
+    !isFinite(packCost) ||
+    !isFinite(unitsPerPack) ||
+    packCost <= 0 ||
+    unitsPerPack <= 0
+  ) {
+    return 0
+  }
+  return Math.round((packCost / unitsPerPack) * 100) / 100
+}

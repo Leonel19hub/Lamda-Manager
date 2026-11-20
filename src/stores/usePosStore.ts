@@ -1,6 +1,17 @@
 import { create } from 'zustand'
 import { persist, createJSONStorage, type StateStorage } from 'zustand/middleware'
-import type { CartItem, PaymentMethod, Customer } from '@/types'
+import type {
+  CartItem,
+  PaymentMethod,
+  Customer,
+  Sale,
+  SaleItem,
+  SplitPaymentItem,
+  Result,
+  ValidationError,
+  UserRole,
+  CashRegister,
+} from '@/types'
 import {
   calculateItemSubtotal,
   calculateCartSubtotal,
@@ -8,28 +19,47 @@ import {
   calculateCartTotal,
   calculateChange,
   mergeOrAddItem,
+  validateSaleEligibility,
 } from '@/features/pos'
 import { safeStorage } from '@/lib/storage'
+import { useInventoryStore } from './useInventoryStore'
+import { useCustomerStore } from './useCustomerStore'
+
+export interface CheckoutContext {
+  cashierId: string
+  cashierName: string
+  cashierRole: UserRole
+  warehouseId?: string
+  warehouseName: string
+  activeRegister: CashRegister | null
+}
 
 interface PosState {
   items: CartItem[]
   selectedCustomer: Customer | null
   paymentMethod: PaymentMethod
+  splitPayments: SplitPaymentItem[]
   amountPaid: number
   ticketNumber: string
   searchQuery: string
   selectedCategory: string | null
+  recentSales: Sale[]
 
   // Actions
   addItem: (item: CartItem) => void
   removeItem: (id: string) => void
   updateItemQuantity: (id: string, quantity: number) => void
+  setItemDiscount: (id: string, discountPercent: number) => void
   clearCart: () => void
   setCustomer: (customer: Customer | null) => void
   setPaymentMethod: (method: PaymentMethod) => void
+  setSplitPayments: (payments: SplitPaymentItem[]) => void
+  addSplitPayment: (payment: SplitPaymentItem) => void
+  removeSplitPayment: (id: string) => void
   setAmountPaid: (amount: number) => void
   setSearchQuery: (query: string) => void
   setSelectedCategory: (categoryId: string | null) => void
+  checkoutTicket: (ctx: CheckoutContext) => Result<Sale, ValidationError>
 
   // Delegated queries
   subtotal: () => number
@@ -62,6 +92,7 @@ export const usePosStore = create<PosState>()(
           id: 'item-init-1',
           productId: 'prod-01',
           productName: 'Tomate Redondo Especial',
+          productSku: 'TOM-01',
           saleType: 'weight',
           quantity: 1.35,
           unitPrice: 1890,
@@ -73,6 +104,7 @@ export const usePosStore = create<PosState>()(
           id: 'item-init-2',
           productId: 'prod-05',
           productName: 'Aceite de Girasol Natura 1.5L',
+          productSku: 'ACE-NAT-1.5',
           saleType: 'unit',
           quantity: 2,
           unitPrice: 2350,
@@ -84,6 +116,7 @@ export const usePosStore = create<PosState>()(
           id: 'item-init-3',
           productId: 'prod-02',
           productName: 'Banana Cavendish Ecuador',
+          productSku: 'BAN-ECU',
           saleType: 'weight',
           quantity: 0.82,
           unitPrice: 2100,
@@ -95,6 +128,7 @@ export const usePosStore = create<PosState>()(
           id: 'item-init-4',
           productId: 'prod-07',
           productName: 'Yerba Mate Playadito 1kg',
+          productSku: 'YER-PLAY-1K',
           saleType: 'unit',
           quantity: 1,
           unitPrice: 3890,
@@ -104,11 +138,13 @@ export const usePosStore = create<PosState>()(
         },
       ],
       selectedCustomer: null,
-      paymentMethod: 'cash',
+      paymentMethod: 'efectivo',
+      splitPayments: [],
       amountPaid: 15000,
-      ticketNumber: `0004-${String(ticketCounter).padStart(6, '0')}`,
+      ticketNumber: `0001-${String(ticketCounter).padStart(8, '0')}`,
       searchQuery: '',
       selectedCategory: null,
+      recentSales: [],
 
       addItem: (item) =>
         set((state) => ({
@@ -127,7 +163,20 @@ export const usePosStore = create<PosState>()(
               ? {
                   ...i,
                   quantity,
-                  subtotal: calculateItemSubtotal(quantity, i.unitPrice),
+                  subtotal: calculateItemSubtotal(quantity, i.unitPrice, i.discountPercent || 0),
+                }
+              : i
+          ),
+        })),
+
+      setItemDiscount: (id, discountPercent) =>
+        set((state) => ({
+          items: state.items.map((i) =>
+            i.id === id
+              ? {
+                  ...i,
+                  discountPercent,
+                  subtotal: calculateItemSubtotal(i.quantity, i.unitPrice, discountPercent),
                 }
               : i
           ),
@@ -138,17 +187,112 @@ export const usePosStore = create<PosState>()(
         set({
           items: [],
           selectedCustomer: null,
-          paymentMethod: 'cash',
+          paymentMethod: 'efectivo',
+          splitPayments: [],
           amountPaid: 0,
-          ticketNumber: `0004-${String(ticketCounter).padStart(6, '0')}`,
+          ticketNumber: `0001-${String(ticketCounter).padStart(8, '0')}`,
         })
       },
 
       setCustomer: (customer) => set({ selectedCustomer: customer }),
       setPaymentMethod: (method) => set({ paymentMethod: method }),
+      setSplitPayments: (payments) => set({ splitPayments: payments }),
+      addSplitPayment: (payment) =>
+        set((s) => ({ splitPayments: [...s.splitPayments, payment] })),
+      removeSplitPayment: (id) =>
+        set((s) => ({ splitPayments: s.splitPayments.filter((p) => p.id !== id) })),
       setAmountPaid: (amount) => set({ amountPaid: amount }),
       setSearchQuery: (query) => set({ searchQuery: query }),
       setSelectedCategory: (categoryId) => set({ selectedCategory: categoryId }),
+
+      checkoutTicket: (ctx) => {
+        const state = get()
+        const currentTotal = state.total()
+        const currentSubtotal = state.subtotal()
+
+        const eligibility = validateSaleEligibility({
+          items: state.items,
+          paymentMethod: state.paymentMethod,
+          selectedCustomer: state.selectedCustomer,
+          activeRegister: ctx.activeRegister,
+          total: currentTotal,
+          amountPaid: state.amountPaid,
+          splitPayments: state.splitPayments,
+        })
+
+        if (!eligibility.success) {
+          return eligibility
+        }
+
+        const saleItems: SaleItem[] = state.items.map((i) => ({
+          id: `item-${Date.now()}-${Math.random()}`,
+          saleId: `sale-${Date.now()}`,
+          productId: i.productId,
+          productSku: i.productSku || i.pluCode || i.barcode || 'SKU-GEN',
+          productName: i.productName,
+          quantity: i.quantity,
+          unitPrice: i.unitPrice,
+          discountPercent: i.discountPercent || 0,
+          costPrice: i.costPrice,
+          subtotal: i.subtotal,
+          total: i.subtotal,
+          saleType: i.saleType,
+        }))
+
+        const finalSale: Sale = {
+          id: `sale-${Date.now()}-${Math.random()}`,
+          ticketNumber: state.ticketNumber,
+          registerId: ctx.activeRegister?.id || 'reg-01',
+          warehouseId: ctx.warehouseId,
+          warehouseName: ctx.warehouseName,
+          customerId: state.selectedCustomer?.id,
+          customerName: state.selectedCustomer?.fullName || 'Consumidor Final',
+          customerDni: state.selectedCustomer?.dni || state.selectedCustomer?.dniCuit,
+          cashierId: ctx.cashierId,
+          cashierName: ctx.cashierName,
+          cashierRole: ctx.cashierRole,
+          subtotal: currentSubtotal,
+          discountTotal: 0,
+          rounding: currentTotal - currentSubtotal,
+          total: currentTotal,
+          paymentMethod: state.paymentMethod,
+          splitPayments: state.paymentMethod === 'mixto' ? state.splitPayments : undefined,
+          cashReceived: state.paymentMethod === 'efectivo' ? state.amountPaid : undefined,
+          cashChange: state.paymentMethod === 'efectivo' ? state.change() : undefined,
+          status: 'completed',
+          createdAt: new Date().toISOString(),
+          items: saleItems,
+        }
+
+        // Deduct inventory stock for each sold item
+        const inventoryStore = useInventoryStore.getState()
+        state.items.forEach((item) => {
+          inventoryStore.deductProductStock(item.productId, item.quantity, ctx.warehouseId)
+        })
+
+        // If sale is on account (fiado), charge customer account
+        if (state.paymentMethod === 'cuenta_corriente' && state.selectedCustomer) {
+          useCustomerStore.getState().chargeAccount(
+            state.selectedCustomer.id,
+            currentTotal,
+            state.ticketNumber,
+            'Venta fiado almacén y verdulería'
+          )
+        }
+
+        ticketCounter++
+        set((s) => ({
+          recentSales: [finalSale, ...s.recentSales].slice(0, 50),
+          items: [],
+          selectedCustomer: null,
+          paymentMethod: 'efectivo',
+          splitPayments: [],
+          amountPaid: 0,
+          ticketNumber: `0001-${String(ticketCounter).padStart(8, '0')}`,
+        }))
+
+        return { success: true, data: finalSale }
+      },
 
       // Delegated to pure calculations
       subtotal: () => calculateCartSubtotal(get().items),

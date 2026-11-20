@@ -8,11 +8,17 @@ import {
   ArrowUpRight
 } from 'lucide-react'
 import { formatCurrency, formatWeight } from '@/lib/utils'
-import { mockProducts } from '@/mock/mockData'
 import { useAppStore } from '@/stores/useAppStore'
+import { useInventoryStore } from '@/stores/useInventoryStore'
+import { useCustomerStore } from '@/stores/useCustomerStore'
 
 export const DashboardView: React.FC = () => {
-  const { activeBranch } = useAppStore()
+  const { activeBranch, activeCashRegister } = useAppStore()
+  const products = useInventoryStore((s) => s.products)
+  const customers = useCustomerStore((s) => s.customers)
+
+  const totalFiadoDebt = customers.reduce((acc, c) => acc + c.currentBalance, 0)
+  const activeFiadoAccounts = customers.filter((c) => c.currentBalance > 0).length
 
   const hourlyData = [
     { hour: '08:00', amount: 18500, height: 28 },
@@ -36,7 +42,7 @@ export const DashboardView: React.FC = () => {
     { name: 'Lácteos & Fiambrería', pct: 10, color: 'bg-amber-500', amount: 34865 },
   ]
 
-  const lowStockItems = mockProducts.filter(
+  const lowStockItems = products.filter(
     (p) => (p.stock?.currentStock || 0) <= (p.stock?.minStock || 0)
   )
 
@@ -63,8 +69,13 @@ export const DashboardView: React.FC = () => {
 
         <div className="flex items-center gap-2">
           <span className="font-mono text-xs font-semibold text-emerald-800 bg-emerald-50 px-3 py-1.5 rounded-lg border border-emerald-200 flex items-center gap-1.5">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" aria-hidden="true" />
-            Caja Activa: $ 85.200
+            <span
+              className={`w-2 h-2 rounded-full ${activeCashRegister?.isOpen ? 'bg-emerald-500 animate-pulse' : 'bg-red-500'}`}
+              aria-hidden="true"
+            />
+            {activeCashRegister?.isOpen
+              ? `Caja Activa: ${formatCurrency(activeCashRegister.expectedCash)}`
+              : 'Caja Cerrada'}
           </span>
         </div>
       </header>
@@ -146,11 +157,11 @@ export const DashboardView: React.FC = () => {
             </dt>
             <dd className="my-2">
               <span className="font-mono text-xl font-bold text-purple-800">
-                $ 149.450
+                {formatCurrency(totalFiadoDebt)}
               </span>
             </dd>
             <dd className="text-[10px] text-outline">
-              4 cuentas activas
+              {activeFiadoAccounts} {activeFiadoAccounts === 1 ? 'cuenta activa' : 'cuentas activas'}
             </dd>
           </div>
 

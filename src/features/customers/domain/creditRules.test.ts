@@ -3,6 +3,8 @@ import {
   calculateCreditUsagePct,
   getCreditStatus,
   applyPayment,
+  calculateNewBalanceAfterCharge,
+  validateCustomerForm,
 } from './creditRules'
 
 describe('customers/domain/creditRules', () => {
@@ -87,6 +89,102 @@ describe('customers/domain/creditRules', () => {
       if (res.success) {
         expect(res.data).toBe(0)
       }
+    })
+  })
+
+  describe('calculateNewBalanceAfterCharge', () => {
+    it('increases balance by charge amount accurately', () => {
+      expect(calculateNewBalanceAfterCharge(10000, 2500)).toBe(12500)
+      expect(calculateNewBalanceAfterCharge(0, 5400)).toBe(5400)
+    })
+
+    it('returns current balance if charge amount is 0, negative, or NaN', () => {
+      expect(calculateNewBalanceAfterCharge(10000, 0)).toBe(10000)
+      expect(calculateNewBalanceAfterCharge(10000, -500)).toBe(10000)
+      expect(calculateNewBalanceAfterCharge(10000, NaN)).toBe(10000)
+    })
+
+    it('handles negative or NaN currentBalance safely', () => {
+      expect(calculateNewBalanceAfterCharge(-100, 2000)).toBe(2000)
+      expect(calculateNewBalanceAfterCharge(NaN, 3000)).toBe(3000)
+      expect(calculateNewBalanceAfterCharge(NaN, 0)).toBe(0)
+      expect(calculateNewBalanceAfterCharge(-50, -10)).toBe(0)
+    })
+  })
+
+  describe('validateCustomerForm', () => {
+    it('validates a correct customer input', () => {
+      const result = validateCustomerForm({
+        fullName: 'Juan Pérez',
+        dniCuit: '20-12345678-9',
+        phone: '1145678901',
+        email: 'juan@gmail.com',
+        address: 'Calle Falsa 123',
+        creditLimit: 50000,
+        type: 'persona',
+      })
+      expect(result.success).toBe(true)
+    })
+
+    it('allows 0 credit limit (fiado deshabilitado)', () => {
+      const result = validateCustomerForm({
+        fullName: 'Vecino Contado',
+        creditLimit: 0,
+      })
+      expect(result.success).toBe(true)
+    })
+
+    it('fails if fullName is missing or too short', () => {
+      const emptyRes = validateCustomerForm({
+        fullName: '  ',
+        creditLimit: 10000,
+      })
+      expect(emptyRes.success).toBe(false)
+      if (!emptyRes.success) {
+        expect(emptyRes.error.code).toBe('INVALID_NAME')
+      }
+
+      const shortRes = validateCustomerForm({
+        fullName: 'A',
+        creditLimit: 10000,
+      })
+      expect(shortRes.success).toBe(false)
+    })
+
+    it('fails if creditLimit is negative or NaN', () => {
+      const negRes = validateCustomerForm({
+        fullName: 'Carlos Méndez',
+        creditLimit: -100,
+      })
+      expect(negRes.success).toBe(false)
+      if (!negRes.success) {
+        expect(negRes.error.code).toBe('INVALID_CREDIT_LIMIT')
+      }
+
+      const nanRes = validateCustomerForm({
+        fullName: 'Carlos Méndez',
+        creditLimit: NaN,
+      })
+      expect(nanRes.success).toBe(false)
+    })
+
+    it('validates email format if email is provided', () => {
+      const invalidEmail = validateCustomerForm({
+        fullName: 'Carlos Méndez',
+        creditLimit: 10000,
+        email: 'invalid-email',
+      })
+      expect(invalidEmail.success).toBe(false)
+      if (!invalidEmail.success) {
+        expect(invalidEmail.error.code).toBe('INVALID_EMAIL')
+      }
+
+      const validEmail = validateCustomerForm({
+        fullName: 'Carlos Méndez',
+        creditLimit: 10000,
+        email: 'carlos@example.com',
+      })
+      expect(validEmail.success).toBe(true)
     })
   })
 })

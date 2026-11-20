@@ -1,6 +1,16 @@
-import { ok, fail, type Result, type ValidationError } from '@/types'
+import { ok, fail, type Result, type ValidationError, type CustomerType } from '@/types'
 
 export type CreditStatus = 'ok' | 'warning' | 'critical'
+
+export interface CustomerInput {
+  fullName: string
+  dniCuit?: string
+  phone?: string
+  email?: string
+  address?: string
+  creditLimit: number
+  type?: CustomerType
+}
 
 /**
  * Calculates percentage of credit limit used by the customer.
@@ -66,4 +76,57 @@ export function applyPayment(
   const newBalance = Math.max(0, Math.round((safeBalance - paymentAmount) * 100) / 100)
 
   return ok(newBalance)
+}
+
+/**
+ * Calculates the new positive balance (debt) after adding a credit charge ("fiado").
+ */
+export function calculateNewBalanceAfterCharge(
+  currentBalance: number,
+  chargeAmount: number
+): number {
+  if (
+    isNaN(chargeAmount) ||
+    !isFinite(chargeAmount) ||
+    chargeAmount <= 0
+  ) {
+    return isNaN(currentBalance) || !isFinite(currentBalance) || currentBalance < 0 ? 0 : currentBalance
+  }
+
+  const safeBalance = isNaN(currentBalance) || !isFinite(currentBalance) || currentBalance < 0 ? 0 : currentBalance
+  return Math.round((safeBalance + chargeAmount) * 100) / 100
+}
+
+/**
+ * Validates customer creation or update form data.
+ */
+export function validateCustomerForm(input: CustomerInput): Result<true, ValidationError> {
+  if (!input.fullName || !input.fullName.trim() || input.fullName.trim().length < 2) {
+    return fail({
+      code: 'INVALID_NAME',
+      message: 'El nombre completo del cliente es requerido (mínimo 2 caracteres).',
+      field: 'fullName',
+    })
+  }
+
+  if (isNaN(input.creditLimit) || !isFinite(input.creditLimit) || input.creditLimit < 0) {
+    return fail({
+      code: 'INVALID_CREDIT_LIMIT',
+      message: 'El límite de crédito no puede ser negativo.',
+      field: 'creditLimit',
+    })
+  }
+
+  if (input.email && input.email.trim()) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(input.email.trim())) {
+      return fail({
+        code: 'INVALID_EMAIL',
+        message: 'El formato del correo electrónico es inválido.',
+        field: 'email',
+      })
+    }
+  }
+
+  return ok(true)
 }

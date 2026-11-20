@@ -9,9 +9,29 @@ export * from './result'
 
 export type UserRole = 'EMPLEADO' | 'GERENTE' | 'DUEÑO';
 export type SaleType = 'unit' | 'weight';
-export type PaymentMethod = 'cash' | 'transfer_qr' | 'card' | 'account';
+export type PaymentMethod =
+  | 'efectivo'
+  | 'debito'
+  | 'credito'
+  | 'transferencia_qr'
+  | 'mixto'
+  | 'cuenta_corriente'
+  // Backward compatibility aliases
+  | 'cash'
+  | 'card'
+  | 'transfer_qr'
+  | 'account';
 export type TransferStatus = 'pending' | 'in_transit' | 'received' | 'cancelled';
-export type CashMovementType = 'income' | 'expense' | 'adjustment';
+export type CashMovementType =
+  | 'apertura'
+  | 'ingreso'
+  | 'egreso'
+  | 'retiro'
+  | 'ajuste'
+  // Backward compatibility aliases
+  | 'income'
+  | 'expense'
+  | 'adjustment';
 export type AccountMovementType = 'purchase' | 'payment' | 'adjustment' | 'credit_note';
 
 // ---- Entities ----
@@ -39,17 +59,29 @@ export interface User {
   updatedAt: string;
 }
 
-export interface AttendanceLog {
+export type AttendanceStatus = 'active' | 'completed' | 'flagged';
+
+export interface AttendanceRecord {
   id: string;
   userId: string;
   branchId: string;
+  warehouseId?: string;
+  checkIn?: string;
   clockIn: string;
+  checkOut?: string;
   clockOut?: string;
+  totalHours?: number;
+  isManualEntry?: boolean;
+  editedBy?: string;
   notes?: string;
+  status?: AttendanceStatus;
   createdAt: string;
+  updatedAt?: string;
   // Joined
   user?: User;
 }
+
+export type AttendanceLog = AttendanceRecord;
 
 export interface Category {
   id: string;
@@ -61,18 +93,20 @@ export interface Category {
 
 export interface Product {
   id: string;
+  sku?: string;
   name: string;
   description?: string;
   barcode?: string;
   pluCode?: string;
   categoryId?: string;
   saleType: SaleType;
+  presentation?: 'unidad' | 'kg' | 'pack' | 'litro';
   costPrice: number;
   sellPrice: number;
   marginPct?: number;
   packName?: string;
   unitsPerPack: number;
-  ivaRate: number;
+  ivaRate?: number;
   imageUrl?: string;
   isActive: boolean;
   createdAt: string;
@@ -146,43 +180,74 @@ export interface TransferItem {
   product?: Product;
 }
 
+export type CustomerType = 'persona' | 'empresa';
+
 export interface Customer {
   id: string;
+  name?: string;
   fullName: string;
+  type?: CustomerType;
   dni?: string;
+  dniCuit?: string;
   phone?: string;
   email?: string;
   address?: string;
   creditLimit: number;
   currentBalance: number;
+  balance?: number;
+  totalSpent?: number;
+  purchaseCount?: number;
+  lastPurchaseAt?: string;
   isActive: boolean;
   createdAt: string;
   updatedAt: string;
 }
 
+export interface CustomerPayment {
+  id: string;
+  customerId: string;
+  amount: number;
+  notes?: string;
+  userId?: string;
+  userName?: string;
+  paidAt: string;
+  createdAt: string;
+}
+
 export interface CustomerAccountMovement {
   id: string;
   customerId: string;
-  type: AccountMovementType;
-  amount: number;
+  date: string;
+  type: 'VENTA' | 'COBRO' | 'AJUSTE' | AccountMovementType;
+  doc: string;
+  debit: number;
+  credit: number;
+  notes?: string;
+  amount?: number;
   description?: string;
   saleId?: string;
   createdBy?: string;
-  createdAt: string;
+  createdAt?: string;
 }
 
 export interface CashRegister {
   id: string;
   registerNumber: string;
   branchId: string;
+  warehouseId?: string;
+  warehouseName?: string;
   openedBy: string;
+  openedByName?: string;
   closedBy?: string;
+  closedByName?: string;
   shiftName?: string;
   openingAmount: number;
   expectedCash: number;
   actualCash?: number;
+  totalCash?: number;
   totalCard: number;
   totalTransfer: number;
+  totalQr?: number;
   totalAccount: number;
   difference?: number;
   openedAt: string;
@@ -203,23 +268,43 @@ export interface CashMovement {
   createdAt: string;
 }
 
+export interface SplitPaymentItem {
+  id: string;
+  method: PaymentMethod;
+  amount: number;
+  reference?: string;
+}
+
 export interface Sale {
   id: string;
   ticketNumber: string;
-  branchId: string;
+  branchId?: string;
+  warehouseId?: string;
+  warehouseName?: string;
   registerId: string;
   customerId?: string;
-  sellerId: string;
+  customerName?: string;
+  customerDni?: string;
+  sellerId?: string;
+  cashierId?: string;
+  cashierName?: string;
+  cashierRole?: UserRole;
   subtotal: number;
-  discountAmount: number;
+  discountAmount?: number;
+  discountTotal?: number;
   discountPct?: number;
-  rounding: number;
+  rounding?: number;
   total: number;
   paymentMethod: PaymentMethod;
+  splitPayments?: SplitPaymentItem[];
   amountPaid?: number;
+  cashReceived?: number;
   changeGiven?: number;
-  isVoided: boolean;
+  cashChange?: number;
+  isVoided?: boolean;
+  status?: 'completed' | 'voided' | 'refunded';
   voidedReason?: string;
+  notes?: string;
   createdAt: string;
   // Joined
   items?: SaleItem[];
@@ -231,11 +316,14 @@ export interface SaleItem {
   id: string;
   saleId: string;
   productId: string;
+  productSku?: string;
   productName: string;
   quantity: number;
   unitPrice: number;
-  costPrice: number;
+  discountPercent?: number;
+  costPrice?: number;
   subtotal: number;
+  total?: number;
   saleType: SaleType;
 }
 
@@ -259,6 +347,7 @@ export interface PurchaseItem {
   id: string;
   purchaseId: string;
   productId: string;
+  productName?: string;
   packsReceived?: number;
   unitsPerPack?: number;
   unitsReceived: number;
@@ -292,10 +381,12 @@ export interface CartItem {
   id: string;             // unique within cart
   productId: string;
   productName: string;
+  productSku?: string;
   saleType: SaleType;
   quantity: number;       // units or kg
   unitPrice: number;
   costPrice: number;
+  discountPercent?: number;
   subtotal: number;
   barcode?: string;
   pluCode?: string;

@@ -7,12 +7,14 @@ import {
   calculateMovementDelta,
   type BillItem,
 } from '@/features/cash-register'
+import { useAppStore } from '@/stores/useAppStore'
 import { safeStorage } from '@/lib/storage'
 
 export type BillCount = BillItem
 
 interface CashRegisterState {
   currentRegister: CashRegister | null
+  closedRegisters: CashRegister[]
   movements: CashMovement[]
   billCounts: BillCount[]
 
@@ -56,6 +58,7 @@ export const useCashRegisterStore = create<CashRegisterState>()(
         registerNumber: 'Caja 01',
         branchId: 'branch-01',
         openedBy: 'user-01',
+        openedByName: 'María Gómez',
         shiftName: 'Turno Mañana (Caja 01)',
         openingAmount: 15000,
         expectedCash: 85200,
@@ -65,6 +68,29 @@ export const useCashRegisterStore = create<CashRegisterState>()(
         openedAt: '2026-11-17T08:00:00.000Z',
         isOpen: true,
       },
+      closedRegisters: [
+        {
+          id: 'reg-00-prev',
+          registerNumber: 'Caja 01',
+          branchId: 'branch-01',
+          openedBy: 'user-01',
+          openedByName: 'María Gómez',
+          closedBy: 'user-01',
+          closedByName: 'María Gómez',
+          shiftName: 'Turno Tarde Anterior (Caja 01)',
+          openingAmount: 15000,
+          expectedCash: 72400,
+          actualCash: 72400,
+          difference: 0,
+          totalCard: 31200,
+          totalTransfer: 24500,
+          totalAccount: 8900,
+          openedAt: '2026-11-16T15:00:00.000Z',
+          closedAt: '2026-11-16T22:30:00.000Z',
+          isOpen: false,
+          notes: 'Cierre de turno normal sin discrepancias',
+        },
+      ],
       movements: [
         {
           id: 'mov-01',
@@ -85,38 +111,49 @@ export const useCashRegisterStore = create<CashRegisterState>()(
       ],
       billCounts: [...defaultBills],
 
-      openRegister: (register) =>
+      openRegister: (register) => {
+        useAppStore.getState().setCashRegister(register)
         set({
           currentRegister: register,
           movements: [],
           billCounts: defaultBills.map((b) => ({ ...b, count: 0 })),
-        }),
+        })
+      },
 
       closeRegister: (actualCash, notes) =>
-        set((s) => ({
-          currentRegister: s.currentRegister
-            ? {
-                ...s.currentRegister,
-                isOpen: false,
-                actualCash,
-                difference: calculateCashDifference(actualCash, s.currentRegister.expectedCash),
-                closedAt: new Date().toISOString(),
-                notes,
-              }
-            : null,
-        })),
+        set((s) => {
+          if (!s.currentRegister) return s
+          const diff = calculateCashDifference(actualCash, s.currentRegister.expectedCash)
+          const closed: CashRegister = {
+            ...s.currentRegister,
+            isOpen: false,
+            actualCash,
+            difference: diff,
+            closedAt: new Date().toISOString(),
+            notes,
+          }
+          useAppStore.getState().setCashRegister(closed)
+          return {
+            currentRegister: closed,
+            closedRegisters: [closed, ...s.closedRegisters],
+          }
+        }),
 
       addMovement: (movement) =>
         set((s) => {
           const delta = calculateMovementDelta(movement.type, movement.amount)
+          const updatedRegister = s.currentRegister
+            ? {
+                ...s.currentRegister,
+                expectedCash: Math.round((s.currentRegister.expectedCash + delta) * 100) / 100,
+              }
+            : null
+          if (updatedRegister) {
+            useAppStore.getState().setCashRegister(updatedRegister)
+          }
           return {
             movements: [movement, ...s.movements],
-            currentRegister: s.currentRegister
-              ? {
-                  ...s.currentRegister,
-                  expectedCash: Math.round((s.currentRegister.expectedCash + delta) * 100) / 100,
-                }
-              : null,
+            currentRegister: updatedRegister,
           }
         }),
 

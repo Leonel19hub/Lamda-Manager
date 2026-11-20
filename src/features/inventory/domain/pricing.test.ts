@@ -1,5 +1,9 @@
 import { describe, it, expect } from 'vitest'
-import { calculateMargin, calculateSellPrice } from './pricing'
+import {
+  calculateMargin,
+  calculateSellPrice,
+  calculateCostFromPack,
+} from './pricing'
 
 describe('inventory/domain/pricing', () => {
   describe('calculateMargin', () => {
@@ -47,6 +51,26 @@ describe('inventory/domain/pricing', () => {
       expect(calculateSellPrice(-500, 30)).toBe(0)
       expect(calculateSellPrice(NaN, 30)).toBe(0)
       expect(calculateSellPrice(1000, NaN)).toBe(0)
+    })
+  })
+
+  describe('calculateCostFromPack', () => {
+    it('calculates unit cost from pack price and units per pack', () => {
+      // Cajón $19,000 / 20 kg = $950/kg
+      expect(calculateCostFromPack(19000, 20)).toBe(950)
+      // Pack de 6 aceites a $9,900 = $1650/un
+      expect(calculateCostFromPack(9900, 6)).toBe(1650)
+    })
+
+    it('returns 0 for non-positive or invalid inputs', () => {
+      expect(calculateCostFromPack(0, 10)).toBe(0)
+      expect(calculateCostFromPack(1000, 0)).toBe(0)
+      expect(calculateCostFromPack(-1000, 5)).toBe(0)
+      expect(calculateCostFromPack(1000, -5)).toBe(0)
+      expect(calculateCostFromPack(NaN, 5)).toBe(0)
+      expect(calculateCostFromPack(1000, NaN)).toBe(0)
+      expect(calculateCostFromPack(Infinity, 5)).toBe(0)
+      expect(calculateCostFromPack(1000, Infinity)).toBe(0)
     })
   })
 })

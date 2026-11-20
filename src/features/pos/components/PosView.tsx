@@ -14,10 +14,17 @@ import {
   CreditCard,
   BookOpen,
   ArrowRight,
-  Package
+  Package,
+  AlertTriangle,
+  Layers,
 } from 'lucide-react'
 import { usePosStore } from '@/stores/usePosStore'
-import { mockProducts, mockCategories, mockCustomers } from '@/mock/mockData'
+import { useAppStore } from '@/stores/useAppStore'
+import { useCashRegisterStore } from '@/stores/useCashRegisterStore'
+import { useInventoryStore } from '@/stores/useInventoryStore'
+import { useCustomerStore } from '@/stores/useCustomerStore'
+import { parseScaleBarcode } from '@/features/pos'
+import { mockCategories } from '@/mock/mockData'
 import { formatCurrency, formatWeight } from '@/lib/utils'
 import { Modal } from '@/components/ui/Modal'
 import type { Product, PaymentMethod } from '@/types'
@@ -37,13 +44,20 @@ export const PosView: React.FC = () => {
     clearCart,
     setCustomer,
     setPaymentMethod,
+    setSplitPayments,
     setAmountPaid,
     setSearchQuery,
     setSelectedCategory,
+    checkoutTicket,
     subtotal,
     total,
     change,
   } = usePosStore()
+
+  const { activeCashRegister, currentUser, activeBranch } = useAppStore()
+  const catalogProducts = useInventoryStore((s) => s.products)
+  const customers = useCustomerStore((s) => s.customers)
+  const isRegisterOpen = Boolean(activeCashRegister?.isOpen)
 
   // Hardware barcode input autofocus ref
   const barcodeInputRef = useRef<HTMLInputElement>(null)
@@ -57,6 +71,11 @@ export const PosView: React.FC = () => {
   const [scaleWeight, setScaleWeight] = useState<number>(0.0)
   const [scannerNotification, setScannerNotification] = useState<string | null>(null)
   const [checkoutSuccess, setCheckoutSuccess] = useState(false)
+  const [checkoutError, setCheckoutError] = useState<string | null>(null)
+
+  // Split payment state
+  const [splitCash, setSplitCash] = useState<number>(0)
+  const [splitDigital, setSplitDigital] = useState<number>(0)
 
   // Initial focus on barcode input
   useEffect(() => {
@@ -72,7 +91,6 @@ export const PosView: React.FC = () => {
       const target = e.target as HTMLElement | null
       if (!target) return
 
-      // Don't steal focus if clicking any interactive element, inputs, buttons, links or dialogs
       if (
         target.closest(
           'input, textarea, select, button, a, [role="button"], [role="dialog"], [data-no-autofocus]'
@@ -93,15 +111,101 @@ export const PosView: React.FC = () => {
     setScaleWeight(0.0)
   }, [])
 
+  // Sync split payments when method is mixto
+  useEffect(() => {
+    if (paymentMethod === 'mixto') {
+      const currentTot = total()
+      const half = Math.round((currentTot / 2) * 100) / 100
+      const remainder = Math.round((currentTot - half) * 100) / 100
+      setSplitCash(half)
+      setSplitDigital(remainder)
+      setSplitPayments([
+        { id: 'sp-1', method: 'efectivo', amount: half },
+        { id: 'sp-2', method: 'debito', amount: remainder },
+      ])
+    }
+  }, [paymentMethod, total, setSplitPayments])
+
+  const handleSplitChange = (cashVal: number, digitalVal: number) => {
+    setSplitCash(cashVal)
+    setSplitDigital(digitalVal)
+    setSplitPayments([
+      { id: 'sp-1', method: 'efectivo', amount: cashVal },
+      { id: 'sp-2', method: 'debito', amount: digitalVal },
+    ])
+  }
+
   // Checkout action
   const handleCheckout = useCallback(() => {
-    if (items.length === 0) return
+    setCheckoutError(null)
+    const res = checkoutTicket({
+      cashierId: currentUser?.id || 'user-01',
+      cashierName: currentUser?.fullName || 'Cajero Principal',
+      cashierRole: currentUser?.role || 'EMPLEADO',
+      warehouseId: activeBranch?.id,
+      warehouseName: activeBranch?.name || 'Sucursal Central',
+      activeRegister: activeCashRegister,
+    })
+
+    if (!res.success) {
+      setCheckoutError(res.error.message)
+      setTimeout(() => setCheckoutError(null), 4000)
+      return
+    }
+
+    // Synchronize totals in cash register store
+    const sale = res.data
+    const regStore = useCashRegisterStore.getState()
+    if (regStore.currentRegister && regStore.currentRegister.isOpen) {
+      const cr = regStore.currentRegister
+      let newExpected = cr.expectedCash
+      let newTotalCard = cr.totalCard
+      let newTotalTransfer = cr.totalTransfer
+      let newTotalAccount = cr.totalAccount
+
+      if (sale.paymentMethod === 'efectivo' || sale.paymentMethod === 'cash') {
+        newExpected += sale.total
+      } else if (
+        sale.paymentMethod === 'debito' ||
+        sale.paymentMethod === 'credito' ||
+        sale.paymentMethod === 'card'
+      ) {
+        newTotalCard += sale.total
+      } else if (
+        sale.paymentMethod === 'transferencia_qr' ||
+        sale.paymentMethod === 'transfer_qr'
+      ) {
+        newTotalTransfer += sale.total
+      } else if (
+        sale.paymentMethod === 'cuenta_corriente' ||
+        sale.paymentMethod === 'account'
+      ) {
+        newTotalAccount += sale.total
+      } else if (sale.paymentMethod === 'mixto' && sale.splitPayments) {
+        sale.splitPayments.forEach((p) => {
+          if (p.method === 'efectivo') newExpected += p.amount
+          else if (p.method === 'debito' || p.method === 'credito') newTotalCard += p.amount
+          else if (p.method === 'transferencia_qr') newTotalTransfer += p.amount
+          else if (p.method === 'cuenta_corriente') newTotalAccount += p.amount
+        })
+      }
+
+      useCashRegisterStore.setState({
+        currentRegister: {
+          ...cr,
+          expectedCash: newExpected,
+          totalCard: newTotalCard,
+          totalTransfer: newTotalTransfer,
+          totalAccount: newTotalAccount,
+        },
+      })
+    }
+
     setCheckoutSuccess(true)
     setTimeout(() => {
       setCheckoutSuccess(false)
-      clearCart()
     }, 1800)
-  }, [items.length, clearCart])
+  }, [checkoutTicket, currentUser, activeBranch, activeCashRegister])
 
   // Global Keyboard shortcuts (F12: Cobrar, F2: Search, F7: Tare, Escape: Barcode scanner)
   useEffect(() => {
@@ -126,16 +230,40 @@ export const PosView: React.FC = () => {
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [handleCheckout, handleTare, weighModalOpen, customerModalOpen])
 
-  // Handle barcode scanning submit
+  // Handle barcode scanning submit (including Argentine scale labels EAN-13 starting with 20)
   const handleBarcodeSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     if (!barcodeInputRef.current) return
     const code = barcodeInputRef.current.value.trim()
     if (!code) return
 
-    // Find product by barcode or PLU
-    const found = mockProducts.find(
-      (p) => p.barcode === code || p.pluCode === code
+    // 1. Check if it's a grocery scale barcode (20 + PLU + Weight + C)
+    const scaleRes = parseScaleBarcode(code)
+    if (scaleRes.success) {
+      const foundWeighed = catalogProducts.find((p) => p.pluCode === scaleRes.data.plu)
+      if (foundWeighed) {
+        addItem({
+          id: `item-${Date.now()}-${Math.random()}`,
+          productId: foundWeighed.id,
+          productName: foundWeighed.name,
+          productSku: foundWeighed.sku,
+          saleType: 'weight',
+          quantity: scaleRes.data.weight,
+          unitPrice: foundWeighed.sellPrice,
+          costPrice: foundWeighed.costPrice,
+          subtotal: Math.round(scaleRes.data.weight * foundWeighed.sellPrice * 100) / 100,
+          pluCode: foundWeighed.pluCode,
+        })
+        setScannerNotification(`+ ${scaleRes.data.weight} kg ${foundWeighed.name}`)
+        setTimeout(() => setScannerNotification(null), 1500)
+        barcodeInputRef.current.value = ''
+        return
+      }
+    }
+
+    // 2. Exact match by barcode or PLU
+    const found = catalogProducts.find(
+      (p) => p.barcode === code || p.pluCode === code || p.sku === code
     )
 
     if (found) {
@@ -146,6 +274,7 @@ export const PosView: React.FC = () => {
           id: `item-${Date.now()}-${Math.random()}`,
           productId: found.id,
           productName: found.name,
+          productSku: found.sku,
           saleType: 'unit',
           quantity: 1,
           unitPrice: found.sellPrice,
@@ -163,10 +292,11 @@ export const PosView: React.FC = () => {
     }
   }
 
-  // Open weigh modal for produce
+  // Open weigh modal for produce, initializing with live scale weight if available
   const openWeighModal = (product: Product) => {
     setActiveWeighProduct(product)
-    setModalWeight('0.500')
+    const initialWeight = scaleWeight > 0 ? scaleWeight.toFixed(3) : '0.500'
+    setModalWeight(initialWeight)
     setWeighModalOpen(true)
   }
 
@@ -180,6 +310,7 @@ export const PosView: React.FC = () => {
       id: `item-${Date.now()}-${Math.random()}`,
       productId: activeWeighProduct.id,
       productName: activeWeighProduct.name,
+      productSku: activeWeighProduct.sku,
       saleType: 'weight',
       quantity: kg,
       unitPrice: activeWeighProduct.sellPrice,
@@ -198,6 +329,7 @@ export const PosView: React.FC = () => {
       id: `item-${Date.now()}-${Math.random()}`,
       productId: product.id,
       productName: product.name,
+      productSku: product.sku,
       saleType: 'unit',
       quantity: 1,
       unitPrice: product.sellPrice,
@@ -208,7 +340,7 @@ export const PosView: React.FC = () => {
   }
 
   // Filter products by category and search
-  const filteredProducts = mockProducts.filter((p) => {
+  const filteredProducts = catalogProducts.filter((p) => {
     const matchesCat =
       !selectedCategory ||
       selectedCategory === 'cat-01' ||
@@ -220,6 +352,13 @@ export const PosView: React.FC = () => {
       p.barcode?.includes(searchQuery)
     return matchesCat && matchesQuery
   })
+
+  // Credit validation for selected customer
+  const isCreditOverLimit =
+    paymentMethod === 'cuenta_corriente' &&
+    selectedCustomer !== null &&
+    selectedCustomer.creditLimit > 0 &&
+    (selectedCustomer.currentBalance || 0) + total() > selectedCustomer.creditLimit
 
   return (
     <div className="p-6">
@@ -560,32 +699,57 @@ export const PosView: React.FC = () => {
               <CheckCircle2 className="w-8 h-8 text-emerald-300" />
             </div>
 
+            {/* Cash register closed operational warning */}
+            {!isRegisterOpen && (
+              <div className="mt-2.5 p-2.5 rounded-lg bg-amber-50 border border-amber-300 text-amber-900 text-xs font-semibold flex items-center gap-2">
+                <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0" />
+                <span>
+                  Turno de caja cerrado. Para cobrar tickets debe abrir la caja en <strong>Caja y Roles</strong>.
+                </span>
+              </div>
+            )}
+
+            {/* Checkout error banner */}
+            {checkoutError && (
+              <div className="mt-2.5 p-2.5 rounded-lg bg-red-50 border border-red-300 text-red-900 text-xs font-semibold flex items-center gap-2 animate-in fade-in">
+                <AlertTriangle className="w-4 h-4 text-red-600 shrink-0" />
+                <span>{checkoutError}</span>
+              </div>
+            )}
+
             {/* Payment Method Selection Grid */}
             <div className="mt-3 flex flex-col gap-1.5">
               <span className="text-[10px] uppercase font-bold text-outline">
                 Forma de Pago
               </span>
-              <div className="grid grid-cols-2 gap-1.5">
+              <div className="grid grid-cols-3 gap-1.5">
                 {[
-                  { id: 'cash', label: 'Efectivo', icon: Banknote },
-                  { id: 'transfer_qr', label: 'QR / MP', icon: QrCode },
-                  { id: 'card', label: 'Tarjeta', icon: CreditCard },
-                  { id: 'account', label: 'Fiado / Cta.', icon: BookOpen },
+                  { id: 'efectivo', label: 'Efectivo', icon: Banknote },
+                  { id: 'debito', label: 'Débito', icon: CreditCard },
+                  { id: 'credito', label: 'Crédito', icon: CreditCard },
+                  { id: 'transferencia_qr', label: 'QR / MP', icon: QrCode },
+                  { id: 'cuenta_corriente', label: 'Fiado / Cta.', icon: BookOpen },
+                  { id: 'mixto', label: 'Mixto', icon: Layers },
                 ].map((pm) => {
                   const Icon = pm.icon
-                  const active = paymentMethod === pm.id
+                  const active =
+                    paymentMethod === pm.id ||
+                    (pm.id === 'efectivo' && paymentMethod === 'cash') ||
+                    (pm.id === 'transferencia_qr' && paymentMethod === 'transfer_qr') ||
+                    (pm.id === 'cuenta_corriente' && paymentMethod === 'account') ||
+                    (pm.id === 'debito' && paymentMethod === 'card')
                   return (
                     <button
                       key={pm.id}
                       type="button"
                       onClick={() => setPaymentMethod(pm.id as PaymentMethod)}
-                      className={`h-11 px-2.5 rounded-lg flex items-center gap-2 text-left text-xs font-semibold border transition-all ${
+                      className={`h-11 px-2 rounded-lg flex items-center justify-center gap-1.5 text-center text-xs font-semibold border transition-all ${
                         active
                           ? 'border-emerald-500 bg-emerald-50 text-emerald-950 shadow-xs'
                           : 'bg-surface hover:bg-surface-container text-on-surface border-slate-200'
                       }`}
                     >
-                      <Icon className={`w-4 h-4 ${active ? 'text-emerald-700' : 'text-secondary'}`} />
+                      <Icon className={`w-3.5 h-3.5 shrink-0 ${active ? 'text-emerald-700' : 'text-secondary'}`} />
                       <span className="truncate">{pm.label}</span>
                     </button>
                   )
@@ -593,8 +757,70 @@ export const PosView: React.FC = () => {
               </div>
             </div>
 
+            {/* Fiado validations */}
+            {paymentMethod === 'cuenta_corriente' && (
+              <div className="mt-2.5">
+                {!selectedCustomer ? (
+                  <div className="p-2 rounded-lg bg-amber-50 border border-amber-300 text-amber-900 text-xs font-semibold flex items-center gap-2">
+                    <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0" />
+                    <span>Seleccione un cliente registrado para autorizar el fiado.</span>
+                  </div>
+                ) : isCreditOverLimit ? (
+                  <div className="p-2 rounded-lg bg-red-50 border border-red-300 text-red-900 text-xs font-semibold flex items-center gap-2">
+                    <AlertTriangle className="w-4 h-4 text-red-600 shrink-0" />
+                    <span>
+                      ¡Límite superado! Saldo actual: {formatCurrency(selectedCustomer.currentBalance)} · Límite: {formatCurrency(selectedCustomer.creditLimit)}.
+                    </span>
+                  </div>
+                ) : null}
+              </div>
+            )}
+
+            {/* Split payments box */}
+            {paymentMethod === 'mixto' && (
+              <div className="mt-3 p-2.5 rounded-lg bg-surface border border-slate-200 flex flex-col gap-2">
+                <span className="text-xs font-bold text-on-surface">División del Cobro:</span>
+                <div className="flex items-center justify-between gap-2">
+                  <span className="text-xs text-outline font-medium">Efectivo:</span>
+                  <div className="relative w-32">
+                    <span className="absolute left-2 top-1.5 text-xs font-mono text-outline">$</span>
+                    <input
+                      type="number"
+                      value={splitCash || ''}
+                      onChange={(e) => handleSplitChange(parseFloat(e.target.value) || 0, splitDigital)}
+                      placeholder="0.00"
+                      className="w-full h-8 pl-5 pr-2 text-right bg-white font-mono text-xs font-bold rounded border border-slate-300 text-on-surface focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                    />
+                  </div>
+                </div>
+                <div className="flex items-center justify-between gap-2">
+                  <span className="text-xs text-outline font-medium">Digital / Débito:</span>
+                  <div className="relative w-32">
+                    <span className="absolute left-2 top-1.5 text-xs font-mono text-outline">$</span>
+                    <input
+                      type="number"
+                      value={splitDigital || ''}
+                      onChange={(e) => handleSplitChange(splitCash, parseFloat(e.target.value) || 0)}
+                      placeholder="0.00"
+                      className="w-full h-8 pl-5 pr-2 text-right bg-white font-mono text-xs font-bold rounded border border-slate-300 text-on-surface focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                    />
+                  </div>
+                </div>
+                <div className="flex items-center justify-between pt-1 border-t border-slate-100 text-xs">
+                  <span className="text-outline">Diferencia:</span>
+                  <span
+                    className={`font-mono font-bold ${
+                      Math.abs(total() - (splitCash + splitDigital)) < 0.01 ? 'text-emerald-700' : 'text-red-600'
+                    }`}
+                  >
+                    {formatCurrency(total() - (splitCash + splitDigital))}
+                  </span>
+                </div>
+              </div>
+            )}
+
             {/* Cash settlement box & return calculator (if cash) */}
-            {paymentMethod === 'cash' && (
+            {(paymentMethod === 'efectivo' || paymentMethod === 'cash') && (
               <div className="mt-3 p-2.5 rounded-lg bg-surface border border-slate-200 flex flex-col gap-2">
                 <div className="flex items-center justify-between gap-2">
                   <span className="text-xs text-outline font-medium">Paga con:</span>
@@ -633,7 +859,12 @@ export const PosView: React.FC = () => {
               <button
                 type="button"
                 onClick={handleCheckout}
-                disabled={items.length === 0 || checkoutSuccess}
+                disabled={
+                  items.length === 0 ||
+                  checkoutSuccess ||
+                  !isRegisterOpen ||
+                  (paymentMethod === 'cuenta_corriente' && (!selectedCustomer || isCreditOverLimit))
+                }
                 className="flex-1 h-12 bg-primary-container hover:bg-emerald-600 text-on-primary-container hover:text-white font-bold rounded-lg shadow-sm flex items-center justify-center gap-2 transition-all disabled:opacity-40"
               >
                 {checkoutSuccess ? (
@@ -693,6 +924,18 @@ export const PosView: React.FC = () => {
               className="w-full h-12 px-3 text-right bg-white font-mono text-lg font-bold rounded-lg border-2 border-emerald-500 focus:outline-none"
             />
           </div>
+
+          {/* Live scale button if scale has weight */}
+          {scaleWeight > 0 && (
+            <button
+              type="button"
+              onClick={() => setModalWeight(scaleWeight.toFixed(3))}
+              className="py-2 px-3 rounded-lg border border-emerald-300 bg-emerald-50 text-emerald-900 text-xs font-bold flex items-center justify-center gap-2 hover:bg-emerald-100 transition-colors shadow-xs"
+            >
+              <Scale className="w-4 h-4 text-emerald-700" />
+              <span>Usar peso de balanza en vivo ({scaleWeight.toFixed(3)} kg)</span>
+            </button>
+          )}
 
           {/* Quick preset weight buttons */}
           <div className="grid grid-cols-4 gap-2">
@@ -765,7 +1008,7 @@ export const PosView: React.FC = () => {
             Clientes Registrados con Cuenta Corriente:
           </div>
 
-          {mockCustomers.map((c) => (
+          {customers.map((c) => (
             <button
               key={c.id}
               type="button"
