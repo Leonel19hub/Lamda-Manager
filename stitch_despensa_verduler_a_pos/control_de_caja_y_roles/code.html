@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+
+<html lang="es"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{"colors":{"on-secondary-fixed":"#131b2e","secondary":"#565e74","outline-variant":"#bbcabf","secondary-container":"#dae2fd","tertiary-container":"#23acf1","tertiary-fixed":"#c9e6ff","on-secondary":"#ffffff","on-error":"#ffffff","surface-container-highest":"#d3e4fe","on-surface":"#0b1c30","surface-container-low":"#eff4ff","surface-bright":"#f8f9ff","primary":"#006c49","tertiary-fixed-dim":"#89ceff","surface-container-high":"#dce9ff","outline":"#6c7a71","on-tertiary-container":"#003d59","error":"#ba1a1a","on-secondary-container":"#5c647a","primary-container":"#10b981","tertiary":"#006591","on-surface-variant":"#3c4a42","surface-container":"#e5eeff","primary-fixed-dim":"#4edea3","error-container":"#ffdad6","inverse-primary":"#4edea3","on-background":"#0b1c30","surface-variant":"#d3e4fe","on-tertiary":"#ffffff","secondary-fixed":"#dae2fd","inverse-on-surface":"#eaf1ff","on-tertiary-fixed-variant":"#004c6e","background":"#f8f9ff","on-primary-fixed-variant":"#005236","inverse-surface":"#213145","on-primary-container":"#00422b","surface-tint":"#006c49","secondary-fixed-dim":"#bec6e0","on-primary":"#ffffff","on-secondary-fixed-variant":"#3f465c","surface":"#f8f9ff","on-error-container":"#93000a","on-tertiary-fixed":"#001e2f","primary-fixed":"#6ffbbe","on-primary-fixed":"#002113","surface-dim":"#cbdbf5"},"borderRadius":{"DEFAULT":"0.125rem","lg":"0.25rem","xl":"0.5rem","full":"0.75rem"},"spacing":{"space-lg":"1.5rem","gutter-desktop":"1.5rem","margin":"1rem","space-sm":"0.5rem","space-md":"1rem","space-xs":"0.25rem","gutter":"1rem","margin-desktop":"2rem","space-xl":"2rem"},"fontFamily":{"data-display-lg":["JetBrains Mono"],"data-mono-sm":["JetBrains Mono"],"body-sm":["Inter"],"body-lg":["Inter"],"data-display-xl":["JetBrains Mono"],"headline-lg":["Inter"],"data-mono-md":["JetBrains Mono"],"headline-xl":["Inter"],"label-caps":["Inter"],"body-md":["Inter"],"headline-md":["Inter"]},"fontSize":{"data-display-lg":["1.5rem",{"lineHeight":"2rem","fontWeight":"600"}],"data-mono-sm":["0.75rem",{"lineHeight":"1rem","fontWeight":"500"}],"body-sm":["0.75rem",{"lineHeight":"1rem","fontWeight":"400"}],"body-lg":["1rem",{"lineHeight":"1.5rem","fontWeight":"400"}],"data-display-xl":["2.25rem",{"lineHeight":"2.5rem","fontWeight":"700"}],"headline-lg":["1.5rem",{"lineHeight":"2rem","fontWeight":"600"}],"data-mono-md":["0.875rem",{"lineHeight":"1.25rem","fontWeight":"500"}],"headline-xl":["2rem",{"lineHeight":"2.5rem","fontWeight":"700"}],"label-caps":["0.6875rem",{"lineHeight":"0.875rem","fontWeight":"700"}],"body-md":["0.875rem",{"lineHeight":"1.25rem","fontWeight":"400"}],"headline-md":["1.25rem",{"lineHeight":"1.75rem","fontWeight":"600"}]}}}}</script></head><body class="bg-surface font-body-md text-on-surface antialiased"><aside class="fixed left-0 top-0 h-full w-64 bg-inverse-surface text-inverse-on-surface z-50 flex flex-col justify-between shadow-[0_1px_8px_rgba(0,0,0,0.08)]"><div class="flex flex-col"><div class="h-16 px-space-md flex items-center gap-space-sm bg-inverse-surface"><img alt="Mercado Control Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/ALJJyrDIFABG4jGR5Vbq57OqwvzwKdKWSWVzevxyvD3c7BsuZC5jTlMqtpZt1tdZQD9BZunnIy1uG23TjwsvyZjcJlA7Um2DCSa3mSy5KQTa--4yO6Gz8gsajiZcSI8RD_9ht2JE11_y0wTcEQ7z8Zq9gfj97xrhG5KqFFa1_-SrgQ8VLCnacyOXCD-cBW7E3AKgpvDwvfU0tJpzlUUxbENgXga-ksA61SdvS4tBk1COrnm0"/><div class="flex flex-col min-w-0"><span class="font-headline-md text-headline-md tracking-tight text-surface font-bold truncate leading-none">Mercado Control</span><span class="font-label-caps text-label-caps uppercase tracking-wider text-surface-variant truncate mt-space-xs">Despensa &amp; Verdulería</span></div></div><div class="px-space-md py-space-sm"><div class="font-label-caps text-label-caps uppercase text-surface-variant tracking-wider px-space-xs mb-space-xs">Operaciones &amp; Gestión</div><nav class="flex flex-col gap-space-xs" data-active-classes="bg-primary-container text-on-primary-container font-semibold rounded-lg shadow-sm"><a class="flex items-center gap-space-sm px-space-sm py-space-sm rounded-lg text-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="punto-de-venta" href="#"><span class="material-symbols-outlined text-xl">point_of_sale</span><span class="font-body-md text-body-md truncate">Punto de Venta</span></a><a class="flex items-center gap-space-sm px-space-sm py-space-sm rounded-lg text-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="panel-de-control" href="#"><span class="material-symbols-outlined text-xl">bar_chart</span><span class="font-body-md text-body-md truncate">Panel de Control</span></a><a class="flex items-center gap-space-sm px-space-sm py-space-sm rounded-lg text-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="productos-e-inventario" href="#"><span class="material-symbols-outlined text-xl">inventory_2</span><span class="font-body-md text-body-md truncate">Productos e Inventario</span></a><a class="flex items-center gap-space-sm px-space-sm py-space-sm rounded-lg text-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="clientes-y-cuentas-corrientes" href="#"><span class="material-symbols-outlined text-xl">group</span><span class="font-body-md text-body-md truncate">Clientes y Cuentas Ctes.</span></a><a class="flex items-center gap-space-sm px-space-sm py-space-sm rounded-lg text-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="proveedores-y-compras" href="#"><span class="material-symbols-outlined text-xl">local_shipping</span><span class="font-body-md text-body-md truncate">Proveedores y Compras</span></a><a aria-current="page" class="flex items-center gap-space-sm px-space-sm py-space-sm transition-colors bg-primary-container text-on-primary-container font-semibold rounded-lg shadow-sm" data-path="caja-y-roles" href="#"><span class="material-symbols-outlined text-xl">shield_person</span><span class="font-body-md text-body-md truncate">Caja y Roles</span></a></nav></div></div><div class="p-space-md bg-inverse-surface"><div class="bg-surface-variant/10 rounded-lg p-space-sm flex items-center justify-between"><div class="flex flex-col"><span class="font-label-caps text-label-caps text-surface-variant uppercase tracking-wider">Balanza Serial COM1</span><span class="font-data-mono-sm text-data-mono-sm text-primary-fixed-dim font-bold flex items-center gap-1"><span class="inline-block w-2 h-2 rounded-full bg-primary-container animate-pulse"></span>Online · 0.000 kg</span></div><span class="material-symbols-outlined text-surface-variant text-xl">scale</span></div></div></aside><div class="pl-64"><header class="fixed top-0 left-64 right-0 h-16 bg-surface-container-lowest/90 backdrop-blur-xl z-40 shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-16 w-full px-gutter-desktop flex items-center justify-between gap-space-md"><div class="flex items-center gap-space-md min-w-0"><div class="flex items-center gap-space-xs bg-surface-container-low px-space-sm py-1.5 rounded-lg"><span class="relative flex h-2.5 w-2.5"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary-container opacity-75"></span><span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-primary"></span></span><span class="font-body-sm text-body-sm font-semibold text-on-surface truncate">Sucursal Central</span><span class="font-body-sm text-body-sm text-outline hidden xl:inline">- Av. Rivadavia 4520</span></div><div class="flex items-center gap-1.5 bg-surface-container-low px-space-sm py-1.5 rounded-lg"><span class="inline-block w-2 h-2 rounded-full bg-primary"></span><span class="font-data-mono-sm text-data-mono-sm text-on-surface font-medium truncate">Caja Abierta · Turno Mañana (Caja 01)</span></div></div><div class="flex items-center gap-space-sm"><div class="hidden 2xl:flex items-center gap-space-xs bg-surface-container px-space-sm py-1.5 rounded-lg"><span class="material-symbols-outlined text-outline text-sm">keyboard</span><span class="font-data-mono-sm text-data-mono-sm text-on-surface-variant font-medium">F12: Cobrar | F2: Buscar PLU | F4: Balanza</span></div><div class="flex items-center gap-1.5 bg-surface-container-low px-space-sm py-1.5 rounded-lg cursor-pointer hover:bg-surface-container-high transition-colors"><span class="font-label-caps text-label-caps uppercase text-outline font-bold">Vista:</span><span class="font-body-sm text-body-sm font-semibold text-on-surface">Dueño</span><span class="material-symbols-outlined text-sm text-on-surface-variant">arrow_drop_down</span></div><div class="flex items-center gap-space-sm pl-space-xs"><div class="flex flex-col text-right hidden sm:flex"><span class="font-body-sm text-body-sm font-semibold text-on-surface leading-tight">María Gómez</span><span class="font-label-caps text-label-caps text-outline leading-tight">Administrador / Encargada</span></div><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCnWG_8AMUAEuZFqyuyZazQji66Fw03UmHv8lKDKySwqF_GOwKPEhKU_H8CATsLDtDBcLXBPKjVguK6_HjtXBa9dltMDIgl42xZrE0mXM6OUCNpdNqwL2EcwQWtyC2XspIbjpkbazHtWTbat0WcYZFfzcpMdAEM0kw6hLJf8sfPF9GlPUIGzDH2jA2jW8i_hDrNVyGZRxZuta_aEfuEom7hYJh19Xy1PeaDtM6CLIs"/></div></div></div></header><main class="relative pt-16 w-full min-h-screen bg-surface"><div class="flex flex-col w-full">
+<div class="w-full px-gutter-desktop py-space-lg flex flex-col gap-space-lg max-w-[1720px] mx-auto">
+<!-- Sub-header & Fast Operational Status -->
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-space-md">
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center gap-space-xs">
+<span class="font-label-caps text-label-caps uppercase tracking-wider text-primary font-bold bg-primary-fixed/40 px-2 py-0.5 rounded-lg">Módulo Fiscal &amp; Auditoría</span>
+<span class="text-outline text-xs">/</span>
+<span class="font-label-caps text-label-caps uppercase tracking-wider text-outline font-semibold">Caja 01 - Terminal Principal</span>
+</div>
+<div class="flex items-baseline gap-space-sm flex-wrap">
+<h1 class="font-headline-xl text-headline-xl text-on-surface tracking-tight font-bold">Control de Caja y Matriz de Roles</h1>
+<span class="font-data-mono-sm text-data-mono-sm text-outline">Terminal ID: POS-CENTRAL-01 · Rev. 4.9.2</span>
+</div>
+</div>
+<!-- Quick Action Toolbar -->
+<div class="flex items-center gap-space-sm flex-wrap">
+<button class="flex items-center gap-space-xs bg-surface-container-lowest text-on-surface hover:bg-surface-container px-space-md py-2.5 rounded-lg shadow-sm transition-colors">
+<span class="material-symbols-outlined text-lg text-primary">print</span>
+<span class="font-body-md text-body-md font-semibold">Ticket de Arqueo Parcial (X)</span>
+</button>
+<button class="flex items-center gap-space-xs bg-surface-container-lowest text-on-surface hover:bg-surface-container px-space-md py-2.5 rounded-lg shadow-sm transition-colors" onclick="toggleModalGasto(true)">
+<span class="material-symbols-outlined text-lg text-secondary">payments</span>
+<span class="font-body-md text-body-md font-semibold">Registrar Retiro / Gasto Menor</span>
+</button>
+<button class="flex items-center gap-space-xs bg-error text-on-error hover:opacity-95 px-space-md py-2.5 rounded-lg shadow-sm transition-all" onclick="confirmarCierreZ()">
+<span class="material-symbols-outlined text-lg">lock</span>
+<span class="font-body-md text-body-md font-semibold">Cierre de Caja y Bloqueo (Z)</span>
+</button>
+</div>
+</div>
+<!-- Active Shift Metadata Strip -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-space-md">
+<div class="flex items-center gap-space-md">
+<div class="w-12 h-12 rounded-xl bg-primary-container/15 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-2xl font-bold">account_circle</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-space-xs">
+<span class="font-body-lg text-body-lg font-bold text-on-surface">María Gómez</span>
+<span class="font-label-caps text-label-caps uppercase bg-primary-fixed/30 text-on-primary-fixed-variant px-1.5 py-0.5 rounded font-bold">Turno Mañana</span>
+<span class="inline-flex items-center gap-1 font-data-mono-sm text-data-mono-sm text-primary font-semibold">
+<span class="w-2 h-2 rounded-full bg-primary-container animate-pulse"></span>
+              En Curso
+            </span>
+</div>
+<span class="font-body-sm text-body-sm text-outline">Apertura: Hoy 07:30:14 hs · 5h 22m transcurridas · Supervisor validador: Carlos M. (Dueño)</span>
+</div>
+</div>
+<div class="flex items-center gap-space-lg self-end md:self-auto">
+<div class="flex flex-col text-right">
+<span class="font-label-caps text-label-caps uppercase text-outline font-bold">Fondo Inicial de Gaveta</span>
+<span class="font-data-display-lg text-data-display-lg font-bold text-on-surface">$ 25.000,00</span>
+</div>
+<div class="h-8 w-px bg-surface-container-high hidden sm:block"></div>
+<div class="flex flex-col text-right">
+<span class="font-label-caps text-label-caps uppercase text-outline font-bold">Tickets Totales Emitidos</span>
+<span class="font-data-display-lg text-data-display-lg font-bold text-primary">202 <span class="font-body-sm text-body-sm font-normal text-outline">comps.</span></span>
+</div>
+</div>
+</div>
+<!-- 4 Key Balance Cards Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-md">
+<!-- 1. Fondo Inicial -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col justify-between relative overflow-hidden group">
+<div class="absolute top-0 left-0 w-1.5 h-full bg-secondary"></div>
+<div class="flex items-start justify-between">
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps uppercase tracking-wider text-outline font-bold">1. Fondo Inicial de Caja</span>
+<span class="font-data-display-lg text-data-display-lg font-bold text-on-surface mt-1">$ 25.000,00</span>
+</div>
+<span class="material-symbols-outlined text-secondary text-2xl">account_balance_wallet</span>
+</div>
+<div class="mt-space-sm pt-space-xs flex items-center justify-between text-outline">
+<span class="font-body-sm text-body-sm">Efectivo base entregado</span>
+<span class="font-data-mono-sm text-data-mono-sm font-semibold">Gaveta #01</span>
+</div>
+</div>
+<!-- 2. Ventas en Efectivo -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col justify-between relative overflow-hidden group">
+<div class="absolute top-0 left-0 w-1.5 h-full bg-primary-container"></div>
+<div class="flex items-start justify-between">
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps uppercase tracking-wider text-primary font-bold">2. Ventas Efectivo (+)</span>
+<span class="font-data-display-lg text-data-display-lg font-bold text-on-surface mt-1">$ 215.800,00</span>
+</div>
+<div class="w-8 h-8 rounded-lg bg-primary-container/15 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-xl">payments</span>
+</div>
+</div>
+<div class="mt-space-sm pt-space-xs flex items-center justify-between text-outline">
+<span class="font-body-sm text-body-sm">118 tickets cobrados</span>
+<span class="font-data-mono-sm text-data-mono-sm text-primary font-bold">+86.3% flujo</span>
+</div>
+</div>
+<!-- 3. Cobros Digitales / QR / Tarjeta -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col justify-between relative overflow-hidden group">
+<div class="absolute top-0 left-0 w-1.5 h-full bg-tertiary"></div>
+<div class="flex items-start justify-between">
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps uppercase tracking-wider text-tertiary font-bold">3. Digital / QR / MP / Posnet</span>
+<span class="font-data-display-lg text-data-display-lg font-bold text-on-surface mt-1">$ 251.370,00</span>
+</div>
+<div class="w-8 h-8 rounded-lg bg-tertiary-container/20 flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined text-xl">qr_code_scanner</span>
+</div>
+</div>
+<div class="mt-space-sm pt-space-xs flex items-center justify-between text-outline">
+<span class="font-body-sm text-body-sm">84 acreditaciones banco</span>
+<span class="font-data-mono-sm text-data-mono-sm text-tertiary font-semibold">Directo a CBU</span>
+</div>
+</div>
+<!-- 4. Retiros / Gastos Menores -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col justify-between relative overflow-hidden group">
+<div class="absolute top-0 left-0 w-1.5 h-full bg-error"></div>
+<div class="flex items-start justify-between">
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps uppercase tracking-wider text-error font-bold">4. Retiros / Gastos (-)</span>
+<span class="font-data-display-lg text-data-display-lg font-bold text-error mt-1">-$ 18.500,00</span>
+</div>
+<div class="w-8 h-8 rounded-lg bg-error-container/50 flex items-center justify-center text-error">
+<span class="material-symbols-outlined text-xl">output</span>
+</div>
+</div>
+<div class="mt-space-sm pt-space-xs flex items-center justify-between text-outline">
+<span class="font-body-sm text-body-sm">2 comprobantes caja</span>
+<span class="font-data-mono-sm text-data-mono-sm text-error font-semibold">-7.4% caja</span>
+</div>
+</div>
+</div>
+<!-- Triple Section: Cash In Drawer Calculation + Bill Breakdown + Quick Drawer History -->
+<div class="grid grid-cols-1 xl:grid-cols-12 gap-space-lg items-start">
+<!-- LEFT: Theoretical vs Real Cash Reconciliation (7 cols) -->
+<div class="xl:col-span-7 flex flex-col gap-space-md bg-surface-container-lowest rounded-xl p-space-lg shadow-sm">
+<!-- Summary Callout -->
+<div class="p-space-md rounded-xl bg-surface-container-low flex flex-col md:flex-row md:items-center justify-between gap-space-md">
+<div class="flex flex-col">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-xl">price_check</span>
+<span class="font-label-caps text-label-caps uppercase tracking-wider text-outline font-bold">Efectivo Teórico Esperado en Cajón</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Base inicial ($25.000) + Efectivo ($215.800) - Egresos ($18.500)</span>
+</div>
+<div class="flex flex-col text-left md:text-right">
+<span class="font-data-display-xl text-data-display-xl font-bold text-on-surface tracking-tight" id="theoreticalAmount">$ 222.300,00</span>
+<span class="font-label-caps text-label-caps uppercase text-primary font-bold">Fórmula Cuadrada</span>
+</div>
+</div>
+<!-- Bill Denominations Counter Tool -->
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-lg">calculate</span>
+<h2 class="font-headline-md text-headline-md font-bold text-on-surface">Conteo Físico de Billetes en Gaveta</h2>
+</div>
+<button class="font-data-mono-sm text-data-mono-sm text-outline hover:text-on-surface transition-colors flex items-center gap-1" onclick="resetConteo()">
+<span class="material-symbols-outlined text-sm">restart_alt</span> Reiniciar
+            </button>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Ingrese la cantidad física de cada denominación para determinar desvíos de caja.</p>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead>
+<tr class="bg-surface-container text-on-surface-variant font-label-caps text-label-caps uppercase">
+<th class="py-2.5 px-space-md rounded-l-lg">Denominación</th>
+<th class="py-2.5 px-space-md text-center">Cantidad Billetes</th>
+<th class="py-2.5 px-space-md text-right rounded-r-lg">Subtotal ($)</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-container-high/40">
+<!-- $ 10.000 -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-2.5 px-space-md">
+<div class="flex items-center gap-space-sm">
+<span class="w-8 h-5 bg-surface-container-high rounded text-center text-xs font-bold font-data-mono-sm text-on-surface flex items-center justify-center">$ 10k</span>
+<span class="font-body-md text-body-md font-semibold text-on-surface">Billete $ 10.000</span>
+</div>
+</td>
+<td class="py-2.5 px-space-md">
+<div class="flex items-center justify-center gap-space-xs">
+<button class="w-8 h-8 rounded-lg bg-surface-container hover:bg-surface-container-high flex items-center justify-center text-on-surface font-bold" onclick="stepBill('bill10k', -1)">-</button>
+<input class="w-20 h-9 text-center font-data-mono-md text-data-mono-md font-bold bg-surface-container-low rounded-lg focus:outline-none focus:bg-surface-container-lowest" id="bill10k" min="0" oninput="recalcCash()" type="number" value="10"/>
+<button class="w-8 h-8 rounded-lg bg-surface-container hover:bg-surface-container-high flex items-center justify-center text-on-surface font-bold" onclick="stepBill('bill10k', 1)">+</button>
+</div>
+</td>
+<td class="py-2.5 px-space-md text-right font-data-mono-md text-data-mono-md font-semibold text-on-surface" id="sub10k">
+                  $ 100.000,00
+                </td>
+</tr>
+<!-- $ 2.000 -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-2.5 px-space-md">
+<div class="flex items-center gap-space-sm">
+<span class="w-8 h-5 bg-surface-container-high rounded text-center text-xs font-bold font-data-mono-sm text-on-surface flex items-center justify-center">$ 2k</span>
+<span class="font-body-md text-body-md font-semibold text-on-surface">Billete $ 2.000</span>
+</div>
+</td>
+<td class="py-2.5 px-space-md">
+<div class="flex items-center justify-center gap-space-xs">
+<button class="w-8 h-8 rounded-lg bg-surface-container hover:bg-surface-container-high flex items-center justify-center text-on-surface font-bold" onclick="stepBill('bill2k', -1)">-</button>
+<input class="w-20 h-9 text-center font-data-mono-md text-data-mono-md font-bold bg-surface-container-low rounded-lg focus:outline-none focus:bg-surface-container-lowest" id="bill2k" min="0" oninput="recalcCash()" type="number" value="50"/>
+<button class="w-8 h-8 rounded-lg bg-surface-container hover:bg-surface-container-high flex items-center justify-center text-on-surface font-bold" onclick="stepBill('bill2k', 1)">+</button>
+</div>
+</td>
+<td class="py-2.5 px-space-md text-right font-data-mono-md text-data-mono-md font-semibold text-on-surface" id="sub2k">
+                  $ 100.000,00
+                </td>
+</tr>
+<!-- $ 1.000 -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-2.5 px-space-md">
+<div class="flex items-center gap-space-sm">
+<span class="w-8 h-5 bg-surface-container-high rounded text-center text-xs font-bold font-data-mono-sm text-on-surface flex items-center justify-center">$ 1k</span>
+<span class="font-body-md text-body-md font-semibold text-on-surface">Billete $ 1.000</span>
+</div>
+</td>
+<td class="py-2.5 px-space-md">
+<div class="flex items-center justify-center gap-space-xs">
+<button class="w-8 h-8 rounded-lg bg-surface-container hover:bg-surface-container-high flex items-center justify-center text-on-surface font-bold" onclick="stepBill('bill1k', -1)">-</button>
+<input class="w-20 h-9 text-center font-data-mono-md text-data-mono-md font-bold bg-surface-container-low rounded-lg focus:outline-none focus:bg-surface-container-lowest" id="bill1k" min="0" oninput="recalcCash()" type="number" value="20"/>
+<button class="w-8 h-8 rounded-lg bg-surface-container hover:bg-surface-container-high flex items-center justify-center text-on-surface font-bold" onclick="stepBill('bill1k', 1)">+</button>
+</div>
+</td>
+<td class="py-2.5 px-space-md text-right font-data-mono-md text-data-mono-md font-semibold text-on-surface" id="sub1k">
+                  $ 20.000,00
+                </td>
+</tr>
+<!-- $ 100 -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-2.5 px-space-md">
+<div class="flex items-center gap-space-sm">
+<span class="w-8 h-5 bg-surface-container-high rounded text-center text-xs font-bold font-data-mono-sm text-on-surface flex items-center justify-center">$ 100</span>
+<span class="font-body-md text-body-md font-semibold text-on-surface">Billetes Varios ($500 / $200 / $100)</span>
+</div>
+</td>
+<td class="py-2.5 px-space-md">
+<div class="flex items-center justify-center gap-space-xs">
+<button class="w-8 h-8 rounded-lg bg-surface-container hover:bg-surface-container-high flex items-center justify-center text-on-surface font-bold" onclick="stepBill('bill100', -1)">-</button>
+<input class="w-20 h-9 text-center font-data-mono-md text-data-mono-md font-bold bg-surface-container-low rounded-lg focus:outline-none focus:bg-surface-container-lowest" id="bill100" min="0" oninput="recalcCash()" type="number" value="23"/>
+<button class="w-8 h-8 rounded-lg bg-surface-container hover:bg-surface-container-high flex items-center justify-center text-on-surface font-bold" onclick="stepBill('bill100', 1)">+</button>
+</div>
+</td>
+<td class="py-2.5 px-space-md text-right font-data-mono-md text-data-mono-md font-semibold text-on-surface" id="sub100">
+                  $ 2.300,00
+                </td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Real vs Difference Result Box -->
+<div class="mt-space-xs p-space-md bg-surface-container rounded-xl flex flex-col md:flex-row items-center justify-between gap-space-md">
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps uppercase text-outline font-bold">Total Efectivo Real Contado</span>
+<span class="font-data-display-lg text-data-display-lg font-bold text-on-surface" id="realAmountDisplay">$ 222.300,00</span>
+</div>
+<div class="flex items-center gap-space-sm bg-primary-fixed text-on-primary-fixed-variant px-space-md py-2 rounded-xl" id="diffBadge">
+<span class="material-symbols-outlined text-2xl font-bold">verified</span>
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps uppercase font-bold tracking-wider">Estado del Cuadre</span>
+<span class="font-data-mono-md text-data-mono-md font-bold">Diferencia: $ 0,00 (Caja Exacta ✓)</span>
+</div>
+</div>
+</div>
+</div>
+<!-- RIGHT: Expenses / Withdrawals & Audit Trail (5 cols) -->
+<div class="xl:col-span-5 flex flex-col gap-space-md">
+<!-- Detalle de Egresos Menores Card -->
+<div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-error text-xl">receipt_long</span>
+<h3 class="font-headline-md text-headline-md font-bold text-on-surface">Comprobantes de Salida</h3>
+</div>
+<span class="font-label-caps text-label-caps uppercase bg-error-container text-on-error-container px-2 py-0.5 rounded font-bold">
+              Total: -$ 18.500,00
+            </span>
+</div>
+<div class="flex flex-col gap-space-xs">
+<!-- Gasto 1 -->
+<div class="p-space-sm rounded-lg bg-surface-container-low flex items-start justify-between gap-space-sm">
+<div class="flex items-start gap-space-sm">
+<span class="material-symbols-outlined text-outline mt-0.5">local_shipping</span>
+<div class="flex flex-col">
+<span class="font-body-md text-body-md font-semibold text-on-surface">Pago Flete Verduras Mercado Central</span>
+<span class="font-body-sm text-body-sm text-outline">Autorizado por: Carlos M. · Vale #0482</span>
+<span class="font-data-mono-sm text-data-mono-sm text-outline mt-0.5">Hora: 08:42 hs · Chofer: R. Benítez</span>
+</div>
+</div>
+<span class="font-data-mono-md text-data-mono-md font-bold text-error whitespace-nowrap">-$ 15.000,00</span>
+</div>
+<!-- Gasto 2 -->
+<div class="p-space-sm rounded-lg bg-surface-container-low flex items-start justify-between gap-space-sm">
+<div class="flex items-start gap-space-sm">
+<span class="material-symbols-outlined text-outline mt-0.5">cleaning_services</span>
+<div class="flex flex-col">
+<span class="font-body-md text-body-md font-semibold text-on-surface">Compra Artículos de Limpieza y Bolsas</span>
+<span class="font-body-sm text-body-sm text-outline">Ticket Factura 'B' Nro. 0003-0004921</span>
+<span class="font-data-mono-sm text-data-mono-sm text-outline mt-0.5">Hora: 10:15 hs · Prov: Química Sur</span>
+</div>
+</div>
+<span class="font-data-mono-md text-data-mono-md font-bold text-error whitespace-nowrap">-$ 3.500,00</span>
+</div>
+</div>
+<!-- Scale & Peripheral Health in Cash Register -->
+<div class="mt-space-xs p-space-sm rounded-lg bg-surface-container flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-base">print</span>
+<span class="font-body-sm text-body-sm font-semibold text-on-surface">Impresora Fiscal Térmica 80mm</span>
+</div>
+<span class="font-data-mono-sm text-data-mono-sm text-primary font-bold">Papel 78% · OK</span>
+</div>
+</div>
+<!-- Visual Cash Flow Breakdown Ring Chart -->
+<div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-xl">donut_large</span>
+<h3 class="font-headline-md text-headline-md font-bold text-on-surface">Distribución de Ingresos del Turno</h3>
+</div>
+<span class="font-label-caps text-label-caps uppercase text-outline font-bold">Total: $ 467.170,00</span>
+</div>
+<div class="flex items-center justify-between gap-space-md">
+<!-- Inline Mini SVG Donut Chart -->
+<div class="relative w-28 h-28 flex items-center justify-center shrink-0">
+<svg class="w-full h-full -rotate-90" viewbox="0 0 36 36">
+<!-- Background Circle -->
+<path class="text-surface-container" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="4.5"></path>
+<!-- Digital / QR: 53.8% (circumference ~ 100) stroke-dasharray="54, 100" stroke-dashoffset="0" -->
+<path class="text-tertiary transition-all duration-700" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-dasharray="54, 100" stroke-dashoffset="0" stroke-linecap="round" stroke-width="4.5"></path>
+<!-- Efectivo: 46.2% stroke-dasharray="46, 100" stroke-dashoffset="-54" -->
+<path class="text-primary-container transition-all duration-700" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-dasharray="46, 100" stroke-dashoffset="-54" stroke-linecap="round" stroke-width="4.5"></path>
+</svg>
+<div class="absolute flex flex-col items-center justify-center text-center">
+<span class="font-data-mono-sm text-data-mono-sm font-bold text-on-surface">202</span>
+<span class="font-label-caps text-label-caps text-outline uppercase text-[9px]">Ventas</span>
+</div>
+</div>
+<!-- Legend breakdown -->
+<div class="flex flex-col gap-space-xs flex-1">
+<div class="flex items-center justify-between text-body-sm">
+<div class="flex items-center gap-1.5">
+<span class="w-3 h-3 rounded bg-tertiary shrink-0"></span>
+<span class="text-on-surface font-medium truncate">Digital (QR / Débito)</span>
+</div>
+<span class="font-data-mono-sm text-data-mono-sm font-bold text-on-surface">53.8%</span>
+</div>
+<div class="flex items-center justify-between text-body-sm">
+<div class="flex items-center gap-1.5">
+<span class="w-3 h-3 rounded bg-primary-container shrink-0"></span>
+<span class="text-on-surface font-medium truncate">Efectivo Billete</span>
+</div>
+<span class="font-data-mono-sm text-data-mono-sm font-bold text-on-surface">46.2%</span>
+</div>
+<div class="mt-1 pt-1 border-t border-surface-container flex items-center justify-between">
+<span class="font-label-caps text-label-caps uppercase text-outline">Ticket Promedio</span>
+<span class="font-data-mono-sm text-data-mono-sm font-bold text-on-surface">$ 2.312,72</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- BOTTOM SECTION: Granular Access Permissions Matrix across Store Roles -->
+<div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm flex flex-col gap-space-lg">
+<!-- Section Header -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-space-md">
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-2xl font-bold">shield_person</span>
+<h2 class="font-headline-lg text-headline-lg font-bold text-on-surface tracking-tight">Matriz de Roles y Permisos de Acceso al Sistema</h2>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">Control granular de privilegios según jerarquía del personal de la despensa y verdulería. Los cambios aplican de forma inmediata a todas las terminales.</p>
+</div>
+<div class="flex items-center gap-space-xs shrink-0">
+<button class="flex items-center gap-space-xs bg-primary text-on-primary hover:bg-primary/90 px-space-md py-2.5 rounded-lg font-semibold transition-colors shadow-sm" onclick="guardarPermisos()">
+<span class="material-symbols-outlined text-lg">save</span>
+<span class="font-body-md text-body-md">Guardar Política de Roles</span>
+</button>
+</div>
+</div>
+<!-- Roles Comparative Badges Bar -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-space-md bg-surface-container-low p-space-md rounded-xl">
+<div class="flex flex-col justify-center">
+<span class="font-label-caps text-label-caps uppercase tracking-wider text-outline font-bold">Nivel de Seguridad</span>
+<span class="font-headline-md text-headline-md font-bold text-on-surface">3 Perfiles Definidos</span>
+<span class="font-body-sm text-body-sm text-outline">Autenticación por PIN de 4 dígitos o Huella</span>
+</div>
+<!-- Role 1 -->
+<div class="bg-surface-container-lowest p-space-sm rounded-lg flex items-center gap-space-sm">
+<div class="w-10 h-10 rounded-lg bg-surface-container-high flex items-center justify-center text-on-surface-variant font-bold">
+<span class="material-symbols-outlined text-xl">badge</span>
+</div>
+<div class="flex flex-col">
+<span class="font-body-md text-body-md font-bold text-on-surface">Empleado / Cajero</span>
+<span class="font-data-mono-sm text-data-mono-sm text-outline">Operativo Básico (4 usuarios)</span>
+</div>
+</div>
+<!-- Role 2 -->
+<div class="bg-surface-container-lowest p-space-sm rounded-lg flex items-center gap-space-sm">
+<div class="w-10 h-10 rounded-lg bg-secondary-container flex items-center justify-center text-on-secondary-fixed font-bold">
+<span class="material-symbols-outlined text-xl">manage_accounts</span>
+</div>
+<div class="flex flex-col">
+<span class="font-body-md text-body-md font-bold text-on-surface">Gerente / Encargado</span>
+<span class="font-data-mono-sm text-data-mono-sm text-secondary">Intermedio / Auditor (2 usuarios)</span>
+</div>
+</div>
+<!-- Role 3 -->
+<div class="bg-surface-container-lowest p-space-sm rounded-lg flex items-center gap-space-sm">
+<div class="w-10 h-10 rounded-lg bg-primary-fixed flex items-center justify-center text-on-primary-fixed-variant font-bold">
+<span class="material-symbols-outlined text-xl">admin_panel_settings</span>
+</div>
+<div class="flex flex-col">
+<span class="font-body-md text-body-md font-bold text-on-surface">Dueño / Administrador</span>
+<span class="font-data-mono-sm text-data-mono-sm text-primary font-bold">Control Total Restringido (1 usuario)</span>
+</div>
+</div>
+</div>
+<!-- Comprehensive Permissions Matrix Table -->
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container text-on-surface-variant font-label-caps text-label-caps uppercase">
+<th class="py-3 px-space-md rounded-l-lg w-2/5">Módulo / Privilegio Operativo</th>
+<th class="py-3 px-space-md w-1/5 text-center">
+<div class="flex items-center justify-center gap-1">
+<span>Empleado / Cajero</span>
+<span class="text-[10px] bg-surface-container-high px-1 py-0.2 rounded">Básico</span>
+</div>
+</th>
+<th class="py-3 px-space-md w-1/5 text-center">
+<div class="flex items-center justify-center gap-1">
+<span>Gerente / Encargado</span>
+<span class="text-[10px] bg-secondary-container text-on-secondary-container px-1 py-0.2 rounded font-bold">Intermedio</span>
+</div>
+</th>
+<th class="py-3 px-space-md w-1/5 text-center rounded-r-lg">
+<div class="flex items-center justify-center gap-1">
+<span>Dueño / Administrador</span>
+<span class="text-[10px] bg-primary-fixed text-on-primary-fixed-variant px-1 py-0.2 rounded font-bold">Total</span>
+</div>
+</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-container-high/50">
+<!-- Row 1: Cobro y Emisión de Tickets en POS -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-3.5 px-space-md">
+<div class="flex items-start gap-space-sm">
+<span class="material-symbols-outlined text-primary text-xl mt-0.5">point_of_sale</span>
+<div class="flex flex-col">
+<span class="font-body-md text-body-md font-semibold text-on-surface">Cobro y Emisión de Tickets en POS</span>
+<span class="font-body-sm text-body-sm text-outline">Escaneo de código de barras, balanza y cobro standard.</span>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-space-md text-center">
+<span class="inline-flex items-center gap-1 font-body-sm text-body-sm font-semibold text-primary bg-primary-fixed/40 px-2.5 py-1 rounded-lg">
+<span class="material-symbols-outlined text-sm font-bold">check_circle</span> Habilitado
+                </span>
+</td>
+<td class="py-3.5 px-space-md text-center">
+<span class="inline-flex items-center gap-1 font-body-sm text-body-sm font-semibold text-primary bg-primary-fixed/40 px-2.5 py-1 rounded-lg">
+<span class="material-symbols-outlined text-sm font-bold">check_circle</span> Habilitado
+                </span>
+</td>
+<td class="py-3.5 px-space-md text-center">
+<span class="inline-flex items-center gap-1 font-body-sm text-body-sm font-semibold text-primary bg-primary-fixed/40 px-2.5 py-1 rounded-lg">
+<span class="material-symbols-outlined text-sm font-bold">check_circle</span> Habilitado
+                </span>
+</td>
+</tr>
+<!-- Row 2: Aplicar Descuentos Manuales (> 5%) -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-3.5 px-space-md">
+<div class="flex items-start gap-space-sm">
+<span class="material-symbols-outlined text-outline text-xl mt-0.5">percent</span>
+<div class="flex flex-col">
+<span class="font-body-md text-body-md font-semibold text-on-surface">Aplicar Descuentos Manuales (&gt; 5%)</span>
+<span class="font-body-sm text-body-sm text-outline">Rebajas especiales en línea de caja por bulto cerrado o cliente.</span>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-space-md text-center">
+<span class="inline-flex items-center gap-1 font-body-sm text-body-sm font-medium text-error bg-error-container/60 px-2.5 py-1 rounded-lg">
+<span class="material-symbols-outlined text-sm">lock</span> Requiere PIN
+                </span>
+</td>
+<td class="py-3.5 px-space-md text-center">
+<span class="inline-flex items-center gap-1 font-body-sm text-body-sm font-semibold text-on-surface bg-surface-container px-2.5 py-1 rounded-lg">
+<span class="material-symbols-outlined text-sm text-primary">check</span> Hasta 15%
+                </span>
+</td>
+<td class="py-3.5 px-space-md text-center">
+<span class="inline-flex items-center gap-1 font-body-sm text-body-sm font-semibold text-primary bg-primary-fixed/40 px-2.5 py-1 rounded-lg">
+<span class="material-symbols-outlined text-sm font-bold">all_inclusive</span> Sin Límite
+                </span>
+</td>
+</tr>
+<!-- Row 3: Anular Tickets o Ítems ya Emitidos -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-3.5 px-space-md">
+<div class="flex items-start gap-space-sm">
+<span class="material-symbols-outlined text-outline text-xl mt-0.5">cancel</span>
+<div class="flex flex-col">
+<span class="font-body-md text-body-md font-semibold text-on-surface">Anular Tickets o Ítems ya Emitidos</span>
+<span class="font-body-sm text-body-sm text-outline">Cancelación de renglón registrado o anulación completa de comprobante.</span>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-space-md text-center">
+<span class="inline-flex items-center gap-1 font-body-sm text-body-sm font-medium text-error bg-error-container/60 px-2.5 py-1 rounded-lg">
+<span class="material-symbols-outlined text-sm">key</span> Clave Sup.
+                </span>
+</td>
+<td class="py-3.5 px-space-md text-center">
+<span class="inline-flex items-center gap-1 font-body-sm text-body-sm font-semibold text-on-surface bg-surface-container px-2.5 py-1 rounded-lg">
+<span class="material-symbols-outlined text-sm text-primary">check</span> Con Motivo
+                </span>
+</td>
+<td class="py-3.5 px-space-md text-center">
+<span class="inline-flex items-center gap-1 font-body-sm text-body-sm font-semibold text-primary bg-primary-fixed/40 px-2.5 py-1 rounded-lg">
+<span class="material-symbols-outlined text-sm font-bold">check_circle</span> Habilitado
+                </span>
+</td>
+</tr>
+<!-- Row 4: Apertura Manual de Gaveta de Dinero (Sin Venta) -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-3.5 px-space-md">
+<div class="flex items-start gap-space-sm">
+<span class="material-symbols-outlined text-outline text-xl mt-0.5">open_in_browser</span>
+<div class="flex flex-col">
+<span class="font-body-md text-body-md font-semibold text-on-surface">Apertura Manual de Gaveta (Sin Venta)</span>
+<span class="font-body-sm text-body-sm text-outline">Disparo del solenoide del cajón portabilletes sin emitir ticket.</span>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-space-md text-center">
+<span class="inline-flex items-center gap-1 font-body-sm text-body-sm font-medium text-error bg-error-container/60 px-2.5 py-1 rounded-lg">
+<span class="material-symbols-outlined text-sm">block</span> Bloqueado
+                </span>
+</td>
+<td class="py-3.5 px-space-md text-center">
+<span class="inline-flex items-center gap-1 font-body-sm text-body-sm font-semibold text-secondary bg-surface-container px-2.5 py-1 rounded-lg">
+<span class="material-symbols-outlined text-sm">history_toggle_off</span> Con Auditoría
+                </span>
+</td>
+<td class="py-3.5 px-space-md text-center">
+<span class="inline-flex items-center gap-1 font-body-sm text-body-sm font-semibold text-primary bg-primary-fixed/40 px-2.5 py-1 rounded-lg">
+<span class="material-symbols-outlined text-sm font-bold">check_circle</span> Habilitado
+                </span>
+</td>
+</tr>
+<!-- Row 5: Ver Precios de Costo y Margen de Ganancia -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-3.5 px-space-md">
+<div class="flex items-start gap-space-sm">
+<span class="material-symbols-outlined text-outline text-xl mt-0.5">visibility_off</span>
+<div class="flex flex-col">
+<span class="font-body-md text-body-md font-semibold text-on-surface">Ver Precios de Costo y Margen (%)</span>
+<span class="font-body-sm text-body-sm text-outline">Visibilidad de costos de compra a proveedores en lista de productos.</span>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-space-md text-center">
+<span class="inline-flex items-center gap-1 font-body-sm text-body-sm font-medium text-outline bg-surface-container px-2.5 py-1 rounded-lg">
+<span class="material-symbols-outlined text-sm">visibility_off</span> Oculto
+                </span>
+</td>
+<td class="py-3.5 px-space-md text-center">
+<span class="inline-flex items-center gap-1 font-body-sm text-body-sm font-semibold text-on-surface bg-surface-container px-2.5 py-1 rounded-lg">
+<span class="material-symbols-outlined text-sm text-primary">visibility</span> Solo Lectura
+                </span>
+</td>
+<td class="py-3.5 px-space-md text-center">
+<span class="inline-flex items-center gap-1 font-body-sm text-body-sm font-semibold text-primary bg-primary-fixed/40 px-2.5 py-1 rounded-lg">
+<span class="material-symbols-outlined text-sm font-bold">edit</span> Visible y Editable
+                </span>
+</td>
+</tr>
+<!-- Row 6: Registrar Mermas y Descarte de Frutas/Verduras -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-3.5 px-space-md">
+<div class="flex items-start gap-space-sm">
+<span class="material-symbols-outlined text-primary text-xl mt-0.5">delete_sweep</span>
+<div class="flex flex-col">
+<span class="font-body-md text-body-md font-semibold text-on-surface">Registrar Mermas y Descarte de Verdulería</span>
+<span class="font-body-sm text-body-sm text-outline">Baja de kilos podridos, maduración excedida o merma natural.</span>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-space-md text-center">
+<span class="inline-flex items-center gap-1 font-body-sm text-body-sm font-semibold text-on-surface bg-surface-container px-2.5 py-1 rounded-lg">
+<span class="material-symbols-outlined text-sm text-primary">scale</span> Con Peso / Foto
+                </span>
+</td>
+<td class="py-3.5 px-space-md text-center">
+<span class="inline-flex items-center gap-1 font-body-sm text-body-sm font-semibold text-primary bg-primary-fixed/40 px-2.5 py-1 rounded-lg">
+<span class="material-symbols-outlined text-sm font-bold">verified</span> Aprueba y Ajusta
+                </span>
+</td>
+<td class="py-3.5 px-space-md text-center">
+<span class="inline-flex items-center gap-1 font-body-sm text-body-sm font-semibold text-primary bg-primary-fixed/40 px-2.5 py-1 rounded-lg">
+<span class="material-symbols-outlined text-sm font-bold">check_circle</span> Total
+                </span>
+</td>
+</tr>
+<!-- Row 7: Modificar Precios de Venta al Público -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-3.5 px-space-md">
+<div class="flex items-start gap-space-sm">
+<span class="material-symbols-outlined text-outline text-xl mt-0.5">price_change</span>
+<div class="flex flex-col">
+<span class="font-body-md text-body-md font-semibold text-on-surface">Modificar Precios de Venta al Público</span>
+<span class="font-body-sm text-body-sm text-outline">Actualización de pizarras de verdulería y gondolas de almacén.</span>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-space-md text-center">
+<span class="inline-flex items-center gap-1 font-body-sm text-body-sm font-medium text-error bg-error-container/60 px-2.5 py-1 rounded-lg">
+<span class="material-symbols-outlined text-sm">block</span> Bloqueado
+                </span>
+</td>
+<td class="py-3.5 px-space-md text-center">
+<span class="inline-flex items-center gap-1 font-body-sm text-body-sm font-semibold text-primary bg-primary-fixed/40 px-2.5 py-1 rounded-lg">
+<span class="material-symbols-outlined text-sm font-bold">check_circle</span> Habilitado
+                </span>
+</td>
+<td class="py-3.5 px-space-md text-center">
+<span class="inline-flex items-center gap-1 font-body-sm text-body-sm font-semibold text-primary bg-primary-fixed/40 px-2.5 py-1 rounded-lg">
+<span class="material-symbols-outlined text-sm font-bold">check_circle</span> Habilitado
+                </span>
+</td>
+</tr>
+<!-- Row 8: Autorizar Ventas a Crédito / Fiado (Cta. Cte.) -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-3.5 px-space-md">
+<div class="flex items-start gap-space-sm">
+<span class="material-symbols-outlined text-outline text-xl mt-0.5">handshake</span>
+<div class="flex flex-col">
+<span class="font-body-md text-body-md font-semibold text-on-surface">Autorizar Ventas a Crédito / Fiado (Cta. Cte.)</span>
+<span class="font-body-sm text-body-sm text-outline">Imputación de compras al cuaderno de cuenta corriente barrial.</span>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-space-md text-center">
+<span class="inline-flex items-center gap-1 font-body-sm text-body-sm font-semibold text-on-surface-variant bg-surface-container px-2.5 py-1 rounded-lg">
+<span class="material-symbols-outlined text-sm">person_search</span> Solo Saldo Libre
+                </span>
+</td>
+<td class="py-3.5 px-space-md text-center">
+<span class="inline-flex items-center gap-1 font-body-sm text-body-sm font-semibold text-on-surface bg-surface-container px-2.5 py-1 rounded-lg">
+<span class="material-symbols-outlined text-sm text-primary">check</span> Hasta $ 50.000
+                </span>
+</td>
+<td class="py-3.5 px-space-md text-center">
+<span class="inline-flex items-center gap-1 font-body-sm text-body-sm font-semibold text-primary bg-primary-fixed/40 px-2.5 py-1 rounded-lg">
+<span class="material-symbols-outlined text-sm font-bold">all_inclusive</span> Sin Límite
+                </span>
+</td>
+</tr>
+<!-- Row 9: Acceso a Informes de Ganancias y Cierres Fiscales -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-3.5 px-space-md">
+<div class="flex items-start gap-space-sm">
+<span class="material-symbols-outlined text-outline text-xl mt-0.5">finance</span>
+<div class="flex flex-col">
+<span class="font-body-md text-body-md font-semibold text-on-surface">Informes de Ganancias y Cierres Fiscales</span>
+<span class="font-body-sm text-body-sm text-outline">Rentabilidad neta, balance mensual, libro IVA ventas y Cierre Z general.</span>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-space-md text-center">
+<span class="inline-flex items-center gap-1 font-body-sm text-body-sm font-medium text-error bg-error-container/60 px-2.5 py-1 rounded-lg">
+<span class="material-symbols-outlined text-sm">block</span> Bloqueado
+                </span>
+</td>
+<td class="py-3.5 px-space-md text-center">
+<span class="inline-flex items-center gap-1 font-body-sm text-body-sm font-medium text-error bg-error-container/60 px-2.5 py-1 rounded-lg">
+<span class="material-symbols-outlined text-sm">block</span> Bloqueado
+                </span>
+</td>
+<td class="py-3.5 px-space-md text-center">
+<span class="inline-flex items-center gap-1 font-body-sm text-body-sm font-semibold text-primary bg-primary-fixed/40 px-2.5 py-1 rounded-lg">
+<span class="material-symbols-outlined text-sm font-bold">check_circle</span> Acceso Total
+                </span>
+</td>
+</tr>
+<!-- Row 10: Gestión de Usuarios, Claves y Empleados -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-3.5 px-space-md">
+<div class="flex items-start gap-space-sm">
+<span class="material-symbols-outlined text-outline text-xl mt-0.5">manage_accounts</span>
+<div class="flex flex-col">
+<span class="font-body-md text-body-md font-semibold text-on-surface">Gestión de Usuarios, Claves y Empleados</span>
+<span class="font-body-sm text-body-sm text-outline">Alta/baja de personal, reasignación de PINs y auditoría de accesos.</span>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-space-md text-center">
+<span class="inline-flex items-center gap-1 font-body-sm text-body-sm font-medium text-error bg-error-container/60 px-2.5 py-1 rounded-lg">
+<span class="material-symbols-outlined text-sm">block</span> Bloqueado
+                </span>
+</td>
+<td class="py-3.5 px-space-md text-center">
+<span class="inline-flex items-center gap-1 font-body-sm text-body-sm font-medium text-error bg-error-container/60 px-2.5 py-1 rounded-lg">
+<span class="material-symbols-outlined text-sm">block</span> Bloqueado
+                </span>
+</td>
+<td class="py-3.5 px-space-md text-center">
+<span class="inline-flex items-center gap-1 font-body-sm text-body-sm font-semibold text-primary bg-primary-fixed/40 px-2.5 py-1 rounded-lg">
+<span class="material-symbols-outlined text-sm font-bold">security</span> Administrador
+                </span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Quick Role Action Switch Settings footer -->
+<div class="p-space-md bg-surface-container-low rounded-xl flex flex-col md:flex-row md:items-center justify-between gap-space-md">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-primary text-2xl">fingerprint</span>
+<div class="flex flex-col">
+<span class="font-body-md text-body-md font-bold text-on-surface">Requerir confirmación biométrica / PIN en excepciones</span>
+<span class="font-body-sm text-body-sm text-outline">Solicita huella de encargado cuando un cajero supere límites autorizados.</span>
+</div>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-12 h-6 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+<span class="ml-3 font-body-sm text-body-sm font-semibold text-on-surface">Activo</span>
+</label>
+</div>
+</div>
+</div>
+<!-- MODAL: Registrar Egreso / Gasto Menor (Hidden by default) -->
+<div class="fixed inset-0 z-50 bg-inverse-surface/60 backdrop-blur-sm hidden flex items-center justify-center p-space-md" id="modalGasto">
+<div class="bg-surface-container-lowest rounded-xl max-w-lg w-full p-space-lg shadow-xl flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-error text-2xl font-bold">payments</span>
+<h3 class="font-headline-md text-headline-md font-bold text-on-surface">Registrar Salida de Dinero (Gasto)</h3>
+</div>
+<button class="text-outline hover:text-on-surface" onclick="toggleModalGasto(false)">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">El monto se descontará automáticamente del total teórico de efectivo en la gaveta.</p>
+<div class="flex flex-col gap-space-sm">
+<label class="flex flex-col gap-1">
+<span class="font-label-caps text-label-caps uppercase text-outline font-bold">Concepto o Destino</span>
+<input class="h-11 px-3 bg-surface-container-low rounded-lg font-body-md text-body-md text-on-surface focus:outline-none focus:bg-surface-container-lowest" placeholder="Ej: Pago hielo, flete de verdura, insumos..." type="text"/>
+</label>
+<label class="flex flex-col gap-1">
+<span class="font-label-caps text-label-caps uppercase text-outline font-bold">Monto en Efectivo ($)</span>
+<input class="h-11 px-3 font-data-mono-md text-data-mono-md font-bold text-on-surface bg-surface-container-low rounded-lg focus:outline-none focus:bg-surface-container-lowest" placeholder="0.00" type="number"/>
+</label>
+<label class="flex flex-col gap-1">
+<span class="font-label-caps text-label-caps uppercase text-outline font-bold">PIN de Encargado / Dueño</span>
+<input class="h-11 px-3 text-center tracking-widest font-data-mono-md text-data-mono-md text-on-surface bg-surface-container-low rounded-lg focus:outline-none focus:bg-surface-container-lowest" maxlength="4" placeholder="••••" type="password"/>
+</label>
+</div>
+<div class="flex items-center justify-end gap-space-sm pt-space-xs">
+<button class="px-space-md py-2.5 rounded-lg text-secondary hover:bg-surface-container font-semibold transition-colors" onclick="toggleModalGasto(false)">
+          Cancelar
+        </button>
+<button class="px-space-md py-2.5 rounded-lg bg-error text-on-error font-semibold hover:opacity-90 transition-opacity" onclick="guardarGastoModal()">
+          Confirmar y Abrir Gaveta
+        </button>
+</div>
+</div>
+</div>
+<script>
+    // Live Cash Counting calculations
+    function recalcCash() {
+      const b10k = parseInt(document.getElementById('bill10k').value) || 0;
+      const b2k  = parseInt(document.getElementById('bill2k').value) || 0;
+      const b1k  = parseInt(document.getElementById('bill1k').value) || 0;
+      const b100 = parseInt(document.getElementById('bill100').value) || 0;
+
+      const sub10k = b10k * 10000;
+      const sub2k  = b2k * 2000;
+      const sub1k  = b1k * 1000;
+      const sub100 = b100 * 100;
+
+      document.getElementById('sub10k').innerText = '$ ' + sub10k.toLocaleString('es-AR', {minimumFractionDigits: 2});
+      document.getElementById('sub2k').innerText  = '$ ' + sub2k.toLocaleString('es-AR', {minimumFractionDigits: 2});
+      document.getElementById('sub1k').innerText  = '$ ' + sub1k.toLocaleString('es-AR', {minimumFractionDigits: 2});
+      document.getElementById('sub100').innerText = '$ ' + sub100.toLocaleString('es-AR', {minimumFractionDigits: 2});
+
+      const totalReal = sub10k + sub2k + sub1k + sub100;
+      const theoretical = 222300;
+      const diff = totalReal - theoretical;
+
+      document.getElementById('realAmountDisplay').innerText = '$ ' + totalReal.toLocaleString('es-AR', {minimumFractionDigits: 2});
+
+      const diffBadge = document.getElementById('diffBadge');
+      if (diff === 0) {
+        diffBadge.className = 'flex items-center gap-space-sm bg-primary-fixed text-on-primary-fixed-variant px-space-md py-2 rounded-xl';
+        diffBadge.innerHTML = `
+          <span class="material-symbols-outlined text-2xl font-bold">verified</span>
+          <div class="flex flex-col">
+            <span class="font-label-caps text-label-caps uppercase font-bold tracking-wider">Estado del Cuadre</span>
+            <span class="font-data-mono-md text-data-mono-md font-bold">Diferencia: $ 0,00 (Caja Exacta ✓)</span>
+          </div>`;
+      } else if (diff > 0) {
+        diffBadge.className = 'flex items-center gap-space-sm bg-tertiary-fixed text-on-tertiary-fixed-variant px-space-md py-2 rounded-xl';
+        diffBadge.innerHTML = `
+          <span class="material-symbols-outlined text-2xl font-bold">trending_up</span>
+          <div class="flex flex-col">
+            <span class="font-label-caps text-label-caps uppercase font-bold tracking-wider">Sobrante en Gaveta</span>
+            <span class="font-data-mono-md text-data-mono-md font-bold">+ $ ${diff.toLocaleString('es-AR', {minimumFractionDigits: 2})}</span>
+          </div>`;
+      } else {
+        diffBadge.className = 'flex items-center gap-space-sm bg-error-container text-on-error-container px-space-md py-2 rounded-xl';
+        diffBadge.innerHTML = `
+          <span class="material-symbols-outlined text-2xl font-bold">warning</span>
+          <div class="flex flex-col">
+            <span class="font-label-caps text-label-caps uppercase font-bold tracking-wider">Faltante de Caja</span>
+            <span class="font-data-mono-md text-data-mono-md font-bold">- $ ${Math.abs(diff).toLocaleString('es-AR', {minimumFractionDigits: 2})}</span>
+          </div>`;
+      }
+    }
+
+    function stepBill(id, step) {
+      const input = document.getElementById(id);
+      let val = (parseInt(input.value) || 0) + step;
+      if (val < 0) val = 0;
+      input.value = val;
+      recalcCash();
+    }
+
+    function resetConteo() {
+      document.getElementById('bill10k').value = 0;
+      document.getElementById('bill2k').value = 0;
+      document.getElementById('bill1k').value = 0;
+      document.getElementById('bill100').value = 0;
+      recalcCash();
+    }
+
+    function toggleModalGasto(show) {
+      const modal = document.getElementById('modalGasto');
+      if (show) {
+        modal.classList.remove('hidden');
+      } else {
+        modal.classList.add('hidden');
+      }
+    }
+
+    function guardarGastoModal() {
+      toggleModalGasto(false);
+      alert('Egreso de caja registrado correctamente. Se imprimió el vale de control.');
+    }
+
+    function confirmarCierreZ() {
+      if (confirm('¿Está seguro de realizar el Cierre Definitivo de Turno (Z) de la Caja 01?\\nSe emitirá el reporte fiscal y se bloqueará el POS para el conteo final.')) {
+        alert('Cierre Z generado con éxito. Reporte fiscal enviado a impresora térmica.');
+      }
+    }
+
+    function guardarPermisos() {
+      alert('Matriz de roles actualizada con éxito. Cambios aplicados a la red local de cajas.');
+    }
+  </script>
+</div></main></div></body></html>

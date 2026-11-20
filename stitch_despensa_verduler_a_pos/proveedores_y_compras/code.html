@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+
+<html lang="es"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{"colors":{"on-secondary-fixed":"#131b2e","secondary":"#565e74","outline-variant":"#bbcabf","secondary-container":"#dae2fd","tertiary-container":"#23acf1","tertiary-fixed":"#c9e6ff","on-secondary":"#ffffff","on-error":"#ffffff","surface-container-highest":"#d3e4fe","on-surface":"#0b1c30","surface-container-low":"#eff4ff","surface-bright":"#f8f9ff","primary":"#006c49","tertiary-fixed-dim":"#89ceff","surface-container-high":"#dce9ff","outline":"#6c7a71","on-tertiary-container":"#003d59","error":"#ba1a1a","on-secondary-container":"#5c647a","primary-container":"#10b981","tertiary":"#006591","on-surface-variant":"#3c4a42","surface-container":"#e5eeff","primary-fixed-dim":"#4edea3","error-container":"#ffdad6","inverse-primary":"#4edea3","on-background":"#0b1c30","surface-variant":"#d3e4fe","on-tertiary":"#ffffff","secondary-fixed":"#dae2fd","inverse-on-surface":"#eaf1ff","on-tertiary-fixed-variant":"#004c6e","background":"#f8f9ff","on-primary-fixed-variant":"#005236","inverse-surface":"#213145","on-primary-container":"#00422b","surface-tint":"#006c49","secondary-fixed-dim":"#bec6e0","on-primary":"#ffffff","on-secondary-fixed-variant":"#3f465c","surface":"#f8f9ff","on-error-container":"#93000a","on-tertiary-fixed":"#001e2f","primary-fixed":"#6ffbbe","on-primary-fixed":"#002113","surface-dim":"#cbdbf5"},"borderRadius":{"DEFAULT":"0.125rem","lg":"0.25rem","xl":"0.5rem","full":"0.75rem"},"spacing":{"space-lg":"1.5rem","gutter-desktop":"1.5rem","margin":"1rem","space-sm":"0.5rem","space-md":"1rem","space-xs":"0.25rem","gutter":"1rem","margin-desktop":"2rem","space-xl":"2rem"},"fontFamily":{"data-display-lg":["JetBrains Mono"],"data-mono-sm":["JetBrains Mono"],"body-sm":["Inter"],"body-lg":["Inter"],"data-display-xl":["JetBrains Mono"],"headline-lg":["Inter"],"data-mono-md":["JetBrains Mono"],"headline-xl":["Inter"],"label-caps":["Inter"],"body-md":["Inter"],"headline-md":["Inter"]},"fontSize":{"data-display-lg":["1.5rem",{"lineHeight":"2rem","fontWeight":"600"}],"data-mono-sm":["0.75rem",{"lineHeight":"1rem","fontWeight":"500"}],"body-sm":["0.75rem",{"lineHeight":"1rem","fontWeight":"400"}],"body-lg":["1rem",{"lineHeight":"1.5rem","fontWeight":"400"}],"data-display-xl":["2.25rem",{"lineHeight":"2.5rem","fontWeight":"700"}],"headline-lg":["1.5rem",{"lineHeight":"2rem","fontWeight":"600"}],"data-mono-md":["0.875rem",{"lineHeight":"1.25rem","fontWeight":"500"}],"headline-xl":["2rem",{"lineHeight":"2.5rem","fontWeight":"700"}],"label-caps":["0.6875rem",{"lineHeight":"0.875rem","fontWeight":"700"}],"body-md":["0.875rem",{"lineHeight":"1.25rem","fontWeight":"400"}],"headline-md":["1.25rem",{"lineHeight":"1.75rem","fontWeight":"600"}]}}}}</script></head><body class="bg-surface font-body-md text-on-surface antialiased"><aside class="fixed left-0 top-0 h-full w-64 bg-inverse-surface text-inverse-on-surface z-50 flex flex-col justify-between shadow-[0_1px_8px_rgba(0,0,0,0.08)]"><div class="flex flex-col"><div class="h-16 px-space-md flex items-center gap-space-sm bg-inverse-surface"><img alt="Mercado Control Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/ALJJyrDIFABG4jGR5Vbq57OqwvzwKdKWSWVzevxyvD3c7BsuZC5jTlMqtpZt1tdZQD9BZunnIy1uG23TjwsvyZjcJlA7Um2DCSa3mSy5KQTa--4yO6Gz8gsajiZcSI8RD_9ht2JE11_y0wTcEQ7z8Zq9gfj97xrhG5KqFFa1_-SrgQ8VLCnacyOXCD-cBW7E3AKgpvDwvfU0tJpzlUUxbENgXga-ksA61SdvS4tBk1COrnm0"/><div class="flex flex-col min-w-0"><span class="font-headline-md text-headline-md tracking-tight text-surface font-bold truncate leading-none">Mercado Control</span><span class="font-label-caps text-label-caps uppercase tracking-wider text-surface-variant truncate mt-space-xs">Despensa &amp; Verdulería</span></div></div><div class="px-space-md py-space-sm"><div class="font-label-caps text-label-caps uppercase text-surface-variant tracking-wider px-space-xs mb-space-xs">Operaciones &amp; Gestión</div><nav class="flex flex-col gap-space-xs" data-active-classes="bg-primary-container text-on-primary-container font-semibold rounded-lg shadow-sm"><a class="flex items-center gap-space-sm px-space-sm py-space-sm rounded-lg text-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="punto-de-venta" href="#"><span class="material-symbols-outlined text-xl">point_of_sale</span><span class="font-body-md text-body-md truncate">Punto de Venta</span></a><a class="flex items-center gap-space-sm px-space-sm py-space-sm rounded-lg text-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="panel-de-control" href="#"><span class="material-symbols-outlined text-xl">bar_chart</span><span class="font-body-md text-body-md truncate">Panel de Control</span></a><a class="flex items-center gap-space-sm px-space-sm py-space-sm rounded-lg text-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="productos-e-inventario" href="#"><span class="material-symbols-outlined text-xl">inventory_2</span><span class="font-body-md text-body-md truncate">Productos e Inventario</span></a><a class="flex items-center gap-space-sm px-space-sm py-space-sm rounded-lg text-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="clientes-y-cuentas-corrientes" href="#"><span class="material-symbols-outlined text-xl">group</span><span class="font-body-md text-body-md truncate">Clientes y Cuentas Ctes.</span></a><a aria-current="page" class="flex items-center gap-space-sm px-space-sm py-space-sm transition-colors bg-primary-container text-on-primary-container font-semibold rounded-lg shadow-sm" data-path="proveedores-y-compras" href="#"><span class="material-symbols-outlined text-xl">local_shipping</span><span class="font-body-md text-body-md truncate">Proveedores y Compras</span></a><a class="flex items-center gap-space-sm px-space-sm py-space-sm rounded-lg text-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="caja-y-roles" href="#"><span class="material-symbols-outlined text-xl">shield_person</span><span class="font-body-md text-body-md truncate">Caja y Roles</span></a></nav></div></div><div class="p-space-md bg-inverse-surface"><div class="bg-surface-variant/10 rounded-lg p-space-sm flex items-center justify-between"><div class="flex flex-col"><span class="font-label-caps text-label-caps text-surface-variant uppercase tracking-wider">Balanza Serial COM1</span><span class="font-data-mono-sm text-data-mono-sm text-primary-fixed-dim font-bold flex items-center gap-1"><span class="inline-block w-2 h-2 rounded-full bg-primary-container animate-pulse"></span>Online · 0.000 kg</span></div><span class="material-symbols-outlined text-surface-variant text-xl">scale</span></div></div></aside><div class="pl-64"><header class="fixed top-0 left-64 right-0 h-16 bg-surface-container-lowest/90 backdrop-blur-xl z-40 shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-16 w-full px-gutter-desktop flex items-center justify-between gap-space-md"><div class="flex items-center gap-space-md min-w-0"><div class="flex items-center gap-space-xs bg-surface-container-low px-space-sm py-1.5 rounded-lg"><span class="relative flex h-2.5 w-2.5"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary-container opacity-75"></span><span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-primary"></span></span><span class="font-body-sm text-body-sm font-semibold text-on-surface truncate">Sucursal Central</span><span class="font-body-sm text-body-sm text-outline hidden xl:inline">- Av. Rivadavia 4520</span></div><div class="flex items-center gap-1.5 bg-surface-container-low px-space-sm py-1.5 rounded-lg"><span class="inline-block w-2 h-2 rounded-full bg-primary"></span><span class="font-data-mono-sm text-data-mono-sm text-on-surface font-medium truncate">Caja Abierta · Turno Mañana (Caja 01)</span></div></div><div class="flex items-center gap-space-sm"><div class="hidden 2xl:flex items-center gap-space-xs bg-surface-container px-space-sm py-1.5 rounded-lg"><span class="material-symbols-outlined text-outline text-sm">keyboard</span><span class="font-data-mono-sm text-data-mono-sm text-on-surface-variant font-medium">F12: Cobrar | F2: Buscar PLU | F4: Balanza</span></div><div class="flex items-center gap-1.5 bg-surface-container-low px-space-sm py-1.5 rounded-lg cursor-pointer hover:bg-surface-container-high transition-colors"><span class="font-label-caps text-label-caps uppercase text-outline font-bold">Vista:</span><span class="font-body-sm text-body-sm font-semibold text-on-surface">Dueño</span><span class="material-symbols-outlined text-sm text-on-surface-variant">arrow_drop_down</span></div><div class="flex items-center gap-space-sm pl-space-xs"><div class="flex flex-col text-right hidden sm:flex"><span class="font-body-sm text-body-sm font-semibold text-on-surface leading-tight">María Gómez</span><span class="font-label-caps text-label-caps text-outline leading-tight">Administrador / Encargada</span></div><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCnWG_8AMUAEuZFqyuyZazQji66Fw03UmHv8lKDKySwqF_GOwKPEhKU_H8CATsLDtDBcLXBPKjVguK6_HjtXBa9dltMDIgl42xZrE0mXM6OUCNpdNqwL2EcwQWtyC2XspIbjpkbazHtWTbat0WcYZFfzcpMdAEM0kw6hLJf8sfPF9GlPUIGzDH2jA2jW8i_hDrNVyGZRxZuta_aEfuEom7hYJh19Xy1PeaDtM6CLIs"/></div></div></div></header><main class="relative pt-16 w-full min-h-screen bg-surface"><div class="flex flex-col w-full">
+<!-- Interactive Modal: Cargar Factura / Ingreso de Mercadería (Hidden by default, triggered via JS) -->
+<div class="fixed inset-0 z-50 bg-inverse-surface/60 backdrop-blur-sm hidden items-center justify-center p-gutter" id="modal-factura">
+<div class="bg-surface-container-lowest rounded-xl shadow-xl w-full max-w-3xl overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+<!-- Modal Header -->
+<div class="bg-surface-container-high px-space-lg py-space-md flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<div class="w-10 h-10 rounded-lg bg-primary-container/20 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-2xl">receipt_long</span>
+</div>
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface leading-tight">Carga de Factura &amp; Ingreso de Stock</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Actualización automática de costos promedio y stock en tiempo real</p>
+</div>
+</div>
+<button class="p-1 rounded-lg hover:bg-surface-container text-on-surface-variant transition-colors" onclick="document.getElementById('modal-factura').classList.add('hidden')">
+<span class="material-symbols-outlined text-xl">close</span>
+</button>
+</div>
+<!-- Modal Body -->
+<div class="p-space-lg flex flex-col gap-space-md">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-space-md">
+<div>
+<label class="font-label-caps text-label-caps uppercase text-on-surface-variant block mb-1">Proveedor</label>
+<select class="w-full bg-surface-container-low px-space-sm py-2 rounded-lg text-body-md font-body-md text-on-surface outline-none">
+<option>Mercado Concentrador - Puesto 42</option>
+<option>Distribuidora Mayorista Los Amigos</option>
+<option>La Serenísima / Danone</option>
+<option>Quilmes &amp; Cervecería Argentina</option>
+</select>
+</div>
+<div>
+<label class="font-label-caps text-label-caps uppercase text-on-surface-variant block mb-1">Tipo &amp; N° Comprobante</label>
+<div class="flex gap-1">
+<select class="w-24 bg-surface-container-low px-space-xs py-2 rounded-lg text-body-md font-body-md text-on-surface outline-none">
+<option>FC A</option>
+<option>Remito</option>
+<option>FC B</option>
+</select>
+<input class="w-full bg-surface-container-low px-space-sm py-2 rounded-lg text-data-mono-md font-data-mono-md text-on-surface outline-none" placeholder="0001-0004812" type="text"/>
+</div>
+</div>
+<div>
+<label class="font-label-caps text-label-caps uppercase text-on-surface-variant block mb-1">Condición de Pago</label>
+<select class="w-full bg-surface-container-low px-space-sm py-2 rounded-lg text-body-md font-body-md text-on-surface outline-none">
+<option>Contado Efectivo</option>
+<option>Cuenta Corriente (15 días)</option>
+<option>Transferencia Bancaria</option>
+</select>
+</div>
+</div>
+<div class="bg-surface-container-low rounded-lg p-space-md">
+<div class="flex items-center justify-between mb-space-xs">
+<span class="font-label-caps text-label-caps uppercase text-on-surface-variant">Líneas de Carga Rápida</span>
+<span class="font-body-sm text-body-sm text-primary font-semibold flex items-center gap-1 cursor-pointer">
+<span class="material-symbols-outlined text-sm">add_circle</span> Añadir Fila
+            </span>
+</div>
+<div class="grid grid-cols-12 gap-2 text-label-caps font-label-caps text-secondary mb-1 px-1">
+<div class="col-span-5">PRODUCTO / CÓDIGO PLU</div>
+<div class="col-span-2 text-right">CANT / KG</div>
+<div class="col-span-2 text-right">COSTO UNIT ($)</div>
+<div class="col-span-3 text-right">SUBTOTAL</div>
+</div>
+<div class="space-y-1.5">
+<div class="grid grid-cols-12 gap-2 items-center bg-surface-container-lowest p-1.5 rounded-lg shadow-sm">
+<div class="col-span-5 font-body-sm text-body-sm font-medium text-on-surface truncate">Tomate Redondo Especial (PLU 102)</div>
+<div class="col-span-2 text-right font-data-mono-sm text-data-mono-sm">45.00 kg</div>
+<div class="col-span-2 text-right font-data-mono-sm text-data-mono-sm">$ 1.500,00</div>
+<div class="col-span-3 text-right font-data-mono-md text-data-mono-md font-bold text-on-surface">$ 67.500,00</div>
+</div>
+<div class="grid grid-cols-12 gap-2 items-center bg-surface-container-lowest p-1.5 rounded-lg shadow-sm">
+<div class="col-span-5 font-body-sm text-body-sm font-medium text-on-surface truncate">Papa Negra Cepillada (PLU 101)</div>
+<div class="col-span-2 text-right font-data-mono-sm text-data-mono-sm">60.00 kg</div>
+<div class="col-span-2 text-right font-data-mono-sm text-data-mono-sm">$ 750,00</div>
+<div class="col-span-3 text-right font-data-mono-md text-data-mono-md font-bold text-on-surface">$ 45.000,00</div>
+</div>
+</div>
+</div>
+<div class="flex items-center justify-between pt-space-xs">
+<div class="flex items-center gap-2 text-body-sm font-body-sm text-secondary">
+<span class="material-symbols-outlined text-primary text-base">verified</span>
+<span>Ajusta stock y recalcula precio sugerido automáticamente.</span>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="font-label-caps text-label-caps uppercase text-secondary">Total Factura:</span>
+<span class="font-data-display-lg text-data-display-lg font-bold text-primary">$ 112.500,00</span>
+</div>
+</div>
+</div>
+<!-- Modal Footer -->
+<div class="bg-surface-container-low px-space-lg py-space-sm flex justify-end gap-space-sm">
+<button class="px-space-md py-2.5 rounded-lg font-body-md text-body-md font-semibold text-secondary hover:bg-surface-container transition-colors" onclick="document.getElementById('modal-factura').classList.add('hidden')">
+          Cancelar
+        </button>
+<button class="px-space-lg py-2.5 rounded-lg bg-primary-container text-on-primary-container font-body-md text-body-md font-bold shadow hover:bg-primary transition-colors hover:text-on-primary flex items-center gap-1.5" onclick="document.getElementById('modal-factura').classList.add('hidden')">
+<span class="material-symbols-outlined text-lg">save</span>
+          Confirmar e Ingresar a Depósito
+        </button>
+</div>
+</div>
+</div>
+<!-- Page Content Shell -->
+<div class="p-gutter-desktop space-y-space-lg">
+<!-- Top KPI Bar: 4 Industrial Metric Cards -->
+<section class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-space-md">
+<!-- KPI 1: Proveedores Activos -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm relative overflow-hidden flex flex-col justify-between">
+<div class="flex items-start justify-between">
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps uppercase text-secondary tracking-wider">Directorio Activo</span>
+<h2 class="font-headline-lg text-headline-lg text-on-surface font-bold mt-1">18 Proveedores</h2>
+</div>
+<div class="w-10 h-10 rounded-lg bg-surface-container-high flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-2xl">local_shipping</span>
+</div>
+</div>
+<div class="mt-space-md pt-space-xs flex flex-wrap gap-1.5 items-center">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-data-mono-sm font-data-mono-sm bg-surface-container text-on-surface-variant">Mercado: 4</span>
+<span class="inline-flex items-center px-2 py-0.5 rounded text-data-mono-sm font-data-mono-sm bg-surface-container text-on-surface-variant">Lácteos: 3</span>
+<span class="inline-flex items-center px-2 py-0.5 rounded text-data-mono-sm font-data-mono-sm bg-surface-container text-on-surface-variant">Bebidas: 5</span>
+<span class="inline-flex items-center px-2 py-0.5 rounded text-data-mono-sm font-data-mono-sm bg-surface-container text-on-surface-variant">Secos: 6</span>
+</div>
+<div class="absolute bottom-0 left-0 right-0 h-1 bg-primary/20"></div>
+</div>
+<!-- KPI 2: Compras del Mes -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm relative overflow-hidden flex flex-col justify-between">
+<div class="flex items-start justify-between">
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps uppercase text-secondary tracking-wider">Compras del Mes ($)</span>
+<h2 class="font-data-display-lg text-data-display-lg text-on-surface font-bold mt-1 tracking-tight">$ 1.240.500<span class="text-data-mono-sm font-data-mono-sm text-secondary">,00</span></h2>
+</div>
+<div class="w-10 h-10 rounded-lg bg-primary-container/20 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-2xl">shopping_cart_checkout</span>
+</div>
+</div>
+<div class="mt-space-md pt-space-xs flex items-center justify-between text-body-sm font-body-sm">
+<span class="text-on-surface-variant font-medium flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-primary-container"></span>
+            28 facturas registradas
+          </span>
+<span class="font-data-mono-sm text-data-mono-sm text-primary font-bold">+8.4% vs sep</span>
+</div>
+<div class="absolute bottom-0 left-0 right-0 h-1 bg-primary"></div>
+</div>
+<!-- KPI 3: Saldos a Pagar -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm relative overflow-hidden flex flex-col justify-between">
+<div class="flex items-start justify-between">
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps uppercase text-secondary tracking-wider">Saldos Cta. Cte. a Pagar</span>
+<h2 class="font-data-display-lg text-data-display-lg text-error font-bold mt-1 tracking-tight">$ 185.000<span class="text-data-mono-sm font-data-mono-sm text-secondary">,00</span></h2>
+</div>
+<div class="w-10 h-10 rounded-lg bg-error-container/30 flex items-center justify-center text-error">
+<span class="material-symbols-outlined text-2xl">pending_actions</span>
+</div>
+</div>
+<div class="mt-space-md pt-space-xs flex items-center justify-between text-body-sm font-body-sm">
+<span class="text-on-surface-variant font-medium truncate">Próx. 7 días:</span>
+<span class="px-2 py-0.5 rounded font-data-mono-sm text-data-mono-sm bg-error-container text-on-error-container font-bold">$ 75.000,00</span>
+</div>
+<div class="absolute bottom-0 left-0 right-0 h-1 bg-error"></div>
+</div>
+<!-- KPI 4: Día de Pedidos Hoy -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm relative overflow-hidden flex flex-col justify-between">
+<div class="flex items-start justify-between">
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps uppercase text-secondary tracking-wider">Entregas y Pedidos Hoy</span>
+<h2 class="font-headline-md text-headline-md text-on-surface font-bold mt-1">🥬 Verduras &amp; 🥛 Lácteos</h2>
+</div>
+<div class="w-10 h-10 rounded-lg bg-tertiary-fixed flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined text-2xl">calendar_today</span>
+</div>
+</div>
+<div class="mt-space-md pt-space-xs flex items-center justify-between text-body-sm font-body-sm">
+<span class="text-on-surface-variant">2 visitas programadas</span>
+<span class="font-label-caps text-label-caps uppercase text-tertiary font-bold tracking-wider">Lunes Operativo</span>
+</div>
+<div class="absolute bottom-0 left-0 right-0 h-1 bg-tertiary-container"></div>
+</div>
+</section>
+<!-- Toolbar: Search, Filters & CTAs -->
+<section class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col xl:flex-row xl:items-center justify-between gap-space-md">
+<!-- Left: Search and Rubro Filters -->
+<div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-space-sm flex-1">
+<div class="relative flex-1 max-w-lg">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-xl">search</span>
+<input class="w-full bg-surface-container-low pl-10 pr-space-md py-2.5 rounded-lg text-body-md font-body-md text-on-surface placeholder:text-secondary outline-none transition-all focus:bg-surface-container-lowest focus:shadow-sm" placeholder="Buscar proveedor por razón social, contacto o rubro..." type="text"/>
+</div>
+<div class="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0">
+<button class="px-space-sm py-2 rounded-lg bg-inverse-surface text-inverse-on-surface font-body-sm text-body-sm font-semibold whitespace-nowrap shadow-sm">Todos los Rubros</button>
+<button class="px-space-sm py-2 rounded-lg bg-surface-container-low text-on-surface-variant hover:bg-surface-container font-body-sm text-body-sm whitespace-nowrap transition-colors">🥬 Frutas &amp; Verduras</button>
+<button class="px-space-sm py-2 rounded-lg bg-surface-container-low text-on-surface-variant hover:bg-surface-container font-body-sm text-body-sm whitespace-nowrap transition-colors">📦 Almacén Seco</button>
+<button class="px-space-sm py-2 rounded-lg bg-surface-container-low text-on-surface-variant hover:bg-surface-container font-body-sm text-body-sm whitespace-nowrap transition-colors">🥛 Lácteos &amp; Quesos</button>
+<button class="px-space-sm py-2 rounded-lg bg-surface-container-low text-on-surface-variant hover:bg-surface-container font-body-sm text-body-sm whitespace-nowrap transition-colors">🍾 Bebidas</button>
+</div>
+</div>
+<!-- Right: Main Action Buttons -->
+<div class="flex items-center gap-space-sm shrink-0">
+<button class="px-space-md py-2.5 rounded-lg bg-surface-container text-on-surface font-body-md text-body-md font-semibold hover:bg-surface-container-high transition-colors flex items-center gap-1.5 shadow-sm">
+<span class="material-symbols-outlined text-lg">person_add</span>
+<span>+ Nuevo Proveedor</span>
+</button>
+<button class="px-space-md py-2.5 rounded-lg bg-primary-container text-on-primary-container font-body-md text-body-md font-bold shadow hover:bg-primary hover:text-on-primary transition-all flex items-center gap-2" onclick="document.getElementById('modal-factura').classList.remove('hidden')">
+<span class="material-symbols-outlined text-xl">post_add</span>
+<span>+ Cargar Factura / Ingreso de Stock</span>
+</button>
+</div>
+</section>
+<!-- Main Content Layout: Table & Recent Operations Feed -->
+<div class="grid grid-cols-1 xl:grid-cols-12 gap-space-lg">
+<!-- Suppliers Table (Cols 1-8) -->
+<section class="xl:col-span-8 bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden flex flex-col">
+<div class="px-space-lg py-space-md bg-surface-container-low flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">contacts</span>
+<span class="font-headline-md text-headline-md text-on-surface font-bold">Listado General de Proveedores</span>
+</div>
+<span class="font-label-caps text-label-caps uppercase text-secondary font-bold tracking-wider">5 de 18 visibles</span>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead>
+<tr class="bg-surface-container-high text-secondary font-label-caps text-label-caps uppercase tracking-wider">
+<th class="py-space-sm px-space-md">Proveedor / Razón Social</th>
+<th class="py-space-sm px-space-sm">Rubro</th>
+<th class="py-space-sm px-space-sm">Contacto &amp; Celular</th>
+<th class="py-space-sm px-space-sm">Día Entrega</th>
+<th class="py-space-sm px-space-sm">Cond. Pago</th>
+<th class="py-space-sm px-space-sm text-right">Saldo Pendiente</th>
+<th class="py-space-sm px-space-md text-center">Acciones</th>
+</tr>
+</thead>
+<tbody class="divide-y-0 text-on-surface">
+<!-- Row 1: Don Vicente Mercado Concentrador -->
+<tr class="hover:bg-surface-container-low/50 transition-colors">
+<td class="py-space-md px-space-md">
+<div class="flex items-center gap-space-sm">
+<div class="w-9 h-9 rounded-lg bg-surface-container flex items-center justify-center font-bold text-primary text-body-md font-body-md">
+                      MV
+                    </div>
+<div class="flex flex-col">
+<span class="font-body-md text-body-md font-bold text-on-surface leading-tight">Mercado Concentrador</span>
+<span class="font-data-mono-sm text-data-mono-sm text-secondary">Puesto 42 (Don Vicente)</span>
+</div>
+</div>
+</td>
+<td class="py-space-md px-space-sm">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-data-mono-sm font-data-mono-sm bg-primary-fixed text-on-primary-fixed font-semibold">
+                    Verduras &amp; Frutas
+                  </span>
+</td>
+<td class="py-space-md px-space-sm">
+<div class="flex flex-col font-body-sm text-body-sm">
+<span class="font-semibold text-on-surface">Vicente Morales</span>
+<span class="text-secondary font-data-mono-sm text-data-mono-sm">+54 9 11 5566-7788</span>
+</div>
+</td>
+<td class="py-space-md px-space-sm font-body-sm text-body-sm">
+<div class="flex flex-col">
+<span class="font-semibold text-on-surface">Lun, Mié, Vie</span>
+<span class="text-data-mono-sm text-data-mono-sm text-secondary">05:00 AM Central</span>
+</div>
+</td>
+<td class="py-space-md px-space-sm font-body-sm text-body-sm">
+<span class="text-on-surface font-medium">Contado contra entrega</span>
+</td>
+<td class="py-space-md px-space-sm text-right">
+<div class="flex flex-col items-end">
+<span class="font-data-mono-md text-data-mono-md font-bold text-on-surface">$ 0,00</span>
+<span class="inline-flex items-center gap-1 font-label-caps text-label-caps text-primary uppercase font-bold">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>Al Día
+                    </span>
+</div>
+</td>
+<td class="py-space-md px-space-md">
+<div class="flex items-center justify-center gap-1">
+<button class="p-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface-variant transition-colors" onclick="document.getElementById('modal-factura').classList.remove('hidden')" title="Cargar Remito">
+<span class="material-symbols-outlined text-lg">inventory</span>
+</button>
+<button class="p-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface-variant transition-colors" title="Historial Compras">
+<span class="material-symbols-outlined text-lg">receipt</span>
+</button>
+<button class="p-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface-variant transition-colors" title="Editar Proveedor">
+<span class="material-symbols-outlined text-lg">edit</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 2: Distribuidora Los Amigos -->
+<tr class="hover:bg-surface-container-low/50 transition-colors bg-surface-container-low/20">
+<td class="py-space-md px-space-md">
+<div class="flex items-center gap-space-sm">
+<div class="w-9 h-9 rounded-lg bg-secondary-container flex items-center justify-center font-bold text-on-secondary-container text-body-md font-body-md">
+                      DA
+                    </div>
+<div class="flex flex-col">
+<span class="font-body-md text-body-md font-bold text-on-surface leading-tight">Distribuidora Los Amigos</span>
+<span class="font-data-mono-sm text-data-mono-sm text-secondary">CUIT 30-71442299-4</span>
+</div>
+</div>
+</td>
+<td class="py-space-md px-space-sm">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-data-mono-sm font-data-mono-sm bg-secondary-fixed text-on-secondary-fixed font-semibold">
+                    Almacén Seco
+                  </span>
+</td>
+<td class="py-space-md px-space-sm">
+<div class="flex flex-col font-body-sm text-body-sm">
+<span class="font-semibold text-on-surface">Esteban Gómez</span>
+<span class="text-secondary font-data-mono-sm text-data-mono-sm">+54 9 11 4433-2211</span>
+</div>
+</td>
+<td class="py-space-md px-space-sm font-body-sm text-body-sm">
+<span class="font-semibold text-on-surface">Martes &amp; Jueves</span>
+</td>
+<td class="py-space-md px-space-sm font-body-sm text-body-sm">
+<span class="text-on-surface font-medium">Cta. Cte. 15 días</span>
+</td>
+<td class="py-space-md px-space-sm text-right">
+<div class="flex flex-col items-end">
+<span class="font-data-mono-md text-data-mono-md font-bold text-on-surface">$ 110.000,00</span>
+<span class="inline-flex items-center gap-1 font-label-caps text-label-caps text-on-surface-variant font-bold bg-surface-container px-1.5 py-0.5 rounded">
+                      Vence: 22 Oct
+                    </span>
+</div>
+</td>
+<td class="py-space-md px-space-md">
+<div class="flex items-center justify-center gap-1">
+<button class="p-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface-variant transition-colors" onclick="document.getElementById('modal-factura').classList.remove('hidden')" title="Cargar Remito">
+<span class="material-symbols-outlined text-lg">inventory</span>
+</button>
+<button class="p-1.5 rounded-lg bg-primary-container/20 hover:bg-primary-container text-primary hover:text-on-primary-container transition-colors" title="Pagar Saldo">
+<span class="material-symbols-outlined text-lg">payments</span>
+</button>
+<button class="p-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface-variant transition-colors" title="Editar Proveedor">
+<span class="material-symbols-outlined text-lg">edit</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 3: La Serenísima / Danone -->
+<tr class="hover:bg-surface-container-low/50 transition-colors">
+<td class="py-space-md px-space-md">
+<div class="flex items-center gap-space-sm">
+<div class="w-9 h-9 rounded-lg bg-tertiary-fixed flex items-center justify-center font-bold text-tertiary text-body-md font-body-md">
+                      LS
+                    </div>
+<div class="flex flex-col">
+<span class="font-body-md text-body-md font-bold text-on-surface leading-tight">La Serenísima / Danone</span>
+<span class="font-data-mono-sm text-data-mono-sm text-secondary">Logística Directa</span>
+</div>
+</div>
+</td>
+<td class="py-space-md px-space-sm">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-data-mono-sm font-data-mono-sm bg-tertiary-fixed text-on-tertiary-fixed-variant font-semibold">
+                    Lácteos &amp; Yogures
+                  </span>
+</td>
+<td class="py-space-md px-space-sm">
+<div class="flex flex-col font-body-sm text-body-sm">
+<span class="font-semibold text-on-surface">Preventista: Lucas</span>
+<span class="text-secondary font-data-mono-sm text-data-mono-sm">+54 9 11 8877-6655</span>
+</div>
+</td>
+<td class="py-space-md px-space-sm font-body-sm text-body-sm">
+<span class="font-semibold text-on-surface">Lunes y Jueves</span>
+</td>
+<td class="py-space-md px-space-sm font-body-sm text-body-sm">
+<span class="text-on-surface font-medium">Factura 7 días</span>
+</td>
+<td class="py-space-md px-space-sm text-right">
+<div class="flex flex-col items-end">
+<span class="font-data-mono-md text-data-mono-md font-bold text-error">$ 45.000,00</span>
+<span class="inline-flex items-center gap-1 font-label-caps text-label-caps text-on-error-container bg-error-container px-1.5 py-0.5 rounded font-bold">
+                      Vence: Hoy 19 Oct
+                    </span>
+</div>
+</td>
+<td class="py-space-md px-space-md">
+<div class="flex items-center justify-center gap-1">
+<button class="p-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface-variant transition-colors" onclick="document.getElementById('modal-factura').classList.remove('hidden')" title="Cargar Remito">
+<span class="material-symbols-outlined text-lg">inventory</span>
+</button>
+<button class="p-1.5 rounded-lg bg-primary-container/20 hover:bg-primary-container text-primary hover:text-on-primary-container transition-colors" title="Pagar Saldo">
+<span class="material-symbols-outlined text-lg">payments</span>
+</button>
+<button class="p-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface-variant transition-colors" title="Editar Proveedor">
+<span class="material-symbols-outlined text-lg">edit</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 4: Quilmes & Cervecería Argentina -->
+<tr class="hover:bg-surface-container-low/50 transition-colors bg-surface-container-low/20">
+<td class="py-space-md px-space-md">
+<div class="flex items-center gap-space-sm">
+<div class="w-9 h-9 rounded-lg bg-surface-container-highest flex items-center justify-center font-bold text-on-surface-variant text-body-md font-body-md">
+                      QC
+                    </div>
+<div class="flex flex-col">
+<span class="font-body-md text-body-md font-bold text-on-surface leading-tight">Quilmes &amp; Cervecería</span>
+<span class="font-data-mono-sm text-data-mono-sm text-secondary">Cervezas &amp; Aguas</span>
+</div>
+</div>
+</td>
+<td class="py-space-md px-space-sm">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-data-mono-sm font-data-mono-sm bg-surface-container-high text-on-surface font-semibold">
+                    Bebidas
+                  </span>
+</td>
+<td class="py-space-md px-space-sm">
+<div class="flex flex-col font-body-sm text-body-sm">
+<span class="font-semibold text-on-surface">Preventa Zona 4</span>
+<span class="text-secondary font-data-mono-sm text-data-mono-sm">0800-222-3344</span>
+</div>
+</td>
+<td class="py-space-md px-space-sm font-body-sm text-body-sm">
+<span class="font-semibold text-on-surface">Miércoles</span>
+</td>
+<td class="py-space-md px-space-sm font-body-sm text-body-sm">
+<span class="text-on-surface font-medium">Cta. Cte. 21 días</span>
+</td>
+<td class="py-space-md px-space-sm text-right">
+<div class="flex flex-col items-end">
+<span class="font-data-mono-md text-data-mono-md font-bold text-on-surface">$ 30.000,00</span>
+<span class="font-label-caps text-label-caps text-secondary font-medium">Vence: 28 Oct</span>
+</div>
+</td>
+<td class="py-space-md px-space-md">
+<div class="flex items-center justify-center gap-1">
+<button class="p-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface-variant transition-colors" onclick="document.getElementById('modal-factura').classList.remove('hidden')" title="Cargar Remito">
+<span class="material-symbols-outlined text-lg">inventory</span>
+</button>
+<button class="p-1.5 rounded-lg bg-primary-container/20 hover:bg-primary-container text-primary hover:text-on-primary-container transition-colors" title="Pagar Saldo">
+<span class="material-symbols-outlined text-lg">payments</span>
+</button>
+<button class="p-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface-variant transition-colors" title="Editar Proveedor">
+<span class="material-symbols-outlined text-lg">edit</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 5: Panificadora San Cayetano -->
+<tr class="hover:bg-surface-container-low/50 transition-colors">
+<td class="py-space-md px-space-md">
+<div class="flex items-center gap-space-sm">
+<div class="w-9 h-9 rounded-lg bg-secondary-fixed-dim flex items-center justify-center font-bold text-on-secondary-fixed text-body-md font-body-md">
+                      PS
+                    </div>
+<div class="flex flex-col">
+<span class="font-body-md text-body-md font-bold text-on-surface leading-tight">Panificadora San Cayetano</span>
+<span class="font-data-mono-sm text-data-mono-sm text-secondary">Pan fresco &amp; Facturas</span>
+</div>
+</div>
+</td>
+<td class="py-space-md px-space-sm">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-data-mono-sm font-data-mono-sm bg-surface-container-high text-on-surface font-semibold">
+                    Panadería
+                  </span>
+</td>
+<td class="py-space-md px-space-sm">
+<div class="flex flex-col font-body-sm text-body-sm">
+<span class="font-semibold text-on-surface">Horacio Rossi</span>
+<span class="text-secondary font-data-mono-sm text-data-mono-sm">+54 9 11 2211-9988</span>
+</div>
+</td>
+<td class="py-space-md px-space-sm font-body-sm text-body-sm">
+<div class="flex flex-col">
+<span class="font-semibold text-on-surface">Diario</span>
+<span class="text-data-mono-sm text-data-mono-sm text-secondary">07:00 AM</span>
+</div>
+</td>
+<td class="py-space-md px-space-sm font-body-sm text-body-sm">
+<span class="text-on-surface font-medium">Semanal</span>
+</td>
+<td class="py-space-md px-space-sm text-right">
+<div class="flex flex-col items-end">
+<span class="font-data-mono-md text-data-mono-md font-bold text-on-surface">$ 0,00</span>
+<span class="inline-flex items-center gap-1 font-label-caps text-label-caps text-primary uppercase font-bold">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>Al Día
+                    </span>
+</div>
+</td>
+<td class="py-space-md px-space-md">
+<div class="flex items-center justify-center gap-1">
+<button class="p-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface-variant transition-colors" onclick="document.getElementById('modal-factura').classList.remove('hidden')" title="Cargar Remito">
+<span class="material-symbols-outlined text-lg">inventory</span>
+</button>
+<button class="p-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface-variant transition-colors" title="Historial Compras">
+<span class="material-symbols-outlined text-lg">receipt</span>
+</button>
+<button class="p-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface-variant transition-colors" title="Editar Proveedor">
+<span class="material-symbols-outlined text-lg">edit</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="px-space-lg py-space-sm bg-surface-container-low flex items-center justify-between mt-auto">
+<span class="font-body-sm text-body-sm text-secondary">Mostrando 5 de 18 registros activos</span>
+<div class="flex items-center gap-1">
+<button class="px-2.5 py-1 rounded bg-surface-container text-secondary text-body-sm font-body-sm hover:bg-surface-container-high" disabled="">Anterior</button>
+<span class="px-2 py-1 font-data-mono-sm text-data-mono-sm font-bold text-primary">1</span>
+<button class="px-2 py-1 font-data-mono-sm text-data-mono-sm text-secondary hover:text-on-surface">2</button>
+<button class="px-2 py-1 font-data-mono-sm text-data-mono-sm text-secondary hover:text-on-surface">3</button>
+<button class="px-2.5 py-1 rounded bg-surface-container text-on-surface text-body-sm font-body-sm hover:bg-surface-container-high">Siguiente</button>
+</div>
+</div>
+</section>
+<!-- Right Drawer / Preview Panel: Recent Goods Receipts & Visual Balance (Cols 9-12) -->
+<section class="xl:col-span-4 flex flex-col gap-space-lg">
+<!-- Visual Balance Widget with SVG Composition -->
+<div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between mb-space-sm">
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps uppercase text-secondary tracking-wider">Flujo de Compras Semanal</span>
+<span class="font-headline-md text-headline-md font-bold text-on-surface mt-0.5">Reposición vs Saldo</span>
+</div>
+<span class="material-symbols-outlined text-primary">analytics</span>
+</div>
+<!-- Inline SVG Bar Visualization (Minimalist Cash Outflow per Day) -->
+<div class="py-space-sm">
+<svg class="w-full h-28 text-primary" fill="none" viewbox="0 0 320 100" xmlns="http://www.w3.org/2000/svg">
+<!-- Background grid bars -->
+<rect fill="currentColor" fill-opacity="0.1" height="70" rx="4" width="28" x="15" y="20"></rect>
+<rect fill="currentColor" fill-opacity="0.1" height="70" rx="4" width="28" x="65" y="20"></rect>
+<rect fill="currentColor" fill-opacity="0.1" height="70" rx="4" width="28" x="115" y="20"></rect>
+<rect fill="currentColor" fill-opacity="0.1" height="70" rx="4" width="28" x="165" y="20"></rect>
+<rect fill="currentColor" fill-opacity="0.1" height="70" rx="4" width="28" x="215" y="20"></rect>
+<rect fill="currentColor" fill-opacity="0.1" height="70" rx="4" width="28" x="265" y="20"></rect>
+<!-- Active data bars -->
+<!-- Lun: Produce Restock Peak -->
+<rect fill="currentColor" height="58" rx="4" width="28" x="15" y="32"></rect>
+<!-- Mar: Dry goods -->
+<rect fill="currentColor" fill-opacity="0.7" height="35" rx="4" width="28" x="65" y="55"></rect>
+<!-- Mie: Central Market visit 2 -->
+<rect fill="currentColor" height="50" rx="4" width="28" x="115" y="40"></rect>
+<!-- Jue: Dairy & Beverages -->
+<rect fill="currentColor" fill-opacity="0.6" height="30" rx="4" width="28" x="165" y="60"></rect>
+<!-- Vie: Weekend heavy stock -->
+<rect fill="currentColor" height="66" rx="4" width="28" x="215" y="24"></rect>
+<!-- Sab: Emergency bakeries -->
+<rect fill="currentColor" fill-opacity="0.4" height="15" rx="4" width="28" x="265" y="75"></rect>
+</svg>
+<div class="flex justify-between text-label-caps font-label-caps uppercase text-secondary px-2 pt-1">
+<span>Lun</span>
+<span>Mar</span>
+<span>Mié</span>
+<span>Jue</span>
+<span>Vie</span>
+<span>Sáb</span>
+</div>
+</div>
+<div class="pt-space-xs flex items-center justify-between text-body-sm font-body-sm">
+<span class="text-secondary font-medium">Mayor desembolso:</span>
+<span class="font-data-mono-sm text-data-mono-sm font-bold text-on-surface">Viernes ($ 380k - Frutas &amp; Verduras)</span>
+</div>
+</div>
+<!-- Recent Invoices / Remitos Feed -->
+<div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm flex flex-col">
+<div class="flex items-center justify-between mb-space-md">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">move_to_inbox</span>
+<h3 class="font-headline-md text-headline-md font-bold text-on-surface">Últimos Ingresos</h3>
+</div>
+<span class="font-label-caps text-label-caps uppercase text-primary font-bold">En Vivo</span>
+</div>
+<div class="space-y-space-md">
+<!-- Receipt 1: Produce Market -->
+<div class="bg-surface-container-low rounded-lg p-space-md relative overflow-hidden transition-all hover:shadow-sm">
+<div class="flex items-center justify-between mb-1.5">
+<span class="font-data-mono-md text-data-mono-md font-bold text-on-surface">Remito #R-0089</span>
+<span class="font-data-mono-sm text-data-mono-sm text-secondary">Hoy 06:15 AM</span>
+</div>
+<p class="font-body-md text-body-md font-semibold text-on-surface">Puesto 42 · Mercado Central</p>
+<div class="bg-surface-container-lowest rounded p-2 my-2 text-data-mono-sm font-data-mono-sm text-on-surface-variant flex flex-wrap gap-x-3 gap-y-1">
+<span>🥬 45 kg Tomate</span>
+<span>🥔 30 kg Papa</span>
+<span>🍌 20 kg Banana</span>
+</div>
+<div class="flex items-center justify-between pt-1">
+<span class="font-data-mono-lg text-data-mono-md font-bold text-primary">$ 112.500,00</span>
+<span class="inline-flex items-center gap-1 font-label-caps text-label-caps uppercase text-primary font-bold bg-primary-fixed/40 px-2 py-0.5 rounded">
+<span class="material-symbols-outlined text-xs">done_all</span> Stock Actualizado
+                </span>
+</div>
+</div>
+<!-- Receipt 2: Dry goods distributor -->
+<div class="bg-surface-container-low rounded-lg p-space-md relative overflow-hidden transition-all hover:shadow-sm">
+<div class="flex items-center justify-between mb-1.5">
+<span class="font-data-mono-md text-data-mono-md font-bold text-on-surface">Factura A-10293</span>
+<span class="font-data-mono-sm text-data-mono-sm text-secondary">Ayer 15:40 PM</span>
+</div>
+<p class="font-body-md text-body-md font-semibold text-on-surface">Distribuidora Mayorista Los Amigos</p>
+<div class="bg-surface-container-lowest rounded p-2 my-2 text-data-mono-sm font-data-mono-sm text-on-surface-variant flex flex-wrap gap-x-3 gap-y-1">
+<span>🌻 24 Aceite Natura 1.5L</span>
+<span>🧉 30 Yerba Playadito 500g</span>
+</div>
+<div class="flex items-center justify-between pt-1">
+<span class="font-data-mono-lg text-data-mono-md font-bold text-on-surface">$ 145.800,00</span>
+<span class="inline-flex items-center gap-1 font-label-caps text-label-caps uppercase text-secondary font-bold bg-surface-container px-2 py-0.5 rounded">
+<span class="material-symbols-outlined text-xs">price_change</span> Costos Actualizados
+                </span>
+</div>
+</div>
+<!-- Receipt 3: Dairy Direct -->
+<div class="bg-surface-container-low rounded-lg p-space-md relative overflow-hidden transition-all hover:shadow-sm">
+<div class="flex items-center justify-between mb-1.5">
+<span class="font-data-mono-md text-data-mono-md font-bold text-on-surface">Remito #LS-7741</span>
+<span class="font-data-mono-sm text-data-mono-sm text-secondary">17 Oct 09:20 AM</span>
+</div>
+<p class="font-body-md text-body-md font-semibold text-on-surface">La Serenísima Logística</p>
+<div class="bg-surface-container-lowest rounded p-2 my-2 text-data-mono-sm font-data-mono-sm text-on-surface-variant flex flex-wrap gap-x-3 gap-y-1">
+<span>🥛 40 Leche Entera Sachets</span>
+<span>🧀 6 Queso Cremoso 3kg</span>
+</div>
+<div class="flex items-center justify-between pt-1">
+<span class="font-data-mono-lg text-data-mono-md font-bold text-on-surface">$ 88.400,00</span>
+<span class="inline-flex items-center gap-1 font-label-caps text-label-caps uppercase text-primary font-bold bg-primary-fixed/40 px-2 py-0.5 rounded">
+<span class="material-symbols-outlined text-xs">done_all</span> En Cámara Fría
+                </span>
+</div>
+</div>
+</div>
+<!-- Bottom Shortcut to full history -->
+<button class="mt-space-md w-full py-2.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-body-sm text-body-sm font-semibold transition-colors flex items-center justify-center gap-1.5">
+<span>Ver Historial Completo de Ingresos</span>
+<span class="material-symbols-outlined text-base">arrow_forward</span>
+</button>
+</div>
+</section>
+</div>
+</div>
+</div></main></div></body></html>

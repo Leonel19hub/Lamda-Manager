@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+
+<html lang="es"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{"colors":{"on-secondary-fixed":"#131b2e","secondary":"#565e74","outline-variant":"#bbcabf","secondary-container":"#dae2fd","tertiary-container":"#23acf1","tertiary-fixed":"#c9e6ff","on-secondary":"#ffffff","on-error":"#ffffff","surface-container-highest":"#d3e4fe","on-surface":"#0b1c30","surface-container-low":"#eff4ff","surface-bright":"#f8f9ff","primary":"#006c49","tertiary-fixed-dim":"#89ceff","surface-container-high":"#dce9ff","outline":"#6c7a71","on-tertiary-container":"#003d59","error":"#ba1a1a","on-secondary-container":"#5c647a","primary-container":"#10b981","tertiary":"#006591","on-surface-variant":"#3c4a42","surface-container":"#e5eeff","primary-fixed-dim":"#4edea3","error-container":"#ffdad6","inverse-primary":"#4edea3","on-background":"#0b1c30","surface-variant":"#d3e4fe","on-tertiary":"#ffffff","secondary-fixed":"#dae2fd","inverse-on-surface":"#eaf1ff","on-tertiary-fixed-variant":"#004c6e","background":"#f8f9ff","on-primary-fixed-variant":"#005236","inverse-surface":"#213145","on-primary-container":"#00422b","surface-tint":"#006c49","secondary-fixed-dim":"#bec6e0","on-primary":"#ffffff","on-secondary-fixed-variant":"#3f465c","surface":"#f8f9ff","on-error-container":"#93000a","on-tertiary-fixed":"#001e2f","primary-fixed":"#6ffbbe","on-primary-fixed":"#002113","surface-dim":"#cbdbf5"},"borderRadius":{"DEFAULT":"0.125rem","lg":"0.25rem","xl":"0.5rem","full":"0.75rem"},"spacing":{"space-lg":"1.5rem","gutter-desktop":"1.5rem","margin":"1rem","space-sm":"0.5rem","space-md":"1rem","space-xs":"0.25rem","gutter":"1rem","margin-desktop":"2rem","space-xl":"2rem"},"fontFamily":{"data-display-lg":["JetBrains Mono"],"data-mono-sm":["JetBrains Mono"],"body-sm":["Inter"],"body-lg":["Inter"],"data-display-xl":["JetBrains Mono"],"headline-lg":["Inter"],"data-mono-md":["JetBrains Mono"],"headline-xl":["Inter"],"label-caps":["Inter"],"body-md":["Inter"],"headline-md":["Inter"]},"fontSize":{"data-display-lg":["1.5rem",{"lineHeight":"2rem","fontWeight":"600"}],"data-mono-sm":["0.75rem",{"lineHeight":"1rem","fontWeight":"500"}],"body-sm":["0.75rem",{"lineHeight":"1rem","fontWeight":"400"}],"body-lg":["1rem",{"lineHeight":"1.5rem","fontWeight":"400"}],"data-display-xl":["2.25rem",{"lineHeight":"2.5rem","fontWeight":"700"}],"headline-lg":["1.5rem",{"lineHeight":"2rem","fontWeight":"600"}],"data-mono-md":["0.875rem",{"lineHeight":"1.25rem","fontWeight":"500"}],"headline-xl":["2rem",{"lineHeight":"2.5rem","fontWeight":"700"}],"label-caps":["0.6875rem",{"lineHeight":"0.875rem","fontWeight":"700"}],"body-md":["0.875rem",{"lineHeight":"1.25rem","fontWeight":"400"}],"headline-md":["1.25rem",{"lineHeight":"1.75rem","fontWeight":"600"}]}}}}</script></head><body class="bg-surface font-body-md text-on-surface antialiased"><aside class="fixed left-0 top-0 h-full w-64 bg-inverse-surface text-inverse-on-surface z-50 flex flex-col justify-between shadow-[0_1px_8px_rgba(0,0,0,0.08)]"><div class="flex flex-col"><div class="h-16 px-space-md flex items-center gap-space-sm bg-inverse-surface"><img alt="Mercado Control Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/ALJJyrDIFABG4jGR5Vbq57OqwvzwKdKWSWVzevxyvD3c7BsuZC5jTlMqtpZt1tdZQD9BZunnIy1uG23TjwsvyZjcJlA7Um2DCSa3mSy5KQTa--4yO6Gz8gsajiZcSI8RD_9ht2JE11_y0wTcEQ7z8Zq9gfj97xrhG5KqFFa1_-SrgQ8VLCnacyOXCD-cBW7E3AKgpvDwvfU0tJpzlUUxbENgXga-ksA61SdvS4tBk1COrnm0"/><div class="flex flex-col min-w-0"><span class="font-headline-md text-headline-md tracking-tight text-surface font-bold truncate leading-none">Mercado Control</span><span class="font-label-caps text-label-caps uppercase tracking-wider text-surface-variant truncate mt-space-xs">Despensa &amp; Verdulería</span></div></div><div class="px-space-md py-space-sm"><div class="font-label-caps text-label-caps uppercase text-surface-variant tracking-wider px-space-xs mb-space-xs">Operaciones &amp; Gestión</div><nav class="flex flex-col gap-space-xs" data-active-classes="bg-primary-container text-on-primary-container font-semibold rounded-lg shadow-sm"><a class="flex items-center gap-space-sm px-space-sm py-space-sm rounded-lg text-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="punto-de-venta" href="#"><span class="material-symbols-outlined text-xl">point_of_sale</span><span class="font-body-md text-body-md truncate">Punto de Venta</span></a><a class="flex items-center gap-space-sm px-space-sm py-space-sm rounded-lg text-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="panel-de-control" href="#"><span class="material-symbols-outlined text-xl">bar_chart</span><span class="font-body-md text-body-md truncate">Panel de Control</span></a><a class="flex items-center gap-space-sm px-space-sm py-space-sm rounded-lg text-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="productos-e-inventario" href="#"><span class="material-symbols-outlined text-xl">inventory_2</span><span class="font-body-md text-body-md truncate">Productos e Inventario</span></a><a aria-current="page" class="flex items-center gap-space-sm px-space-sm py-space-sm transition-colors bg-primary-container text-on-primary-container font-semibold rounded-lg shadow-sm" data-path="clientes-y-cuentas-corrientes" href="#"><span class="material-symbols-outlined text-xl">group</span><span class="font-body-md text-body-md truncate">Clientes y Cuentas Ctes.</span></a><a class="flex items-center gap-space-sm px-space-sm py-space-sm rounded-lg text-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="proveedores-y-compras" href="#"><span class="material-symbols-outlined text-xl">local_shipping</span><span class="font-body-md text-body-md truncate">Proveedores y Compras</span></a><a class="flex items-center gap-space-sm px-space-sm py-space-sm rounded-lg text-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="caja-y-roles" href="#"><span class="material-symbols-outlined text-xl">shield_person</span><span class="font-body-md text-body-md truncate">Caja y Roles</span></a></nav></div></div><div class="p-space-md bg-inverse-surface"><div class="bg-surface-variant/10 rounded-lg p-space-sm flex items-center justify-between"><div class="flex flex-col"><span class="font-label-caps text-label-caps text-surface-variant uppercase tracking-wider">Balanza Serial COM1</span><span class="font-data-mono-sm text-data-mono-sm text-primary-fixed-dim font-bold flex items-center gap-1"><span class="inline-block w-2 h-2 rounded-full bg-primary-container animate-pulse"></span>Online · 0.000 kg</span></div><span class="material-symbols-outlined text-surface-variant text-xl">scale</span></div></div></aside><div class="pl-64"><header class="fixed top-0 left-64 right-0 h-16 bg-surface-container-lowest/90 backdrop-blur-xl z-40 shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-16 w-full px-gutter-desktop flex items-center justify-between gap-space-md"><div class="flex items-center gap-space-md min-w-0"><div class="flex items-center gap-space-xs bg-surface-container-low px-space-sm py-1.5 rounded-lg"><span class="relative flex h-2.5 w-2.5"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary-container opacity-75"></span><span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-primary"></span></span><span class="font-body-sm text-body-sm font-semibold text-on-surface truncate">Sucursal Central</span><span class="font-body-sm text-body-sm text-outline hidden xl:inline">- Av. Rivadavia 4520</span></div><div class="flex items-center gap-1.5 bg-surface-container-low px-space-sm py-1.5 rounded-lg"><span class="inline-block w-2 h-2 rounded-full bg-primary"></span><span class="font-data-mono-sm text-data-mono-sm text-on-surface font-medium truncate">Caja Abierta · Turno Mañana (Caja 01)</span></div></div><div class="flex items-center gap-space-sm"><div class="hidden 2xl:flex items-center gap-space-xs bg-surface-container px-space-sm py-1.5 rounded-lg"><span class="material-symbols-outlined text-outline text-sm">keyboard</span><span class="font-data-mono-sm text-data-mono-sm text-on-surface-variant font-medium">F12: Cobrar | F2: Buscar PLU | F4: Balanza</span></div><div class="flex items-center gap-1.5 bg-surface-container-low px-space-sm py-1.5 rounded-lg cursor-pointer hover:bg-surface-container-high transition-colors"><span class="font-label-caps text-label-caps uppercase text-outline font-bold">Vista:</span><span class="font-body-sm text-body-sm font-semibold text-on-surface">Dueño</span><span class="material-symbols-outlined text-sm text-on-surface-variant">arrow_drop_down</span></div><div class="flex items-center gap-space-sm pl-space-xs"><div class="flex flex-col text-right hidden sm:flex"><span class="font-body-sm text-body-sm font-semibold text-on-surface leading-tight">María Gómez</span><span class="font-label-caps text-label-caps text-outline leading-tight">Administrador / Encargada</span></div><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCnWG_8AMUAEuZFqyuyZazQji66Fw03UmHv8lKDKySwqF_GOwKPEhKU_H8CATsLDtDBcLXBPKjVguK6_HjtXBa9dltMDIgl42xZrE0mXM6OUCNpdNqwL2EcwQWtyC2XspIbjpkbazHtWTbat0WcYZFfzcpMdAEM0kw6hLJf8sfPF9GlPUIGzDH2jA2jW8i_hDrNVyGZRxZuta_aEfuEom7hYJh19Xy1PeaDtM6CLIs"/></div></div></div></header><main class="relative pt-16 w-full min-h-screen bg-surface"><div class="flex flex-col w-full">
+<div class="p-margin-desktop flex flex-col gap-space-lg">
+<!-- Subheader Operations Summary & Quick Stats -->
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-space-md">
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-space-xs text-on-surface-variant">
+<span class="font-label-caps text-label-caps uppercase tracking-wider">Gestión Comercial</span>
+<span class="text-xs">/</span>
+<span class="font-label-caps text-label-caps uppercase tracking-wider text-primary font-bold">Cuentas Corrientes &amp; Fiados</span>
+</div>
+<div class="flex items-center gap-space-sm mt-0.5">
+<h1 class="font-headline-lg text-headline-lg text-on-surface font-bold tracking-tight">Clientes y Crédito Vecinal</h1>
+<span class="bg-surface-container px-space-xs py-0.5 rounded text-on-surface-variant font-data-mono-sm text-data-mono-sm">Libreta Activa</span>
+</div>
+</div>
+<div class="flex flex-wrap items-center gap-space-sm">
+<button class="bg-surface-container-lowest hover:bg-surface-container text-on-surface px-space-md h-11 rounded-lg shadow-sm flex items-center gap-space-xs transition-colors font-body-md text-body-md font-medium" id="btn-export-debtors">
+<span class="material-symbols-outlined text-xl text-secondary">picture_as_pdf</span>
+<span>Listado de Deudores (PDF / WhatsApp)</span>
+</button>
+<button class="bg-primary-container hover:bg-primary text-on-primary-container hover:text-on-primary px-space-md h-11 rounded-lg shadow-sm flex items-center gap-space-xs transition-colors font-body-md text-body-md font-semibold" onclick="openNewCustomerModal()">
+<span class="material-symbols-outlined text-xl">person_add</span>
+<span>+ Nuevo Cliente</span>
+</button>
+</div>
+</div>
+<!-- Top KPI Metrics Bar (3 Cards) -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter-desktop">
+<!-- Metric 1: Total Clientes -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col justify-between relative overflow-hidden">
+<div class="absolute right-0 top-0 w-24 h-24 bg-surface-container/50 rounded-full -mr-8 -mt-8 pointer-events-none"></div>
+<div class="flex items-start justify-between">
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps uppercase tracking-wider text-secondary">Total Clientes Registrados</span>
+<div class="flex items-baseline gap-space-xs mt-space-xs">
+<span class="font-data-display-xl text-data-display-xl font-bold text-on-surface">168</span>
+<span class="font-body-md text-body-md text-secondary">fichas</span>
+</div>
+</div>
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-2xl">badge</span>
+</div>
+</div>
+<div class="mt-space-md pt-space-xs flex items-center justify-between">
+<span class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-primary-container inline-block"></span>
+            142 activos en el mes corriente
+          </span>
+<span class="font-data-mono-sm text-data-mono-sm text-secondary font-medium">84.5% recurrencia</span>
+</div>
+</div>
+<!-- Metric 2: Clientes con Deuda -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col justify-between relative overflow-hidden">
+<div class="flex items-start justify-between">
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps uppercase tracking-wider text-secondary">Clientes con Saldo Deudor (Fiado)</span>
+<div class="flex items-baseline gap-space-xs mt-space-xs">
+<span class="font-data-display-xl text-data-display-xl font-bold text-on-surface">24</span>
+<span class="font-body-md text-body-md text-secondary">cuentas con saldo</span>
+</div>
+</div>
+<div class="w-10 h-10 rounded-lg bg-secondary-container/60 flex items-center justify-center text-on-secondary-fixed">
+<span class="material-symbols-outlined text-2xl">receipt_long</span>
+</div>
+</div>
+<div class="mt-space-md pt-space-xs flex items-center justify-between">
+<div class="inline-flex items-center gap-1 px-space-xs py-0.5 rounded bg-surface-container text-on-surface font-body-sm text-body-sm font-semibold">
+<span class="material-symbols-outlined text-sm text-secondary">pie_chart</span>
+<span>14.2% del total de clientes</span>
+</div>
+<span class="font-data-mono-sm text-data-mono-sm text-secondary font-medium">Límite prom: $42.000</span>
+</div>
+</div>
+<!-- Metric 3: Deuda Total -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col justify-between relative overflow-hidden">
+<div class="flex items-start justify-between">
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps uppercase tracking-wider text-secondary">Total por Cobrar (Deuda Total)</span>
+<div class="flex items-baseline gap-space-xs mt-space-xs">
+<span class="font-data-display-xl text-data-display-xl font-bold text-error tracking-tight">$ 342.850,00</span>
+</div>
+</div>
+<div class="w-10 h-10 rounded-lg bg-error-container/60 flex items-center justify-center text-error">
+<span class="material-symbols-outlined text-2xl">pending_actions</span>
+</div>
+</div>
+<div class="mt-space-md pt-space-xs flex items-center justify-between">
+<div class="inline-flex items-center gap-1 text-error font-body-sm text-body-sm font-semibold">
+<span class="material-symbols-outlined text-base">trending_up</span>
+<span>+$ 28.100 en la última semana</span>
+</div>
+<span class="font-data-mono-sm text-data-mono-sm text-on-surface-variant font-medium">18 pagos registrados hoy</span>
+</div>
+</div>
+</div>
+<!-- Main Workspace: Dual Split (Table Left 65% / Quick Operations Right 35%) -->
+<div class="grid grid-cols-1 xl:grid-cols-12 gap-gutter-desktop items-start">
+<!-- Left Column: Customer Accounts Explorer (xl:col-span-8) -->
+<div class="xl:col-span-8 flex flex-col gap-space-md">
+<!-- Filter & Search Bar -->
+<div class="bg-surface-container-lowest rounded-xl p-space-sm shadow-sm flex flex-col md:flex-row items-stretch md:items-center justify-between gap-space-sm">
+<!-- Search input -->
+<div class="relative flex-1 min-w-[260px]">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-xl">search</span>
+<input class="w-full h-11 pl-10 pr-4 rounded-lg bg-surface-container-low text-on-surface placeholder:text-outline text-body-md font-body-md focus:outline-none focus:bg-surface-container-lowest transition-all" id="customerSearch" placeholder="Buscar por nombre, DNI o teléfono..." type="text"/>
+</div>
+<!-- Status Filters Segmented Tabs -->
+<div class="flex items-center bg-surface-container-low p-1 rounded-lg overflow-x-auto">
+<button class="filter-tab px-space-sm py-1.5 rounded-lg text-body-sm font-body-sm font-medium text-secondary hover:text-on-surface transition-colors whitespace-nowrap" onclick="setFilter('todos', this)">
+              Todos (168)
+            </button>
+<button class="filter-tab px-space-sm py-1.5 rounded-lg text-body-sm font-body-sm font-semibold bg-surface-container-lowest text-on-surface shadow-xs transition-colors whitespace-nowrap flex items-center gap-1.5" onclick="setFilter('deudores', this)">
+<span class="w-2 h-2 rounded-full bg-error inline-block"></span>
+              Con Deuda (24)
+            </button>
+<button class="filter-tab px-space-sm py-1.5 rounded-lg text-body-sm font-body-sm font-medium text-secondary hover:text-on-surface transition-colors whitespace-nowrap flex items-center gap-1.5" onclick="setFilter('aldia', this)">
+<span class="w-2 h-2 rounded-full bg-primary-container inline-block"></span>
+              Al Día / $0 (144)
+            </button>
+</div>
+</div>
+<!-- Accounts Table Container -->
+<div class="bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden flex flex-col">
+<div class="overflow-x-auto w-full">
+<table class="w-full text-left">
+<thead>
+<tr class="bg-surface-container-low text-secondary font-label-caps text-label-caps uppercase tracking-wider">
+<th class="py-space-sm px-space-md font-semibold">Cliente</th>
+<th class="py-space-sm px-space-sm font-semibold">Teléfono / WhatsApp</th>
+<th class="py-space-sm px-space-sm font-semibold text-right">Límite</th>
+<th class="py-space-sm px-space-sm font-semibold text-right">Saldo Actual</th>
+<th class="py-space-sm px-space-sm font-semibold text-center">Estado</th>
+<th class="py-space-sm px-space-sm font-semibold">Última Compra</th>
+<th class="py-space-sm px-space-md font-semibold text-right">Acciones</th>
+</tr>
+</thead>
+<tbody class="font-body-md text-body-md" id="clientsTableBody">
+<!-- Row 1: Roberto Díaz (Active Selected by default) -->
+<tr class="customer-row bg-surface-container/60 hover:bg-surface-container-high transition-colors cursor-pointer" data-customer="roberto" onclick="selectCustomer('Roberto Díaz', 'DNI 28.452.190', '+54 9 11 4521-8899', 50000, 18450, 'Hoy 10:24 AM (Ticket #889)')">
+<td class="py-space-sm px-space-md">
+<div class="flex items-center gap-space-sm">
+<div class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center font-bold text-sm shrink-0">
+                        RD
+                      </div>
+<div class="flex flex-col min-w-0">
+<span class="font-semibold text-on-surface leading-tight truncate">Roberto Díaz</span>
+<span class="font-data-mono-sm text-data-mono-sm text-secondary truncate">DNI 28.452.190</span>
+</div>
+</div>
+</td>
+<td class="py-space-sm px-space-sm">
+<a class="inline-flex items-center gap-1 text-on-surface hover:text-primary transition-colors font-data-mono-sm text-data-mono-sm" href="https://wa.me/5491145218899" onclick="event.stopPropagation();" target="_blank">
+<span class="material-symbols-outlined text-base text-primary-container">chat</span>
+<span>+54 9 11 4521-8899</span>
+</a>
+</td>
+<td class="py-space-sm px-space-sm text-right font-data-mono-md text-data-mono-md text-secondary">
+                    $ 50.000,00
+                  </td>
+<td class="py-space-sm px-space-sm text-right font-data-mono-md text-data-mono-md font-bold text-error">
+                    $ 18.450,00
+                  </td>
+<td class="py-space-sm px-space-sm text-center">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-error-container text-on-error-container">
+                      Deudor
+                    </span>
+</td>
+<td class="py-space-sm px-space-sm">
+<div class="flex flex-col">
+<span class="text-xs text-on-surface font-medium truncate">Hoy 10:24 AM</span>
+<span class="font-data-mono-sm text-data-mono-sm text-secondary">Ticket #889</span>
+</div>
+</td>
+<td class="py-space-sm px-space-md text-right">
+<div class="flex items-center justify-end gap-1" onclick="event.stopPropagation();">
+<button class="bg-primary-container hover:bg-primary text-on-primary-container hover:text-on-primary px-2.5 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1 transition-colors" onclick="triggerPaymentModal('Roberto Díaz', 18450)">
+<span class="material-symbols-outlined text-sm">payments</span>
+                        Cobrar
+                      </button>
+<button class="p-1.5 rounded-lg text-secondary hover:bg-surface-container hover:text-on-surface transition-colors" onclick="viewHistory('Roberto Díaz')" title="Ver Historial">
+<span class="material-symbols-outlined text-lg">receipt</span>
+</button>
+<button class="p-1.5 rounded-lg text-secondary hover:bg-surface-container hover:text-on-surface transition-colors" onclick="editCustomer('Roberto Díaz')" title="Editar Cuenta">
+<span class="material-symbols-outlined text-lg">edit</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 2: Doña Marta Fernández (85% limit alert) -->
+<tr class="customer-row hover:bg-surface-container-high transition-colors cursor-pointer" data-customer="marta" onclick="selectCustomer('Doña Marta Fernández', 'DNI 14.120.334', '+54 9 11 6789-1122', 40000, 26800, 'Ayer 19:15 PM (Ticket #845)')">
+<td class="py-space-sm px-space-md">
+<div class="flex items-center gap-space-sm">
+<div class="w-8 h-8 rounded-full bg-secondary-container text-on-secondary-fixed flex items-center justify-center font-bold text-sm shrink-0">
+                        MF
+                      </div>
+<div class="flex flex-col min-w-0">
+<span class="font-semibold text-on-surface leading-tight truncate">Doña Marta Fernández</span>
+<span class="font-data-mono-sm text-data-mono-sm text-secondary truncate">DNI 14.120.334</span>
+</div>
+</div>
+</td>
+<td class="py-space-sm px-space-sm">
+<a class="inline-flex items-center gap-1 text-on-surface hover:text-primary transition-colors font-data-mono-sm text-data-mono-sm" href="https://wa.me/5491167891122" onclick="event.stopPropagation();" target="_blank">
+<span class="material-symbols-outlined text-base text-primary-container">chat</span>
+<span>+54 9 11 6789-1122</span>
+</a>
+</td>
+<td class="py-space-sm px-space-sm text-right font-data-mono-md text-data-mono-md text-secondary">
+                    $ 40.000,00
+                  </td>
+<td class="py-space-sm px-space-sm text-right font-data-mono-md text-data-mono-md font-bold text-error">
+                    $ 26.800,00
+                  </td>
+<td class="py-space-sm px-space-sm text-center">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-semibold bg-error-container text-error" title="Ha consumido el 67% de su crédito disponible">
+<span class="material-symbols-outlined text-xs">warning</span>
+                      Alerta 67%
+                    </span>
+</td>
+<td class="py-space-sm px-space-sm">
+<div class="flex flex-col">
+<span class="text-xs text-on-surface font-medium truncate">Ayer 19:15 PM</span>
+<span class="font-data-mono-sm text-data-mono-sm text-secondary">Ticket #845</span>
+</div>
+</td>
+<td class="py-space-sm px-space-md text-right">
+<div class="flex items-center justify-end gap-1" onclick="event.stopPropagation();">
+<button class="bg-primary-container hover:bg-primary text-on-primary-container hover:text-on-primary px-2.5 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1 transition-colors" onclick="triggerPaymentModal('Doña Marta Fernández', 26800)">
+<span class="material-symbols-outlined text-sm">payments</span>
+                        Cobrar
+                      </button>
+<button class="p-1.5 rounded-lg text-secondary hover:bg-surface-container hover:text-on-surface transition-colors" onclick="viewHistory('Doña Marta Fernández')" title="Ver Historial">
+<span class="material-symbols-outlined text-lg">receipt</span>
+</button>
+<button class="p-1.5 rounded-lg text-secondary hover:bg-surface-container hover:text-on-surface transition-colors" onclick="editCustomer('Doña Marta Fernández')" title="Editar Cuenta">
+<span class="material-symbols-outlined text-lg">edit</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 3: Familia González -->
+<tr class="customer-row hover:bg-surface-container-high transition-colors cursor-pointer" data-customer="gonzalez" onclick="selectCustomer('Familia González (Juan)', 'DNI 32.890.111', '+54 9 11 5544-3322', 60000, 8120, '15/10/2023 · 12:40 PM')">
+<td class="py-space-sm px-space-md">
+<div class="flex items-center gap-space-sm">
+<div class="w-8 h-8 rounded-full bg-secondary-fixed text-on-secondary-fixed flex items-center justify-center font-bold text-sm shrink-0">
+                        FG
+                      </div>
+<div class="flex flex-col min-w-0">
+<span class="font-semibold text-on-surface leading-tight truncate">Familia González (Juan)</span>
+<span class="font-data-mono-sm text-data-mono-sm text-secondary truncate">DNI 32.890.111</span>
+</div>
+</div>
+</td>
+<td class="py-space-sm px-space-sm">
+<a class="inline-flex items-center gap-1 text-on-surface hover:text-primary transition-colors font-data-mono-sm text-data-mono-sm" href="https://wa.me/5491155443322" onclick="event.stopPropagation();" target="_blank">
+<span class="material-symbols-outlined text-base text-primary-container">chat</span>
+<span>+54 9 11 5544-3322</span>
+</a>
+</td>
+<td class="py-space-sm px-space-sm text-right font-data-mono-md text-data-mono-md text-secondary">
+                    $ 60.000,00
+                  </td>
+<td class="py-space-sm px-space-sm text-right font-data-mono-md text-data-mono-md font-bold text-error">
+                    $ 8.120,00
+                  </td>
+<td class="py-space-sm px-space-sm text-center">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-error-container text-on-error-container">
+                      Deudor
+                    </span>
+</td>
+<td class="py-space-sm px-space-sm">
+<div class="flex flex-col">
+<span class="text-xs text-on-surface font-medium truncate">15/10/2023</span>
+<span class="font-data-mono-sm text-data-mono-sm text-secondary">Ticket #790</span>
+</div>
+</td>
+<td class="py-space-sm px-space-md text-right">
+<div class="flex items-center justify-end gap-1" onclick="event.stopPropagation();">
+<button class="bg-primary-container hover:bg-primary text-on-primary-container hover:text-on-primary px-2.5 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1 transition-colors" onclick="triggerPaymentModal('Familia González (Juan)', 8120)">
+<span class="material-symbols-outlined text-sm">payments</span>
+                        Cobrar
+                      </button>
+<button class="p-1.5 rounded-lg text-secondary hover:bg-surface-container hover:text-on-surface transition-colors" onclick="viewHistory('Familia González (Juan)')" title="Ver Historial">
+<span class="material-symbols-outlined text-lg">receipt</span>
+</button>
+<button class="p-1.5 rounded-lg text-secondary hover:bg-surface-container hover:text-on-surface transition-colors" onclick="editCustomer('Familia González (Juan)')" title="Editar Cuenta">
+<span class="material-symbols-outlined text-lg">edit</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 4: Carlos Benítez (Al Día) -->
+<tr class="customer-row hover:bg-surface-container-high transition-colors cursor-pointer" data-customer="benitez" onclick="selectCustomer('Carlos Benítez', 'DNI 24.556.781', '+54 9 11 9988-7766', 30000, 0, '14/10/2023 · 18:05 PM')">
+<td class="py-space-sm px-space-md">
+<div class="flex items-center gap-space-sm">
+<div class="w-8 h-8 rounded-full bg-surface-container text-on-surface flex items-center justify-center font-bold text-sm shrink-0">
+                        CB
+                      </div>
+<div class="flex flex-col min-w-0">
+<span class="font-semibold text-on-surface leading-tight truncate">Carlos Benítez</span>
+<span class="font-data-mono-sm text-data-mono-sm text-secondary truncate">DNI 24.556.781</span>
+</div>
+</div>
+</td>
+<td class="py-space-sm px-space-sm">
+<a class="inline-flex items-center gap-1 text-on-surface hover:text-primary transition-colors font-data-mono-sm text-data-mono-sm" href="https://wa.me/5491199887766" onclick="event.stopPropagation();" target="_blank">
+<span class="material-symbols-outlined text-base text-primary-container">chat</span>
+<span>+54 9 11 9988-7766</span>
+</a>
+</td>
+<td class="py-space-sm px-space-sm text-right font-data-mono-md text-data-mono-md text-secondary">
+                    $ 30.000,00
+                  </td>
+<td class="py-space-sm px-space-sm text-right font-data-mono-md text-data-mono-md font-bold text-primary">
+                    $ 0,00
+                  </td>
+<td class="py-space-sm px-space-sm text-center">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-primary-fixed text-on-primary-fixed">
+                      Al Día
+                    </span>
+</td>
+<td class="py-space-sm px-space-sm">
+<div class="flex flex-col">
+<span class="text-xs text-on-surface font-medium truncate">14/10/2023</span>
+<span class="font-data-mono-sm text-data-mono-sm text-secondary">Ticket #732</span>
+</div>
+</td>
+<td class="py-space-sm px-space-md text-right">
+<div class="flex items-center justify-end gap-1" onclick="event.stopPropagation();">
+<button class="p-1.5 rounded-lg text-secondary hover:bg-surface-container hover:text-on-surface transition-colors" onclick="viewHistory('Carlos Benítez')" title="Ver Historial">
+<span class="material-symbols-outlined text-lg">receipt</span>
+</button>
+<button class="p-1.5 rounded-lg text-secondary hover:bg-surface-container hover:text-on-surface transition-colors" onclick="editCustomer('Carlos Benítez')" title="Editar Cuenta">
+<span class="material-symbols-outlined text-lg">edit</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 5: Lucía Morales -->
+<tr class="customer-row hover:bg-surface-container-high transition-colors cursor-pointer" data-customer="morales" onclick="selectCustomer('Lucía Morales', 'DNI 38.100.450', '+54 9 11 3322-1144', 35000, 12300, '12/10/2023 · 11:20 AM')">
+<td class="py-space-sm px-space-md">
+<div class="flex items-center gap-space-sm">
+<div class="w-8 h-8 rounded-full bg-secondary-fixed text-on-secondary-fixed flex items-center justify-center font-bold text-sm shrink-0">
+                        LM
+                      </div>
+<div class="flex flex-col min-w-0">
+<span class="font-semibold text-on-surface leading-tight truncate">Lucía Morales</span>
+<span class="font-data-mono-sm text-data-mono-sm text-secondary truncate">DNI 38.100.450</span>
+</div>
+</div>
+</td>
+<td class="py-space-sm px-space-sm">
+<a class="inline-flex items-center gap-1 text-on-surface hover:text-primary transition-colors font-data-mono-sm text-data-mono-sm" href="https://wa.me/5491133221144" onclick="event.stopPropagation();" target="_blank">
+<span class="material-symbols-outlined text-base text-primary-container">chat</span>
+<span>+54 9 11 3322-1144</span>
+</a>
+</td>
+<td class="py-space-sm px-space-sm text-right font-data-mono-md text-data-mono-md text-secondary">
+                    $ 35.000,00
+                  </td>
+<td class="py-space-sm px-space-sm text-right font-data-mono-md text-data-mono-md font-bold text-error">
+                    $ 12.300,00
+                  </td>
+<td class="py-space-sm px-space-sm text-center">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-error-container text-on-error-container">
+                      Deudor
+                    </span>
+</td>
+<td class="py-space-sm px-space-sm">
+<div class="flex flex-col">
+<span class="text-xs text-on-surface font-medium truncate">12/10/2023</span>
+<span class="font-data-mono-sm text-data-mono-sm text-secondary">Ticket #661</span>
+</div>
+</td>
+<td class="py-space-sm px-space-md text-right">
+<div class="flex items-center justify-end gap-1" onclick="event.stopPropagation();">
+<button class="bg-primary-container hover:bg-primary text-on-primary-container hover:text-on-primary px-2.5 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1 transition-colors" onclick="triggerPaymentModal('Lucía Morales', 12300)">
+<span class="material-symbols-outlined text-sm">payments</span>
+                        Cobrar
+                      </button>
+<button class="p-1.5 rounded-lg text-secondary hover:bg-surface-container hover:text-on-surface transition-colors" onclick="viewHistory('Lucía Morales')" title="Ver Historial">
+<span class="material-symbols-outlined text-lg">receipt</span>
+</button>
+<button class="p-1.5 rounded-lg text-secondary hover:bg-surface-container hover:text-on-surface transition-colors" onclick="editCustomer('Lucía Morales')" title="Editar Cuenta">
+<span class="material-symbols-outlined text-lg">edit</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 6: Estela Giménez (Al Día) -->
+<tr class="customer-row hover:bg-surface-container-high transition-colors cursor-pointer" data-customer="gimenez" onclick="selectCustomer('Estela Giménez', 'DNI 17.654.321', '+54 9 11 2233-4455', 45000, 0, '11/10/2023 · 09:40 AM')">
+<td class="py-space-sm px-space-md">
+<div class="flex items-center gap-space-sm">
+<div class="w-8 h-8 rounded-full bg-surface-container text-on-surface flex items-center justify-center font-bold text-sm shrink-0">
+                        EG
+                      </div>
+<div class="flex flex-col min-w-0">
+<span class="font-semibold text-on-surface leading-tight truncate">Estela Giménez</span>
+<span class="font-data-mono-sm text-data-mono-sm text-secondary truncate">DNI 17.654.321</span>
+</div>
+</div>
+</td>
+<td class="py-space-sm px-space-sm">
+<a class="inline-flex items-center gap-1 text-on-surface hover:text-primary transition-colors font-data-mono-sm text-data-mono-sm" href="https://wa.me/5491122334455" onclick="event.stopPropagation();" target="_blank">
+<span class="material-symbols-outlined text-base text-primary-container">chat</span>
+<span>+54 9 11 2233-4455</span>
+</a>
+</td>
+<td class="py-space-sm px-space-sm text-right font-data-mono-md text-data-mono-md text-secondary">
+                    $ 45.000,00
+                  </td>
+<td class="py-space-sm px-space-sm text-right font-data-mono-md text-data-mono-md font-bold text-primary">
+                    $ 0,00
+                  </td>
+<td class="py-space-sm px-space-sm text-center">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-primary-fixed text-on-primary-fixed">
+                      Al Día
+                    </span>
+</td>
+<td class="py-space-sm px-space-sm">
+<div class="flex flex-col">
+<span class="text-xs text-on-surface font-medium truncate">11/10/2023</span>
+<span class="font-data-mono-sm text-data-mono-sm text-secondary">Ticket #592</span>
+</div>
+</td>
+<td class="py-space-sm px-space-md text-right">
+<div class="flex items-center justify-end gap-1" onclick="event.stopPropagation();">
+<button class="p-1.5 rounded-lg text-secondary hover:bg-surface-container hover:text-on-surface transition-colors" onclick="viewHistory('Estela Giménez')" title="Ver Historial">
+<span class="material-symbols-outlined text-lg">receipt</span>
+</button>
+<button class="p-1.5 rounded-lg text-secondary hover:bg-surface-container hover:text-on-surface transition-colors" onclick="editCustomer('Estela Giménez')" title="Editar Cuenta">
+<span class="material-symbols-outlined text-lg">edit</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Table Footer Pagination and Quick Summary -->
+<div class="bg-surface-container-low px-space-md py-space-sm flex items-center justify-between text-secondary">
+<span class="font-body-sm text-body-sm">Mostrando 6 de 168 clientes registrados</span>
+<div class="flex items-center gap-space-xs">
+<button class="px-2 py-1 rounded bg-surface-container-lowest text-on-surface text-body-sm font-medium shadow-xs disabled:opacity-40" disabled="">Anterior</button>
+<span class="px-2 py-1 font-data-mono-sm text-data-mono-sm font-bold text-on-surface">1</span>
+<button class="px-2 py-1 rounded bg-surface-container text-on-surface-variant hover:bg-surface-container-highest text-body-sm font-medium">2</button>
+<button class="px-2 py-1 rounded bg-surface-container text-on-surface-variant hover:bg-surface-container-highest text-body-sm font-medium">3</button>
+<button class="px-2 py-1 rounded bg-surface-container-lowest text-on-surface text-body-sm font-medium shadow-xs">Siguiente</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Dedicated Client Detail & Immediate Settlement Terminal (xl:col-span-4) -->
+<div class="xl:col-span-4 flex flex-col gap-space-md sticky top-20">
+<!-- Interactive Detail Card: Roberto Díaz by default -->
+<div class="bg-surface-container-lowest rounded-xl shadow-md p-space-lg flex flex-col gap-space-md relative overflow-hidden">
+<!-- Header of selected client -->
+<div class="flex items-start justify-between pb-space-sm">
+<div class="flex items-center gap-space-sm">
+<div class="w-12 h-12 rounded-xl bg-primary text-on-primary flex items-center justify-center font-bold text-lg shadow-sm" id="sideClientAvatar">
+                RD
+              </div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-caps text-label-caps text-secondary uppercase tracking-wider">Detalle de Cuenta Corriente</span>
+<h2 class="font-headline-md text-headline-md font-bold text-on-surface truncate leading-tight" id="sideClientName">Roberto Díaz</h2>
+<span class="font-data-mono-sm text-data-mono-sm text-secondary truncate" id="sideClientDoc">DNI 28.452.190</span>
+</div>
+</div>
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-bold bg-error-container text-on-error-container" id="sideBadgeDeudor">
+              Fiado Activo
+            </span>
+</div>
+<!-- Credit Balance Micro-Dashboard -->
+<div class="bg-surface-container-low rounded-xl p-space-md flex flex-col gap-space-sm">
+<div class="grid grid-cols-2 gap-space-sm">
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps uppercase text-secondary">Límite Aprobado</span>
+<span class="font-data-mono-md text-data-mono-md font-bold text-on-surface" id="sideCreditLimit">$ 50.000,00</span>
+</div>
+<div class="flex flex-col text-right">
+<span class="font-label-caps text-label-caps uppercase text-secondary">Crédito Disponible</span>
+<span class="font-data-mono-md text-data-mono-md font-bold text-primary" id="sideCreditAvailable">$ 31.550,00</span>
+</div>
+</div>
+<!-- Visual Bar of Credit Consumption -->
+<div class="flex flex-col gap-1 mt-1">
+<div class="flex justify-between items-center text-xs">
+<span class="font-label-caps text-label-caps uppercase text-secondary">Uso del Límite</span>
+<span class="font-data-mono-sm text-data-mono-sm font-bold text-error" id="sidePercentLabel">36.9% consumido</span>
+</div>
+<div class="w-full h-2.5 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-error transition-all duration-300" id="sideProgressBar" style="width: 36.9%"></div>
+</div>
+</div>
+<!-- Big Main Outstanding Balance Callout -->
+<div class="mt-2 pt-space-xs flex items-center justify-between">
+<span class="font-body-sm text-body-sm font-semibold text-secondary">Saldo Deudor Total:</span>
+<span class="font-data-display-lg text-data-display-lg font-bold text-error" id="sideTotalDebt">$ 18.450,00</span>
+</div>
+</div>
+<!-- Instant Communication WhatsApp Button -->
+<button class="w-full h-11 bg-surface-container hover:bg-surface-container-high text-on-surface rounded-lg font-body-md text-body-md font-semibold flex items-center justify-center gap-space-xs transition-colors" id="btnWhatsappShare" onclick="sendWhatsAppSummary()">
+<span class="material-symbols-outlined text-primary-container text-xl">share</span>
+<span>Enviar Resumen de Saldo por WhatsApp</span>
+</button>
+<!-- Fast In-Store Cash/Digital Settlement Form -->
+<div class="flex flex-col gap-space-sm pt-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-label-caps text-label-caps uppercase tracking-wider text-secondary font-bold">Registrar Cobro de Fiado</span>
+<span class="text-xs text-secondary">Turno Mañana #01</span>
+</div>
+<!-- Payment Amount Input Field -->
+<div class="flex flex-col gap-1">
+<label class="text-xs font-medium text-on-surface-variant">Monto a pagar</label>
+<div class="relative">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 font-data-mono-md text-data-mono-md font-bold text-secondary">$</span>
+<input class="w-full h-12 pl-8 pr-20 rounded-lg bg-surface-container-lowest text-on-surface font-data-mono-lg text-data-mono-md font-bold focus:outline-none focus:bg-surface-container-low shadow-sm transition-all" id="inputPaymentAmount" type="text" value="18.450,00"/>
+<button class="absolute right-2 top-1/2 -translate-y-1/2 px-2 py-1 rounded bg-surface-container text-xs font-semibold text-on-surface hover:bg-surface-container-high transition-colors" onclick="setFullPayment()">
+                  Total
+                </button>
+</div>
+</div>
+<!-- Payment Method Radio Toggle Buttons -->
+<div class="grid grid-cols-3 gap-space-xs">
+<label class="cursor-pointer">
+<input checked="" class="peer sr-only" name="payMethod" type="radio" value="efectivo"/>
+<div class="h-10 rounded-lg bg-surface-container-low peer-checked:bg-primary-container peer-checked:text-on-primary-container text-secondary flex items-center justify-center gap-1 font-body-sm text-body-sm font-semibold transition-all">
+<span class="material-symbols-outlined text-base">payments</span>
+<span>Efectivo</span>
+</div>
+</label>
+<label class="cursor-pointer">
+<input class="peer sr-only" name="payMethod" type="radio" value="transferencia"/>
+<div class="h-10 rounded-lg bg-surface-container-low peer-checked:bg-primary-container peer-checked:text-on-primary-container text-secondary flex items-center justify-center gap-1 font-body-sm text-body-sm font-semibold transition-all">
+<span class="material-symbols-outlined text-base">account_balance</span>
+<span>Transf.</span>
+</div>
+</label>
+<label class="cursor-pointer">
+<input class="peer sr-only" name="payMethod" type="radio" value="posnet"/>
+<div class="h-10 rounded-lg bg-surface-container-low peer-checked:bg-primary-container peer-checked:text-on-primary-container text-secondary flex items-center justify-center gap-1 font-body-sm text-body-sm font-semibold transition-all">
+<span class="material-symbols-outlined text-base">credit_card</span>
+<span>Débito</span>
+</div>
+</label>
+</div>
+<!-- Operator Notes Field -->
+<div class="flex flex-col gap-1">
+<input class="w-full h-9 px-3 rounded-lg bg-surface-container-low text-xs text-on-surface placeholder:text-outline focus:outline-none" id="inputPaymentNote" placeholder="Observación opcional (ej: Dejó seña en billetes)" type="text"/>
+</div>
+<!-- Action Button Confirm Payment -->
+<button class="w-full h-12 rounded-lg bg-primary-container hover:bg-primary text-on-primary-container hover:text-on-primary font-body-md text-body-md font-semibold flex items-center justify-center gap-2 shadow-sm transition-all mt-1" id="btnConfirmPayment" onclick="executePayment()">
+<span class="material-symbols-outlined text-xl">check_circle</span>
+<span>Confirmar Ingreso de Pago</span>
+</button>
+<span class="text-[11px] text-secondary text-center">Imprime automáticamente comprobante térmico de cancelación</span>
+</div>
+<!-- Last Transaction Mini Breadcrumb -->
+<div class="pt-space-xs text-xs text-secondary flex items-center justify-between">
+<span>Último movimiento registrado:</span>
+<span class="font-data-mono-sm text-data-mono-sm text-on-surface font-medium" id="sideLastMovement">Hoy 10:24 AM (Ticket #889)</span>
+</div>
+</div>
+<!-- Quick Help & Neighborhood Credit Guidance Box -->
+<div class="bg-surface-container-low rounded-xl p-space-md flex items-start gap-space-sm text-on-surface">
+<span class="material-symbols-outlined text-secondary text-xl shrink-0 mt-0.5">info</span>
+<div class="flex flex-col gap-0.5">
+<span class="font-body-sm text-body-sm font-semibold">Política de Fiado Barrial</span>
+<p class="font-body-sm text-body-sm text-secondary leading-snug">
+              Al superar el 80% del límite de crédito otorgado, el sistema solicitará autorización con clave de encargado en la pantalla de cobro rápido de caja.
+            </p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Notification Toast Container -->
+<div class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none" id="toastNotification">
+<div class="bg-inverse-surface text-inverse-on-surface px-space-md py- space-sm rounded-xl shadow-xl flex items-center gap-space-sm min-w-[320px]">
+<span class="material-symbols-outlined text-primary-fixed-dim text-2xl" id="toastIcon">check_circle</span>
+<div class="flex flex-col">
+<span class="font-body-sm text-body-sm font-semibold" id="toastTitle">Operación exitosa</span>
+<span class="font-body-sm text-body-sm text-surface-variant" id="toastMessage">Pago registrado en caja #01</span>
+</div>
+</div>
+</div>
+<!-- Modal: Crear Nuevo Cliente (Hidden by default) -->
+<div class="fixed inset-0 z-50 bg-inverse-surface/40 backdrop-blur-sm hidden items-center justify-center p-space-md" id="newCustomerModal">
+<div class="bg-surface-container-lowest rounded-xl max-w-lg w-full p-space-lg shadow-xl flex flex-col gap-space-md relative">
+<div class="flex items-center justify-between pb-space-xs">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-2xl">person_add</span>
+<h3 class="font-headline-md text-headline-md font-bold text-on-surface">Alta de Cuenta Corriente</h3>
+</div>
+<button class="p-1 rounded-lg text-secondary hover:bg-surface-container" onclick="closeNewCustomerModal()">
+<span class="material-symbols-outlined text-xl">close</span>
+</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-sm">
+<div class="flex flex-col gap-1 md:col-span-2">
+<label class="text-xs font-semibold text-secondary uppercase font-label-caps">Nombre Completo o Razón Social *</label>
+<input class="h-11 px-3 rounded-lg bg-surface-container-low text-body-md focus:outline-none focus:bg-surface-container-lowest shadow-xs" id="modalName" placeholder="Ej: Marcela Benítez" type="text"/>
+</div>
+<div class="flex flex-col gap-1">
+<label class="text-xs font-semibold text-secondary uppercase font-label-caps">DNI / CUIL *</label>
+<input class="h-11 px-3 rounded-lg bg-surface-container-low text-body-md font-data-mono-md focus:outline-none focus:bg-surface-container-lowest shadow-xs" id="modalDni" placeholder="Ej: 30.123.456" type="text"/>
+</div>
+<div class="flex flex-col gap-1">
+<label class="text-xs font-semibold text-secondary uppercase font-label-caps">Teléfono / WhatsApp *</label>
+<input class="h-11 px-3 rounded-lg bg-surface-container-low text-body-md font-data-mono-md focus:outline-none focus:bg-surface-container-lowest shadow-xs" id="modalPhone" placeholder="+54 9 11 ..." type="text"/>
+</div>
+<div class="flex flex-col gap-1 md:col-span-2">
+<label class="text-xs font-semibold text-secondary uppercase font-label-caps">Límite de Fiado Máximo ($) *</label>
+<input class="h-11 px-3 rounded-lg bg-surface-container-low text-body-md font-data-mono-md focus:outline-none focus:bg-surface-container-lowest shadow-xs" id="modalLimit" type="number" value="40000"/>
+<span class="text-[11px] text-secondary">Monto tope de compras sin liquidación en caja</span>
+</div>
+<div class="flex flex-col gap-1 md:col-span-2">
+<label class="text-xs font-semibold text-secondary uppercase font-label-caps">Domicilio / Referencia Vecinal</label>
+<input class="h-11 px-3 rounded-lg bg-surface-container-low text-body-md focus:outline-none focus:bg-surface-container-lowest shadow-xs" id="modalAddress" placeholder="Ej: Rivadavia 4610 - 2do B (Vecino histórico)" type="text"/>
+</div>
+</div>
+<div class="flex items-center justify-end gap-space-sm pt-space-xs mt- space-xs">
+<button class="px-space-md h-11 rounded-lg text-secondary hover:bg-surface-container font-body-md font-medium transition-colors" onclick="closeNewCustomerModal()">
+          Cancelar
+        </button>
+<button class="px-space-md h-11 rounded-lg bg-primary-container hover:bg-primary text-on-primary-container hover:text-on-primary font-body-md font-semibold transition-colors flex items-center gap-1.5 shadow-sm" onclick="saveNewCustomer()">
+<span class="material-symbols-outlined text-lg">check</span>
+<span>Guardar Cliente</span>
+</button>
+</div>
+</div>
+</div>
+<script>
+    let activeCustomer = {
+      name: 'Roberto Díaz',
+      doc: 'DNI 28.452.190',
+      phone: '+54 9 11 4521-8899',
+      limit: 50000,
+      debt: 18450,
+      last: 'Hoy 10:24 AM (Ticket #889)'
+    };
+
+    function selectCustomer(name, doc, phone, limit, debt, last) {
+      activeCustomer = { name, doc, phone, limit, debt, last };
+
+      // Update right panel
+      const initials = name.split(' ').map(n => n[0]).slice(0, 2).join('').toUpperCase();
+      document.getElementById('sideClientAvatar').textContent = initials;
+      document.getElementById('sideClientName').textContent = name;
+      document.getElementById('sideClientDoc').textContent = doc;
+      
+      const available = Math.max(0, limit - debt);
+      const percent = limit > 0 ? ((debt / limit) * 100).toFixed(1) : 0;
+
+      document.getElementById('sideCreditLimit').textContent = '$ ' + limit.toLocaleString('es-AR', {minimumFractionDigits: 2});
+      document.getElementById('sideCreditAvailable').textContent = '$ ' + available.toLocaleString('es-AR', {minimumFractionDigits: 2});
+      document.getElementById('sideTotalDebt').textContent = '$ ' + debt.toLocaleString('es-AR', {minimumFractionDigits: 2});
+      document.getElementById('inputPaymentAmount').value = debt > 0 ? debt.toLocaleString('es-AR', {minimumFractionDigits: 2}) : '0,00';
+      document.getElementById('sideLastMovement').textContent = last;
+
+      const pBar = document.getElementById('sideProgressBar');
+      const pLabel = document.getElementById('sidePercentLabel');
+      pBar.style.width = Math.min(100, percent) + '%';
+      pLabel.textContent = percent + '% consumido';
+
+      const badge = document.getElementById('sideBadgeDeudor');
+      if (debt === 0) {
+        badge.className = 'inline-flex items-center px-2 py-0.5 rounded text-xs font-bold bg-primary-fixed text-on-primary-fixed';
+        badge.textContent = 'Al Día';
+        pBar.className = 'h-full bg-primary transition-all duration-300';
+        pLabel.className = 'font-data-mono-sm text-data-mono-sm font-bold text-primary';
+      } else {
+        badge.className = 'inline-flex items-center px-2 py-0.5 rounded text-xs font-bold bg-error-container text-on-error-container';
+        badge.textContent = 'Fiado Activo';
+        pBar.className = 'h-full bg-error transition-all duration-300';
+        pLabel.className = 'font-data-mono-sm text-data-mono-sm font-bold text-error';
+      }
+
+      // Visual highlight on table rows
+      document.querySelectorAll('.customer-row').forEach(row => {
+        row.classList.remove('bg-surface-container/60');
+      });
+      event.currentTarget.classList.add('bg-surface-container/60');
+    }
+
+    function setFullPayment() {
+      document.getElementById('inputPaymentAmount').value = activeCustomer.debt.toLocaleString('es-AR', {minimumFractionDigits: 2});
+    }
+
+    function triggerPaymentModal(name, debt) {
+      document.getElementById('sideClientName').textContent = name;
+      document.getElementById('inputPaymentAmount').value = debt.toLocaleString('es-AR', {minimumFractionDigits: 2});
+      document.getElementById('inputPaymentAmount').focus();
+      showToast('Listo para cobro', 'Ingrese el monto y método de pago en el panel lateral');
+    }
+
+    function executePayment() {
+      const amountVal = document.getElementById('inputPaymentAmount').value.replace('.', '').replace(',', '.');
+      const amount = parseFloat(amountVal) || 0;
+      if (amount <= 0) {
+        showToast('Atención', 'Ingrese un importe válido a imputar', 'warning');
+        return;
+      }
+
+      showToast('Cobro Procesado', `Se registraron $ ${amount.toLocaleString('es-AR', {minimumFractionDigits: 2})} a la cuenta de ${activeCustomer.name}`);
+      
+      // Update local view balance
+      activeCustomer.debt = Math.max(0, activeCustomer.debt - amount);
+      selectCustomer(activeCustomer.name, activeCustomer.doc, activeCustomer.phone, activeCustomer.limit, activeCustomer.debt, 'Recién (Cobro Caja #01)');
+    }
+
+    function sendWhatsAppSummary() {
+      const msg = encodeURIComponent(`Hola ${activeCustomer.name}, te compartimos el resumen de tu cuenta en Mercado Control: Saldo pendiente: $ ${activeCustomer.debt.toLocaleString('es-AR', {minimumFractionDigits: 2})}. ¡Muchas gracias!`);
+      const cleanPhone = activeCustomer.phone.replace(/[^0-9]/g, '');
+      window.open(`https://wa.me/${cleanPhone}?text=${msg}`, '_blank');
+      showToast('WhatsApp Abierto', 'Se generó el enlace del resumen de cuenta');
+    }
+
+    function setFilter(type, btn) {
+      document.querySelectorAll('.filter-tab').forEach(b => {
+        b.className = 'filter-tab px-space-sm py-1.5 rounded-lg text-body-sm font-body-sm font-medium text-secondary hover:text-on-surface transition-colors whitespace-nowrap';
+      });
+      btn.className = 'filter-tab px-space-sm py-1.5 rounded-lg text-body-sm font-body-sm font-semibold bg-surface-container-lowest text-on-surface shadow-xs transition-colors whitespace-nowrap flex items-center gap-1.5';
+
+      const rows = document.querySelectorAll('#clientsTableBody tr');
+      rows.forEach(row => {
+        const isDeudor = row.textContent.includes('Deudor') || row.textContent.includes('Alerta');
+        if (type === 'todos') {
+          row.style.display = '';
+        } else if (type === 'deudores') {
+          row.style.display = isDeudor ? '' : 'none';
+        } else if (type === 'aldia') {
+          row.style.display = !isDeudor ? '' : 'none';
+        }
+      });
+    }
+
+    function showToast(title, message, iconType = 'check_circle') {
+      const toast = document.getElementById('toastNotification');
+      document.getElementById('toastTitle').textContent = title;
+      document.getElementById('toastMessage').textContent = message;
+      document.getElementById('toastIcon').textContent = iconType;
+      
+      toast.classList.remove('translate-y-20', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+
+      setTimeout(() => {
+        toast.classList.remove('translate-y-0', 'opacity-100');
+        toast.classList.add('translate-y-20', 'opacity-0');
+      }, 3500);
+    }
+
+    function openNewCustomerModal() {
+      document.getElementById('newCustomerModal').classList.remove('hidden');
+      document.getElementById('newCustomerModal').classList.add('flex');
+      document.getElementById('modalName').focus();
+    }
+
+    function closeNewCustomerModal() {
+      document.getElementById('newCustomerModal').classList.add('hidden');
+      document.getElementById('newCustomerModal').classList.remove('flex');
+    }
+
+    function saveNewCustomer() {
+      const name = document.getElementById('modalName').value;
+      if (!name) {
+        showToast('Faltan datos', 'El nombre es requerido', 'error');
+        return;
+      }
+      closeNewCustomerModal();
+      showToast('Cliente Registrado', `Se habilitó la cuenta corriente para ${name}`);
+    }
+
+    function viewHistory(client) {
+      showToast('Historial Solicitado', `Descargando comprobantes y compras fiadas de ${client}`);
+    }
+
+    function editCustomer(client) {
+      showToast('Edición de Cliente', `Abriendo ficha técnica de ${client}`);
+    }
+
+    // Search filter live event
+    document.getElementById('customerSearch').addEventListener('input', function(e) {
+      const q = e.target.value.toLowerCase();
+      document.querySelectorAll('#clientsTableBody tr').forEach(row => {
+        row.style.display = row.innerText.toLowerCase().includes(q) ? '' : 'none';
+      });
+    });
+
+    document.getElementById('btn-export-debtors').addEventListener('click', function() {
+      showToast('Exportación Lista', 'Generando listado consolidado de saldos pendientes en PDF');
+    });
+  </script>
+</div></main></div></body></html>
