@@ -41,12 +41,15 @@ export const Modal: React.FC<ModalProps> = ({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-150">
       <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modal-title"
         className={`w-full ${maxWidthClass} bg-surface-container-lowest rounded-xl shadow-2xl border border-slate-200 overflow-hidden flex flex-col max-h-[90vh]`}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200 bg-surface-container-low/50">
           <div>
-            <h3 className="font-semibold text-lg text-on-surface">{title}</h3>
+            <h3 id="modal-title" className="font-semibold text-lg text-on-surface">{title}</h3>
             {subtitle && (
               <p className="text-xs text-outline mt-0.5">{subtitle}</p>
             )}

@@ -28,12 +28,12 @@
 
 ## Fase 2: Primitivas de Formulario, Modal y Barrel Público
 
-- [ ] **[T-04] Primitivas de Formulario con `ComponentPropsWithRef`: `Input.tsx` y `Select.tsx`**
+- [x] **[T-04] Primitivas de Formulario con `ComponentPropsWithRef`: `Input.tsx` y `Select.tsx`**
   - **Archivos a crear:** `src/components/ui/Input.tsx`, `src/components/ui/Select.tsx`
   - **Descripción:** Implementar `Input.tsx` con soporte `React.ComponentPropsWithRef<'input'>`, `label`, `error`, `helperText`, `leftIcon`, `rightElement` y pasaje directo del `ref` para campos no controlados. Implementar `Select.tsx` con `React.ComponentPropsWithRef<'select'>`, `label`, `error`, `helperText`, y soporte tanto para prop `options` como para `children` nativos.
   - **Hecho cuando:** Ambos controles compilan en TypeScript estricto, gestionan los estados de foco/error con tokens y permiten el control nativo vía `ref`.
 
-- [ ] **[T-05] Adecuación Accesible de `Modal.tsx` y Barrel Público `index.ts`**
+- [x] **[T-05] Adecuación Accesible de `Modal.tsx` y Barrel Público `index.ts`**
   - **Archivos a modificar/crear:** `src/components/ui/Modal.tsx`, `src/components/ui/index.ts`
   - **Descripción:** Actualizar `Modal.tsx` incorporando `role="dialog"` y `aria-modal="true"` en su contenedor principal para sincronización con accesibilidad y `usePosScannerFocus`. Crear `src/components/ui/index.ts` exportando todas las primitivas y sus tipos correspondientes (`Button`, `Badge`, `Input`, `Select`, `AlertBanner`, `Card`, `EmptyState`, `Modal`).
   - **Hecho cuando:** `src/components/ui/index.ts` exporta la totalidad del catálogo y `pnpm run typecheck` compila con 0 errores.
