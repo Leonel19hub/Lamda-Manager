@@ -1,4 +1,4 @@
-export { PosView } from './components/PosView'
+export * from './components'
 export * from './domain/calculations'
 export * from './domain/validators'
 export * from './application/checkoutService'

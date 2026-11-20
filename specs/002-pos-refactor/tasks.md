@@ -41,17 +41,17 @@
 
 ## Fase 3: Descomposición de Interfaz y Optimización de Rendimiento
 
-- [ ] **[T-06] Subcomponentes del Catálogo y Escáner: `PosHardwareBar`, `ProductCard` y `ProductCatalogPanel`**
+- [x] **[T-06] Subcomponentes del Catálogo y Escáner: `PosHardwareBar`, `ProductCard` y `ProductCatalogPanel`**
   - **Archivos a crear:** `src/features/pos/components/PosHardwareBar.tsx`, `src/features/pos/components/ProductCard.tsx`, `src/features/pos/components/ProductCatalogPanel.tsx`
   - **Descripción:** Construir la barra de hardware con input no controlado para el escáner y balanza; la tarjeta de producto envuelta en `React.memo`; y el panel de catálogo con filtrado memoizado por categoría (`null` = todas) y texto de búsqueda.
   - **Hecho cuando:** Los 3 subcomponentes compilan limpiamente y responden fluidamente sin re-renderizar componentes externos.
 
-- [ ] **[T-07] Subcomponentes del Carrito y Cobro: `CartItemRow`, `CartTicketPanel` y `CheckoutPanel`**
+- [x] **[T-07] Subcomponentes del Carrito y Cobro: `CartItemRow`, `CartTicketPanel` y `CheckoutPanel`**
   - **Archivos a crear:** `src/features/pos/components/CartItemRow.tsx`, `src/features/pos/components/CartTicketPanel.tsx`, `src/features/pos/components/CheckoutPanel.tsx`
   - **Descripción:** Construir la fila de ítem del carrito con `React.memo`; el panel del ticket con cabecera de cliente y totales; y el panel de cobro con selector de medios de pago, formulario de pago mixto y cálculo de vuelto en efectivo con redondeo a $10.
   - **Hecho cuando:** Los subcomponentes se suscriben atómicamente a `usePosStore` y compilan sin errores en `pnpm run typecheck`.
 
-- [ ] **[T-08] Modales y Ensamblado de `PosView.tsx` (~120 líneas)**
+- [x] **[T-08] Modales y Ensamblado de `PosView.tsx` (~120 líneas)**
   - **Archivos a crear/modificar:** `src/features/pos/components/WeighProductModal.tsx`, `src/features/pos/components/CustomerSelectModal.tsx`, `src/features/pos/components/PosView.tsx`
   - **Descripción:** Extraer los modales de pesaje y de selección de cliente. Reemplazar el archivo monolítico `PosView.tsx` (1.040 líneas) por un contenedor de layout limpio de ~120 líneas que conecta los hooks y orquesta los subcomponentes.
   - **Hecho cuando:** `PosView.tsx` no supera las 150 líneas, no realiza mutaciones directas `setState` en stores ajenos y pasa `pnpm run typecheck`.

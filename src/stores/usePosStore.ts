@@ -16,7 +16,7 @@ import {
   calculateItemSubtotal,
   calculateCartSubtotal,
   calculateLegalRounding,
-  calculateCartTotal,
+  calculateCheckoutTotal,
   calculateChange,
   mergeOrAddItem,
   validateSaleEligibility,
@@ -310,9 +310,15 @@ export const usePosStore = create<PosState>()(
 
       // Delegated to pure calculations
       subtotal: () => calculateCartSubtotal(get().items),
-      rounding: () => calculateLegalRounding(calculateCartSubtotal(get().items)),
-      total: () => calculateCartTotal(calculateCartSubtotal(get().items)),
-      change: () => calculateChange(calculateCartTotal(calculateCartSubtotal(get().items)), get().amountPaid),
+      rounding: () => {
+        const sub = calculateCartSubtotal(get().items)
+        return get().paymentMethod === 'efectivo' ? calculateLegalRounding(sub) : 0
+      },
+      total: () => calculateCheckoutTotal(calculateCartSubtotal(get().items), get().paymentMethod),
+      change: () => {
+        const tot = calculateCheckoutTotal(calculateCartSubtotal(get().items), get().paymentMethod)
+        return calculateChange(tot, get().amountPaid)
+      },
       itemCount: () => get().items.length,
     }),
     {
