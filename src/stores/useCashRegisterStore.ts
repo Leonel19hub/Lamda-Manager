@@ -1,10 +1,11 @@
 import { create } from 'zustand'
 import { persist, createJSONStorage, type StateStorage } from 'zustand/middleware'
-import type { CashRegister, CashMovement } from '@/types'
+import type { CashRegister, CashMovement, Sale } from '@/types'
 import {
   calculateTotalCounted,
   calculateCashDifference,
   calculateMovementDelta,
+  applySaleToRegister,
   type BillItem,
 } from '@/features/cash-register'
 import { useAppStore } from '@/stores/useAppStore'
@@ -21,6 +22,8 @@ interface CashRegisterState {
   openRegister: (register: CashRegister) => void
   closeRegister: (actualCash: number, notes?: string) => void
   addMovement: (movement: CashMovement) => void
+  recordSale: (sale: Sale) => void
+  revertRegister: (previousRegister: CashRegister | null) => void
   setBillCount: (denomination: number, count: number) => void
   resetBillCounts: () => void
   totalCounted: () => number
@@ -155,6 +158,22 @@ export const useCashRegisterStore = create<CashRegisterState>()(
             movements: [movement, ...s.movements],
             currentRegister: updatedRegister,
           }
+        }),
+
+      recordSale: (sale) =>
+        set((s) => {
+          if (!s.currentRegister || !s.currentRegister.isOpen) return s
+          const updated = applySaleToRegister(s.currentRegister, sale)
+          useAppStore.getState().setCashRegister(updated)
+          return { currentRegister: updated }
+        }),
+
+      revertRegister: (previousRegister) =>
+        set(() => {
+          if (previousRegister) {
+            useAppStore.getState().setCashRegister(previousRegister)
+          }
+          return { currentRegister: previousRegister }
         }),
 
       setBillCount: (denomination, count) =>

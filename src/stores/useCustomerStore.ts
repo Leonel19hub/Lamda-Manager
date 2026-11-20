@@ -37,6 +37,7 @@ interface CustomerState {
     ticketNumber: string,
     notes?: string
   ) => void
+  restoreCustomer: (previousCustomer: Customer) => void
   setSelectedCustomerId: (id: string | null) => void
   getCustomerById: (id: string) => Customer | undefined
   getCustomerMovements: (customerId: string) => CustomerAccountMovement[]
@@ -301,6 +302,13 @@ export const useCustomerStore = create<CustomerState>()(
           }
         })
       },
+
+      restoreCustomer: (previousCustomer) =>
+        set((s) => ({
+          customers: s.customers.map((c) =>
+            c.id === previousCustomer.id ? { ...previousCustomer } : c
+          ),
+        })),
 
       setSelectedCustomerId: (id) => set({ selectedCustomerId: id }),
 

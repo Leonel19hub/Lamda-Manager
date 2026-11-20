@@ -6,7 +6,9 @@ import {
   calculateMovementDelta,
   validateShiftOpening,
   validateCashMovement,
+  applySaleToRegister,
 } from './cashCalculations'
+import type { CashRegister, Sale, PaymentMethod } from '@/types'
 
 describe('cash-register/domain/cashCalculations', () => {
   describe('calculateBillSubtotal', () => {
@@ -262,6 +264,127 @@ describe('cash-register/domain/cashCalculations', () => {
       if (!retiroFail.success) {
         expect(retiroFail.error.code).toBe('INSUFFICIENT_FUNDS')
       }
+    })
+  })
+
+  describe('applySaleToRegister', () => {
+    const baseRegister: CashRegister = {
+      id: 'reg-01',
+      registerNumber: 'Caja 1',
+      branchId: 'branch-01',
+      openedBy: 'user-01',
+      openingAmount: 10000,
+      expectedCash: 10000,
+      totalCard: 0,
+      totalTransfer: 0,
+      totalAccount: 0,
+      openedAt: '2026-03-01T08:00:00Z',
+      isOpen: true,
+    }
+
+    const createSale = (overrides: Partial<Sale> = {}): Sale => ({
+      id: 'sale-01',
+      ticketNumber: '0001-00000001',
+      registerId: 'reg-01',
+      subtotal: 1500,
+      total: 1500,
+      paymentMethod: 'efectivo',
+      createdAt: '2026-03-01T10:00:00Z',
+      ...overrides,
+    })
+
+    it('accumulates cash sales into expectedCash and preserves inmutability', () => {
+      const sale = createSale({ total: 1500, paymentMethod: 'efectivo' })
+      const updated = applySaleToRegister(baseRegister, sale)
+
+      expect(updated.expectedCash).toBe(11500)
+      expect(updated.totalCard).toBe(0)
+      expect(updated.totalTransfer).toBe(0)
+      expect(updated.totalAccount).toBe(0)
+      // Pure function: original register unmodified
+      expect(baseRegister.expectedCash).toBe(10000)
+    })
+
+    it('accumulates debit and credit card sales into totalCard', () => {
+      const debitSale = createSale({ total: 2500.5, paymentMethod: 'debito' })
+      const regAfterDebit = applySaleToRegister(baseRegister, debitSale)
+      expect(regAfterDebit.totalCard).toBe(2500.5)
+      expect(regAfterDebit.expectedCash).toBe(10000)
+
+      const creditSale = createSale({ total: 3200, paymentMethod: 'credito' })
+      const regAfterCredit = applySaleToRegister(regAfterDebit, creditSale)
+      expect(regAfterCredit.totalCard).toBe(5700.5)
+    })
+
+    it('accumulates QR and bank transfer sales into totalTransfer', () => {
+      const qrSale = createSale({ total: 4200.75, paymentMethod: 'transferencia_qr' })
+      const updated = applySaleToRegister(baseRegister, qrSale)
+      expect(updated.totalTransfer).toBe(4200.75)
+      expect(updated.expectedCash).toBe(10000)
+    })
+
+    it('accumulates on-account (fiado) sales into totalAccount', () => {
+      const accountSale = createSale({ total: 6000, paymentMethod: 'cuenta_corriente' })
+      const updated = applySaleToRegister(baseRegister, accountSale)
+      expect(updated.totalAccount).toBe(6000)
+      expect(updated.expectedCash).toBe(10000)
+    })
+
+    it('correctly allocates each split payment in a mixed payment', () => {
+      const mixedSale = createSale({
+        total: 10000,
+        paymentMethod: 'mixto',
+        splitPayments: [
+          { id: 'sp-1', method: 'efectivo', amount: 3000 },
+          { id: 'sp-2', method: 'debito', amount: 2500 },
+          { id: 'sp-3', method: 'transferencia_qr', amount: 2000 },
+          { id: 'sp-4', method: 'cuenta_corriente', amount: 2500 },
+        ],
+      })
+
+      const updated = applySaleToRegister(baseRegister, mixedSale)
+      expect(updated.expectedCash).toBe(13000)
+      expect(updated.totalCard).toBe(2500)
+      expect(updated.totalTransfer).toBe(2000)
+      expect(updated.totalAccount).toBe(2500)
+    })
+
+    it('handles decimal precision and rounding to 2 decimals accurately', () => {
+      const sale1 = createSale({ total: 0.1, paymentMethod: 'efectivo' })
+      const sale2 = createSale({ total: 0.2, paymentMethod: 'efectivo' })
+      const reg1 = applySaleToRegister(baseRegister, sale1)
+      const reg2 = applySaleToRegister(reg1, sale2)
+      expect(reg2.expectedCash).toBe(10000.3)
+    })
+
+    it('returns unmodified register if sale total is zero or negative', () => {
+      const zeroSale = createSale({ total: 0, paymentMethod: 'efectivo' })
+      const updatedZero = applySaleToRegister(baseRegister, zeroSale)
+      expect(updatedZero).toEqual(baseRegister)
+
+      const negativeSale = createSale({ total: -500, paymentMethod: 'efectivo' })
+      const updatedNeg = applySaleToRegister(baseRegister, negativeSale)
+      expect(updatedNeg).toEqual(baseRegister)
+    })
+
+    it('handles mixed payment with missing, empty, or invalid splitPayments without throwing', () => {
+      const brokenMixed = createSale({ total: 5000, paymentMethod: 'mixto', splitPayments: [] })
+      const updated = applySaleToRegister(baseRegister, brokenMixed)
+      expect(updated).toEqual(baseRegister)
+
+      const invalidAmounts = createSale({
+        total: 5000,
+        paymentMethod: 'mixto',
+        splitPayments: [
+          { id: 'sp-invalid-1', method: 'efectivo', amount: -500 },
+          { id: 'sp-invalid-2', method: 'efectivo', amount: NaN },
+          { id: 'sp-invalid-3', method: 'credito', amount: 3000 },
+          { id: 'sp-invalid-4', method: 'other' as unknown as PaymentMethod, amount: 2000 }, // unhandled method
+        ],
+      })
+      const regInvalid = applySaleToRegister(baseRegister, invalidAmounts)
+      expect(regInvalid.totalCard).toBe(3000)
+      expect(regInvalid.expectedCash).toBe(10000)
     })
   })
 })

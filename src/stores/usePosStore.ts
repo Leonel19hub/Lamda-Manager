@@ -59,6 +59,7 @@ interface PosState {
   setAmountPaid: (amount: number) => void
   setSearchQuery: (query: string) => void
   setSelectedCategory: (categoryId: string | null) => void
+  commitSale: (sale: Sale) => void
   checkoutTicket: (ctx: CheckoutContext) => Result<Sale, ValidationError>
 
   // Delegated queries
@@ -204,6 +205,19 @@ export const usePosStore = create<PosState>()(
       setAmountPaid: (amount) => set({ amountPaid: amount }),
       setSearchQuery: (query) => set({ searchQuery: query }),
       setSelectedCategory: (categoryId) => set({ selectedCategory: categoryId }),
+
+      commitSale: (sale) => {
+        ticketCounter++
+        set((s) => ({
+          recentSales: [sale, ...s.recentSales].slice(0, 50),
+          items: [],
+          selectedCustomer: null,
+          paymentMethod: 'efectivo',
+          splitPayments: [],
+          amountPaid: 0,
+          ticketNumber: `0001-${String(ticketCounter).padStart(8, '0')}`,
+        }))
+      },
 
       checkoutTicket: (ctx) => {
         const state = get()

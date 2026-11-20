@@ -15,12 +15,7 @@ export type PaymentMethod =
   | 'credito'
   | 'transferencia_qr'
   | 'mixto'
-  | 'cuenta_corriente'
-  // Backward compatibility aliases
-  | 'cash'
-  | 'card'
-  | 'transfer_qr'
-  | 'account';
+  | 'cuenta_corriente';
 export type TransferStatus = 'pending' | 'in_transit' | 'received' | 'cancelled';
 export type CashMovementType =
   | 'apertura'

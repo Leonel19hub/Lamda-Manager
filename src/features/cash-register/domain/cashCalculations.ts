@@ -1,4 +1,4 @@
-import type { CashMovementType, Result, ValidationError } from '@/types'
+import type { CashMovementType, Result, ValidationError, CashRegister, Sale } from '@/types'
 import { ok, fail } from '@/types'
 
 export interface BillItem {
@@ -150,4 +150,56 @@ export function validateCashMovement(input: CashMovementInput): Result<true, Val
   }
 
   return ok(true)
+}
+
+/**
+ * Applies a finalized sale to a cash register drawer accumulators.
+ * Pure, deterministic, side-effect free and rounds to 2 decimals.
+ */
+export function applySaleToRegister(
+  register: Readonly<CashRegister>,
+  sale: Readonly<Sale>
+): CashRegister {
+  if (isNaN(sale.total) || !isFinite(sale.total) || sale.total <= 0) {
+    return { ...register }
+  }
+
+  let newExpectedCash = register.expectedCash
+  let newTotalCard = register.totalCard
+  let newTotalTransfer = register.totalTransfer
+  let newTotalAccount = register.totalAccount
+
+  const round2 = (val: number) => Math.round(val * 100) / 100
+
+  if (sale.paymentMethod === 'efectivo') {
+    newExpectedCash = round2(newExpectedCash + sale.total)
+  } else if (sale.paymentMethod === 'debito' || sale.paymentMethod === 'credito') {
+    newTotalCard = round2(newTotalCard + sale.total)
+  } else if (sale.paymentMethod === 'transferencia_qr') {
+    newTotalTransfer = round2(newTotalTransfer + sale.total)
+  } else if (sale.paymentMethod === 'cuenta_corriente') {
+    newTotalAccount = round2(newTotalAccount + sale.total)
+  } else if (sale.paymentMethod === 'mixto' && sale.splitPayments && sale.splitPayments.length > 0) {
+    sale.splitPayments.forEach((p) => {
+      if (isNaN(p.amount) || !isFinite(p.amount) || p.amount <= 0) return
+      const amount = p.amount
+      if (p.method === 'efectivo') {
+        newExpectedCash = round2(newExpectedCash + amount)
+      } else if (p.method === 'debito' || p.method === 'credito') {
+        newTotalCard = round2(newTotalCard + amount)
+      } else if (p.method === 'transferencia_qr') {
+        newTotalTransfer = round2(newTotalTransfer + amount)
+      } else if (p.method === 'cuenta_corriente') {
+        newTotalAccount = round2(newTotalAccount + amount)
+      }
+    })
+  }
+
+  return {
+    ...register,
+    expectedCash: newExpectedCash,
+    totalCard: newTotalCard,
+    totalTransfer: newTotalTransfer,
+    totalAccount: newTotalAccount,
+  }
 }

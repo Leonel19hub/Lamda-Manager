@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import { persist, createJSONStorage, type StateStorage } from 'zustand/middleware'
-import type { Product, WasteLog, InventoryTransfer, Result, ValidationError } from '@/types'
-import { mockProducts, mockWasteLogs, mockTransfers } from '@/mock/mockData'
+import type { Product, Category, WasteLog, InventoryTransfer, Result, ValidationError } from '@/types'
+import { mockProducts, mockCategories, mockWasteLogs, mockTransfers } from '@/mock/mockData'
 import {
   deductStock,
   addStock,
@@ -12,6 +12,7 @@ import { safeStorage } from '@/lib/storage'
 
 interface InventoryState {
   products: Product[]
+  categories: Category[]
   wasteLogs: WasteLog[]
   transfers: InventoryTransfer[]
 
@@ -22,6 +23,8 @@ interface InventoryState {
   // Stock operations
   deductProductStock: (productId: string, quantity: number, branchId?: string) => Result<number, ValidationError>
   addProductStock: (productId: string, quantity: number, branchId?: string) => Result<number, ValidationError>
+  restoreProductStock: (productId: string, previousStock: number, branchId?: string) => void
+  restoreProducts: (previousProducts: Product[]) => void
 
   // Waste (Mermas)
   recordWaste: (params: {
@@ -63,6 +66,7 @@ export const useInventoryStore = create<InventoryState>()(
   persist(
     (set, get) => ({
       products: mockProducts,
+      categories: mockCategories.filter((c) => c.id !== 'cat-01'),
       wasteLogs: mockWasteLogs,
       transfers: mockTransfers,
 
@@ -221,6 +225,30 @@ export const useInventoryStore = create<InventoryState>()(
         }))
 
         return { success: true, data: newStock }
+      },
+
+      restoreProductStock: (productId, previousStock) => {
+        const now = new Date().toISOString()
+        set((state) => ({
+          products: state.products.map((p) => {
+            if (p.id === productId && p.stock) {
+              return {
+                ...p,
+                updatedAt: now,
+                stock: {
+                  ...p.stock,
+                  currentStock: previousStock,
+                  updatedAt: now,
+                },
+              }
+            }
+            return p
+          }),
+        }))
+      },
+
+      restoreProducts: (previousProducts) => {
+        set({ products: [...previousProducts] })
       },
 
       recordWaste: (params) => {

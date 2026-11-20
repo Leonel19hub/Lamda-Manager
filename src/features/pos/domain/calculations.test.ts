@@ -7,8 +7,11 @@ import {
   calculateCartTotal,
   calculateChange,
   mergeOrAddItem,
+  createCartItem,
+  calculateSplitDefaults,
+  calculateCheckoutTotal,
 } from './calculations'
-import type { CartItem } from '@/types'
+import type { CartItem, Product } from '@/types'
 
 describe('pos/domain/calculations', () => {
   describe('calculateItemSubtotal', () => {
@@ -226,6 +229,173 @@ describe('pos/domain/calculations', () => {
       expect(step2.length).toBe(2)
       expect(step2[0].quantity).toBe(1.2)
       expect(step2[1].quantity).toBe(0.8)
+    })
+
+    it('merges unit items and preserves already applied discount on the existing line (RF-01.2)', () => {
+      const existingItem: CartItem = {
+        id: 'item-unit-1',
+        productId: 'prod-milk',
+        productName: 'Leche La Serenísima',
+        saleType: 'unit',
+        quantity: 1,
+        unitPrice: 1500,
+        costPrice: 1000,
+        discountPercent: 10,
+        subtotal: 1350, // 1 * 1500 * 0.9
+      }
+
+      const scannedAgain: CartItem = {
+        id: 'item-unit-2',
+        productId: 'prod-milk',
+        productName: 'Leche La Serenísima',
+        saleType: 'unit',
+        quantity: 1,
+        unitPrice: 1500,
+        costPrice: 1000,
+        subtotal: 1500,
+      }
+
+      const merged = mergeOrAddItem([existingItem], scannedAgain)
+      expect(merged.length).toBe(1)
+      expect(merged[0].quantity).toBe(2)
+      expect(merged[0].discountPercent).toBe(10)
+      expect(merged[0].subtotal).toBe(2700) // 2 * 1500 * 0.9 = 2700
+    })
+  })
+
+  describe('createCartItem', () => {
+    const mockProduct: Product = {
+      id: 'prod-01',
+      name: 'Fideos Guiseros',
+      saleType: 'unit',
+      costPrice: 600,
+      sellPrice: 950,
+      marginPct: 36.8,
+      sku: 'SKU-FID-01',
+      barcode: '7791234567890',
+      unitsPerPack: 1,
+      isActive: true,
+      createdAt: '2026-01-01',
+      updatedAt: '2026-01-01',
+    }
+
+    it('creates a unit cart item with correct values and default ID', () => {
+      const item = createCartItem(mockProduct, 2)
+      expect(item.productId).toBe('prod-01')
+      expect(item.productName).toBe('Fideos Guiseros')
+      expect(item.quantity).toBe(2)
+      expect(item.unitPrice).toBe(950)
+      expect(item.subtotal).toBe(1900)
+      expect(item.productSku).toBe('SKU-FID-01')
+      expect(item.id).toMatch(/^item-/)
+    })
+
+    it('creates a weight cart item with gram precision', () => {
+      const weightProduct: Product = {
+        ...mockProduct,
+        id: 'prod-weigh',
+        name: 'Papas Blancas',
+        saleType: 'weight',
+        pluCode: '102',
+        sellPrice: 800,
+      }
+      const item = createCartItem(weightProduct, 1.455)
+      expect(item.saleType).toBe('weight')
+      expect(item.quantity).toBe(1.455)
+      expect(item.subtotal).toBe(1164)
+      expect(item.pluCode).toBe('102')
+    })
+
+    it('applies discount and calculates subtotal accordingly', () => {
+      const item = createCartItem(mockProduct, 3, 10)
+      expect(item.discountPercent).toBe(10)
+      // 3 * 950 = 2850, 10% off = 2565
+      expect(item.subtotal).toBe(2565)
+    })
+
+    it('uses custom idGenerator when provided', () => {
+      const item = createCartItem(mockProduct, 1, 0, () => 'custom-id-123')
+      expect(item.id).toBe('custom-id-123')
+    })
+
+    it('sanitizes negative or NaN quantities to 0', () => {
+      const itemNeg = createCartItem(mockProduct, -5)
+      expect(itemNeg.quantity).toBe(0)
+      expect(itemNeg.subtotal).toBe(0)
+
+      const itemNaN = createCartItem(mockProduct, NaN, NaN)
+      expect(itemNaN.quantity).toBe(0)
+      expect(itemNaN.subtotal).toBe(0)
+    })
+
+    it('falls back to pluCode, barcode or SKU-GEN when product sku is missing', () => {
+      const prodNoSku: Product = {
+        ...mockProduct,
+        sku: undefined,
+        pluCode: 'PLU-123',
+      }
+      expect(createCartItem(prodNoSku, 1).productSku).toBe('PLU-123')
+
+      const prodBarcodeOnly: Product = {
+        ...mockProduct,
+        sku: undefined,
+        pluCode: undefined,
+        barcode: 'BAR-789',
+      }
+      expect(createCartItem(prodBarcodeOnly, 1).productSku).toBe('BAR-789')
+
+      const prodNothing: Product = {
+        ...mockProduct,
+        sku: undefined,
+        pluCode: undefined,
+        barcode: undefined,
+      }
+      expect(createCartItem(prodNothing, 1).productSku).toBe('SKU-GEN')
+    })
+  })
+
+  describe('calculateSplitDefaults', () => {
+    it('splits total into 50% cash and 50% digital', () => {
+      const split1 = calculateSplitDefaults(10000)
+      expect(split1.cash).toBe(5000)
+      expect(split1.digital).toBe(5000)
+      expect(split1.cash + split1.digital).toBe(10000)
+    })
+
+    it('handles odd cents accurately without rounding loss', () => {
+      const split = calculateSplitDefaults(1550.75)
+      expect(split.cash).toBe(775.38)
+      expect(split.digital).toBe(775.37)
+      expect(split.cash + split.digital).toBe(1550.75)
+    })
+
+    it('returns zeroes for zero, negative or NaN totals', () => {
+      expect(calculateSplitDefaults(0)).toEqual({ cash: 0, digital: 0 })
+      expect(calculateSplitDefaults(-500)).toEqual({ cash: 0, digital: 0 })
+      expect(calculateSplitDefaults(NaN)).toEqual({ cash: 0, digital: 0 })
+    })
+  })
+
+  describe('calculateCheckoutTotal', () => {
+    it('rounds to $10 multiples exclusively for cash payments (RF-04.3)', () => {
+      // Multiple of 10 rounding (round to nearest)
+      expect(calculateCheckoutTotal(1895, 'efectivo')).toBe(1900)
+      expect(calculateCheckoutTotal(1894.99, 'efectivo')).toBe(1890)
+      expect(calculateCheckoutTotal(1890, 'efectivo')).toBe(1890)
+    })
+
+    it('keeps exact cents for digital, debit, credit and on-account methods (RF-04.2)', () => {
+      expect(calculateCheckoutTotal(1895.4, 'debito')).toBe(1895.4)
+      expect(calculateCheckoutTotal(1895.4, 'credito')).toBe(1895.4)
+      expect(calculateCheckoutTotal(1895.4, 'transferencia_qr')).toBe(1895.4)
+      expect(calculateCheckoutTotal(1895.4, 'cuenta_corriente')).toBe(1895.4)
+      expect(calculateCheckoutTotal(1895.4, 'mixto')).toBe(1895.4)
+    })
+
+    it('returns 0 for zero, negative, or NaN subtotal', () => {
+      expect(calculateCheckoutTotal(0, 'efectivo')).toBe(0)
+      expect(calculateCheckoutTotal(-100, 'debito')).toBe(0)
+      expect(calculateCheckoutTotal(NaN, 'efectivo')).toBe(0)
     })
   })
 })

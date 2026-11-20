@@ -1,3 +1,5 @@
 export { PosView } from './components/PosView'
 export * from './domain/calculations'
 export * from './domain/validators'
+export * from './application/checkoutService'
+export * from './hooks'

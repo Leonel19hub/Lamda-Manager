@@ -127,6 +127,69 @@ export function parseScaleBarcode(
   return ok({ plu, weight })
 }
 
+export interface CustomerCreditCheckResult {
+  isOver: boolean
+  excessAmount: number
+  amountOnCredit: number
+  availableCredit: number
+}
+
+/**
+ * Validates whether the amount to be charged on account (total sale or partial split in mixed payment)
+ * exceeds the customer's available credit limit.
+ * Conforms to RF-02.4 and RF-02.4.1.
+ */
+export function isCustomerOverCreditLimit(
+  paymentMethod: PaymentMethod,
+  customer: Readonly<Customer> | null,
+  cartTotal: number,
+  splitPayments?: readonly { method: PaymentMethod; amount: number }[]
+): CustomerCreditCheckResult {
+  let amountOnCredit = 0
+  if (paymentMethod === 'cuenta_corriente') {
+    amountOnCredit = cartTotal
+  } else if (paymentMethod === 'mixto' && splitPayments) {
+    const onCredit = splitPayments.find((p) => p.method === 'cuenta_corriente')
+    if (onCredit && onCredit.amount > 0) {
+      amountOnCredit = onCredit.amount
+    }
+  }
+
+  if (amountOnCredit <= 0 || !customer) {
+    return {
+      isOver: false,
+      excessAmount: 0,
+      amountOnCredit: 0,
+      availableCredit: customer?.creditLimit || 0,
+    }
+  }
+
+  const currentBalance = customer.currentBalance || 0
+  const creditLimit = customer.creditLimit || 0
+
+  if (creditLimit <= 0) {
+    return {
+      isOver: false,
+      excessAmount: 0,
+      amountOnCredit,
+      availableCredit: Infinity,
+    }
+  }
+
+  const availableCredit = Math.max(0, Math.round((creditLimit - currentBalance) * 100) / 100)
+  const isOver = currentBalance + amountOnCredit > creditLimit
+  const excessAmount = isOver
+    ? Math.round((currentBalance + amountOnCredit - creditLimit) * 100) / 100
+    : 0
+
+  return {
+    isOver,
+    excessAmount,
+    amountOnCredit,
+    availableCredit,
+  }
+}
+
 export interface SaleEligibilityParams {
   items: readonly CartItem[]
   paymentMethod: PaymentMethod
@@ -134,7 +197,7 @@ export interface SaleEligibilityParams {
   activeRegister: CashRegister | null
   total: number
   amountPaid?: number
-  splitPayments?: readonly { amount: number }[]
+  splitPayments?: readonly { amount: number; method?: PaymentMethod }[]
 }
 
 /**
@@ -177,7 +240,7 @@ export function validateSaleEligibility(
     })
   }
 
-  if (paymentMethod === 'cuenta_corriente' || paymentMethod === 'account') {
+  if (paymentMethod === 'cuenta_corriente') {
     if (!selectedCustomer) {
       return fail({
         code: 'CUSTOMER_REQUIRED_FOR_CREDIT',
@@ -185,18 +248,17 @@ export function validateSaleEligibility(
         field: 'selectedCustomer',
       })
     }
-    const currentBalance = selectedCustomer.currentBalance || 0
-    const creditLimit = selectedCustomer.creditLimit || 0
-    if (creditLimit > 0 && currentBalance + total > creditLimit) {
+    const check = isCustomerOverCreditLimit(paymentMethod, selectedCustomer, total)
+    if (check.isOver) {
       return fail({
         code: 'CREDIT_LIMIT_EXCEEDED',
-        message: `El cliente excede su límite de fiado disponible. Límite: $${creditLimit}, Deuda actual: $${currentBalance}, Total: $${total}.`,
+        message: `El cliente excede su límite de fiado disponible por $${check.excessAmount}. Límite: $${selectedCustomer.creditLimit}, Deuda actual: $${selectedCustomer.currentBalance || 0}, Total: $${total}.`,
         field: 'selectedCustomer',
       })
     }
   }
 
-  if (paymentMethod === 'efectivo' || paymentMethod === 'cash') {
+  if (paymentMethod === 'efectivo') {
     if (amountPaid < total) {
       return fail({
         code: 'INSUFFICIENT_CASH',
@@ -214,6 +276,26 @@ export function validateSaleEligibility(
         message: `La suma de los pagos divididos ($${splitSum}) no coincide con el total del ticket ($${total}).`,
         field: 'splitPayments',
       })
+    }
+
+    const hasCreditSplit = splitPayments.some((p) => p.method === 'cuenta_corriente')
+    if (hasCreditSplit) {
+      if (!selectedCustomer) {
+        return fail({
+          code: 'CUSTOMER_REQUIRED_FOR_CREDIT',
+          message: 'Debe seleccionar un cliente registrado para vender a cuenta corriente (fiado).',
+          field: 'selectedCustomer',
+        })
+      }
+      const typedSplits = splitPayments.filter((p): p is { method: PaymentMethod; amount: number } => Boolean(p.method))
+      const check = isCustomerOverCreditLimit(paymentMethod, selectedCustomer, total, typedSplits)
+      if (check.isOver) {
+        return fail({
+          code: 'CREDIT_LIMIT_EXCEEDED',
+          message: `El cliente excede su límite de fiado disponible por $${check.excessAmount}. Límite: $${selectedCustomer.creditLimit}, Deuda actual: $${selectedCustomer.currentBalance || 0}, Monto fiado: $${check.amountOnCredit}.`,
+          field: 'selectedCustomer',
+        })
+      }
     }
   }
 

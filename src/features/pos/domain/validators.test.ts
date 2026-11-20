@@ -4,10 +4,21 @@ import {
   validateBarcode,
   parseScaleBarcode,
   validateSaleEligibility,
+  isCustomerOverCreditLimit,
 } from './validators'
 import type { CartItem, Customer, CashRegister } from '@/types'
 
 describe('pos/domain/validators', () => {
+  const mockCustomer: Customer = {
+    id: 'c-1',
+    fullName: 'Juan Perez',
+    creditLimit: 50000,
+    currentBalance: 10000,
+    isActive: true,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  }
+
   describe('validateWeightInput', () => {
     it('accepts valid positive numbers', () => {
       const res = validateWeightInput(0.85)
@@ -159,16 +170,6 @@ describe('pos/domain/validators', () => {
       subtotal: 1000,
     }
 
-    const mockCustomer: Customer = {
-      id: 'c-1',
-      fullName: 'Juan Perez',
-      creditLimit: 50000,
-      currentBalance: 10000,
-      isActive: true,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    }
-
     it('approves a valid cash sale with sufficient payment and open register', () => {
       const res = validateSaleEligibility({
         items: [mockCartItem],
@@ -235,16 +236,6 @@ describe('pos/domain/validators', () => {
       })
       expect(res.success).toBe(false)
       if (!res.success) expect(res.error.code).toBe('INSUFFICIENT_CASH')
-
-      // Test 'cash' alias with default amountPaid (0 < total)
-      const resCashDefault = validateSaleEligibility({
-        items: [mockCartItem],
-        paymentMethod: 'cash',
-        selectedCustomer: null,
-        activeRegister: mockOpenRegister,
-        total: 1000,
-      })
-      expect(resCashDefault.success).toBe(false)
     })
 
     it('validates customer and credit limit for cuenta corriente (fiado)', () => {
@@ -259,15 +250,20 @@ describe('pos/domain/validators', () => {
       expect(resNoCust.success).toBe(false)
       if (!resNoCust.success) expect(resNoCust.error.code).toBe('CUSTOMER_REQUIRED_FOR_CREDIT')
 
-      // Account alias with missing customer
-      const resNoCustAlias = validateSaleEligibility({
+      // Exceeds credit limit with currentBalance 0
+      const resOverZeroBalance = validateSaleEligibility({
         items: [mockCartItem],
-        paymentMethod: 'account',
-        selectedCustomer: null,
+        paymentMethod: 'cuenta_corriente',
+        selectedCustomer: {
+          ...mockCustomer,
+          currentBalance: 0,
+          creditLimit: 500,
+        },
         activeRegister: mockOpenRegister,
         total: 1000,
       })
-      expect(resNoCustAlias.success).toBe(false)
+      expect(resOverZeroBalance.success).toBe(false)
+      if (!resOverZeroBalance.success) expect(resOverZeroBalance.error.code).toBe('CREDIT_LIMIT_EXCEEDED')
 
       // Exceeds credit limit
       const resOverLimit = validateSaleEligibility({
@@ -330,6 +326,159 @@ describe('pos/domain/validators', () => {
         splitPayments: [{ amount: 600 }, { amount: 400 }],
       })
       expect(resMatch.success).toBe(true)
+    })
+
+    it('requires customer and validates credit limit if mixto contains cuenta_corriente (RF-02.3, RF-02.4.1)', () => {
+      // Missing customer with credit split
+      const resNoCust = validateSaleEligibility({
+        items: [mockCartItem],
+        paymentMethod: 'mixto',
+        selectedCustomer: null,
+        activeRegister: mockOpenRegister,
+        total: 1000,
+        splitPayments: [
+          { method: 'efectivo', amount: 600 },
+          { method: 'cuenta_corriente', amount: 400 },
+        ],
+      })
+      expect(resNoCust.success).toBe(false)
+      if (!resNoCust.success) expect(resNoCust.error.code).toBe('CUSTOMER_REQUIRED_FOR_CREDIT')
+
+      // Credit limit exceeded only for the partial amount on credit (with 0 balance)
+      const resOverZeroBalance = validateSaleEligibility({
+        items: [mockCartItem],
+        paymentMethod: 'mixto',
+        selectedCustomer: {
+          ...mockCustomer,
+          currentBalance: 0,
+          creditLimit: 500,
+        },
+        activeRegister: mockOpenRegister,
+        total: 2000,
+        splitPayments: [
+          { method: 'efectivo', amount: 1000 },
+          { method: 'cuenta_corriente', amount: 1000 },
+        ],
+      })
+      expect(resOverZeroBalance.success).toBe(false)
+
+      // Credit limit exceeded only for the partial amount on credit
+      const resOver = validateSaleEligibility({
+        items: [mockCartItem],
+        paymentMethod: 'mixto',
+        selectedCustomer: {
+          ...mockCustomer,
+          currentBalance: 48000,
+          creditLimit: 50000,
+        },
+        activeRegister: mockOpenRegister,
+        total: 10000,
+        splitPayments: [
+          { method: 'efectivo', amount: 7000 },
+          { method: 'cuenta_corriente', amount: 3000 }, // 48000 + 3000 = 51000 > 50000
+        ],
+      })
+      expect(resOver.success).toBe(false)
+      if (!resOver.success) {
+        expect(resOver.error.code).toBe('CREDIT_LIMIT_EXCEEDED')
+        expect(resOver.error.message).toContain('1000') // excessAmount: 1000
+      }
+
+      // Valid: partial credit fits within remaining credit limit ($1500 <= $2000 available)
+      const resValid = validateSaleEligibility({
+        items: [mockCartItem],
+        paymentMethod: 'mixto',
+        selectedCustomer: {
+          ...mockCustomer,
+          currentBalance: 48000,
+          creditLimit: 50000,
+        },
+        activeRegister: mockOpenRegister,
+        total: 10000,
+        splitPayments: [
+          { method: 'efectivo', amount: 8500 },
+          { method: 'cuenta_corriente', amount: 1500 },
+        ],
+      })
+      expect(resValid.success).toBe(true)
+    })
+  })
+
+  describe('isCustomerOverCreditLimit', () => {
+    it('returns false when payment method does not involve credit', () => {
+      const res = isCustomerOverCreditLimit('efectivo', mockCustomer, 5000)
+      expect(res.isOver).toBe(false)
+      expect(res.amountOnCredit).toBe(0)
+    })
+
+    it('returns false when customer is null', () => {
+      const res = isCustomerOverCreditLimit('cuenta_corriente', null, 5000)
+      expect(res.isOver).toBe(false)
+    })
+
+    it('returns false if creditLimit is 0 (unlimited credit)', () => {
+      const unlimitedCustomer: Customer = {
+        ...mockCustomer,
+        creditLimit: 0,
+        currentBalance: 100000,
+      }
+      const res = isCustomerOverCreditLimit('cuenta_corriente', unlimitedCustomer, 50000)
+      expect(res.isOver).toBe(false)
+      expect(res.availableCredit).toBe(Infinity)
+    })
+
+    it('detects when total sale exceeds credit limit for cuenta_corriente', () => {
+      const res = isCustomerOverCreditLimit('cuenta_corriente', {
+        ...mockCustomer,
+        creditLimit: 50000,
+        currentBalance: 47000,
+      }, 5000) // 47000 + 5000 = 52000 > 50000
+      expect(res.isOver).toBe(true)
+      expect(res.excessAmount).toBe(2000)
+      expect(res.amountOnCredit).toBe(5000)
+      expect(res.availableCredit).toBe(3000)
+    })
+
+    it('evaluates exclusively the partial amount on credit in mixed payments (RF-02.4.1)', () => {
+      const splits = [
+        { method: 'efectivo' as const, amount: 8000 },
+        { method: 'cuenta_corriente' as const, amount: 2000 },
+      ]
+      // Ticket total is 10000, but only 2000 is on credit. Available credit is 3000.
+      const res = isCustomerOverCreditLimit(
+        'mixto',
+        {
+          ...mockCustomer,
+          creditLimit: 50000,
+          currentBalance: 47000,
+        },
+        10000,
+        splits
+      )
+      expect(res.isOver).toBe(false)
+      expect(res.amountOnCredit).toBe(2000)
+      expect(res.excessAmount).toBe(0)
+    })
+
+    it('handles mixed payment with zero or negative credit split amount', () => {
+      const splitsZero = [
+        { method: 'efectivo' as const, amount: 10000 },
+        { method: 'cuenta_corriente' as const, amount: 0 },
+      ]
+      const res = isCustomerOverCreditLimit('mixto', mockCustomer, 10000, splitsZero)
+      expect(res.isOver).toBe(false)
+      expect(res.amountOnCredit).toBe(0)
+    })
+
+    it('handles customer with falsy currentBalance and undefined creditLimit gracefully', () => {
+      const bareCustomer: Customer = {
+        ...mockCustomer,
+        creditLimit: undefined as unknown as number,
+        currentBalance: undefined as unknown as number,
+      }
+      const res = isCustomerOverCreditLimit('cuenta_corriente', bareCustomer, 1000)
+      expect(res.isOver).toBe(false)
+      expect(res.availableCredit).toBe(Infinity)
     })
   })
 })

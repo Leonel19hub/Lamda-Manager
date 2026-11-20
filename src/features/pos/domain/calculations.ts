@@ -1,4 +1,4 @@
-import type { CartItem } from '@/types'
+import type { CartItem, Product, PaymentMethod } from '@/types'
 
 /**
  * Calculates the monetary subtotal for a single cart item.
@@ -87,7 +87,8 @@ export function calculateChange(total: number, amountPaid: number): number {
 
 /**
  * Merges a new item into cart:
- * If the item is sold by unit and already exists (and has same discount), increments quantity.
+ * If the item is sold by unit and already exists, increments quantity in that line
+ * preserving any previously applied discount (RF-01.2).
  * Weighed items or distinct items are appended without mutation.
  */
 export function mergeOrAddItem(
@@ -96,19 +97,17 @@ export function mergeOrAddItem(
 ): CartItem[] {
   if (newItem.saleType === 'unit') {
     const existingIndex = items.findIndex(
-      (i) =>
-        i.productId === newItem.productId &&
-        i.saleType === 'unit' &&
-        (i.discountPercent || 0) === (newItem.discountPercent || 0)
+      (i) => i.productId === newItem.productId && i.saleType === 'unit'
     )
 
     if (existingIndex !== -1) {
       const existing = items[existingIndex]
       const mergedQuantity = Math.round((existing.quantity + newItem.quantity) * 1000) / 1000
+      const preservedDiscount = existing.discountPercent || 0
       const mergedSubtotal = calculateItemSubtotal(
         mergedQuantity,
         existing.unitPrice,
-        existing.discountPercent || 0
+        preservedDiscount
       )
 
       const updated = [...items]
@@ -122,4 +121,68 @@ export function mergeOrAddItem(
   }
 
   return [...items, { ...newItem }]
+}
+
+/**
+ * Creates a fully typed and calculated CartItem from a Product and desired quantity.
+ */
+export function createCartItem(
+  product: Readonly<Product>,
+  quantity: number,
+  discountPercent = 0,
+  idGenerator?: () => string
+): CartItem {
+  const safeQuantity = Math.max(0, isNaN(quantity) || !isFinite(quantity) ? 0 : quantity)
+  const safeDiscount = Math.max(0, Math.min(100, isNaN(discountPercent) || !isFinite(discountPercent) ? 0 : discountPercent))
+  const subtotal = calculateItemSubtotal(safeQuantity, product.sellPrice, safeDiscount)
+
+  const id = idGenerator
+    ? idGenerator()
+    : `item-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`
+
+  return {
+    id,
+    productId: product.id,
+    productName: product.name,
+    productSku: product.sku || product.pluCode || product.barcode || 'SKU-GEN',
+    saleType: product.saleType,
+    quantity: safeQuantity,
+    unitPrice: product.sellPrice,
+    costPrice: product.costPrice,
+    discountPercent: safeDiscount > 0 ? safeDiscount : undefined,
+    subtotal,
+    pluCode: product.pluCode,
+    barcode: product.barcode,
+  }
+}
+
+/**
+ * Calculates initial 50/50 split defaults for mixed payments.
+ */
+export function calculateSplitDefaults(
+  total: number
+): { cash: number; digital: number } {
+  if (isNaN(total) || !isFinite(total) || total <= 0) {
+    return { cash: 0, digital: 0 }
+  }
+  const cash = Math.round((total / 2) * 100) / 100
+  const digital = Math.round((total - cash) * 100) / 100
+  return { cash, digital }
+}
+
+/**
+ * Calculates final ticket total depending on payment method.
+ * Rounds to $10 multiples exclusively for cash (RF-04.2, RF-04.3).
+ */
+export function calculateCheckoutTotal(
+  subtotal: number,
+  paymentMethod: PaymentMethod
+): number {
+  if (isNaN(subtotal) || !isFinite(subtotal) || subtotal <= 0) {
+    return 0
+  }
+  if (paymentMethod === 'efectivo') {
+    return calculateCartTotal(subtotal)
+  }
+  return Math.round(subtotal * 100) / 100
 }

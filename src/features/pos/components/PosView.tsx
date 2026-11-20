@@ -163,23 +163,13 @@ export const PosView: React.FC = () => {
       let newTotalTransfer = cr.totalTransfer
       let newTotalAccount = cr.totalAccount
 
-      if (sale.paymentMethod === 'efectivo' || sale.paymentMethod === 'cash') {
+      if (sale.paymentMethod === 'efectivo') {
         newExpected += sale.total
-      } else if (
-        sale.paymentMethod === 'debito' ||
-        sale.paymentMethod === 'credito' ||
-        sale.paymentMethod === 'card'
-      ) {
+      } else if (sale.paymentMethod === 'debito' || sale.paymentMethod === 'credito') {
         newTotalCard += sale.total
-      } else if (
-        sale.paymentMethod === 'transferencia_qr' ||
-        sale.paymentMethod === 'transfer_qr'
-      ) {
+      } else if (sale.paymentMethod === 'transferencia_qr') {
         newTotalTransfer += sale.total
-      } else if (
-        sale.paymentMethod === 'cuenta_corriente' ||
-        sale.paymentMethod === 'account'
-      ) {
+      } else if (sale.paymentMethod === 'cuenta_corriente') {
         newTotalAccount += sale.total
       } else if (sale.paymentMethod === 'mixto' && sale.splitPayments) {
         sale.splitPayments.forEach((p) => {
@@ -732,12 +722,7 @@ export const PosView: React.FC = () => {
                   { id: 'mixto', label: 'Mixto', icon: Layers },
                 ].map((pm) => {
                   const Icon = pm.icon
-                  const active =
-                    paymentMethod === pm.id ||
-                    (pm.id === 'efectivo' && paymentMethod === 'cash') ||
-                    (pm.id === 'transferencia_qr' && paymentMethod === 'transfer_qr') ||
-                    (pm.id === 'cuenta_corriente' && paymentMethod === 'account') ||
-                    (pm.id === 'debito' && paymentMethod === 'card')
+                  const active = paymentMethod === pm.id
                   return (
                     <button
                       key={pm.id}
@@ -820,7 +805,7 @@ export const PosView: React.FC = () => {
             )}
 
             {/* Cash settlement box & return calculator (if cash) */}
-            {(paymentMethod === 'efectivo' || paymentMethod === 'cash') && (
+            {paymentMethod === 'efectivo' && (
               <div className="mt-3 p-2.5 rounded-lg bg-surface border border-slate-200 flex flex-col gap-2">
                 <div className="flex items-center justify-between gap-2">
                   <span className="text-xs text-outline font-medium">Paga con:</span>
