@@ -2,6 +2,7 @@ import React from 'react'
 import { Trash2 } from 'lucide-react'
 import type { CartItem } from '@/types'
 import { formatCurrency, formatWeight } from '@/lib/utils'
+import { Button } from '@/components/ui'
 
 export interface CartItemRowProps {
   item: CartItem
@@ -54,33 +55,39 @@ export const CartItemRow: React.FC<CartItemRowProps> = React.memo(
         {/* Quantity modifier and delete button */}
         <div className="flex items-center justify-between pt-1 border-t border-slate-100">
           <div className="flex items-center bg-surface-container-lowest border border-slate-200 rounded">
-            <button
+            <Button
               type="button"
+              variant="ghost"
+              size="sm"
               onClick={handleDecrement}
-              className="w-6 h-6 flex items-center justify-center text-outline hover:text-on-surface hover:bg-slate-100 rounded text-xs font-bold"
+              className="w-6 h-6 p-0 text-outline hover:text-on-surface rounded text-xs font-bold"
             >
               -
-            </button>
+            </Button>
             <span className="px-2 font-mono text-[11px] font-semibold">
               {isWeight ? formatWeight(item.quantity) : `${item.quantity} un`}
             </span>
-            <button
+            <Button
               type="button"
+              variant="ghost"
+              size="sm"
               onClick={handleIncrement}
-              className="w-6 h-6 flex items-center justify-center text-outline hover:text-on-surface hover:bg-slate-100 rounded text-xs font-bold"
+              className="w-6 h-6 p-0 text-outline hover:text-on-surface rounded text-xs font-bold"
             >
               +
-            </button>
+            </Button>
           </div>
 
-          <button
+          <Button
             type="button"
+            variant="ghost"
+            size="sm"
             onClick={() => onRemove(item.id)}
-            className="w-6 h-6 flex items-center justify-center text-red-500 hover:bg-red-50 rounded transition-colors"
+            className="w-6 h-6 p-0 text-error hover:bg-error-container/40 rounded transition-colors"
             title="Eliminar del ticket"
           >
             <Trash2 className="w-3.5 h-3.5" />
-          </button>
+          </Button>
         </div>
       </div>
     )

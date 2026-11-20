@@ -17,6 +17,7 @@ import { CartTicketPanel } from './CartTicketPanel'
 import { CheckoutPanel } from './CheckoutPanel'
 import { WeighProductModal } from './WeighProductModal'
 import { CustomerSelectModal } from './CustomerSelectModal'
+import { Card } from '@/components/ui'
 import type { Product, Customer } from '@/types'
 
 /**
@@ -162,7 +163,7 @@ export const PosView: React.FC = () => {
 
         {/* Right Panel: Current Ticket & Checkout */}
         <div className="xl:col-span-4 flex flex-col gap-4 sticky top-20">
-          <div className="bg-surface-container-lowest rounded-xl shadow-md border border-slate-200 p-4 flex flex-col">
+          <Card padding="md" className="shadow-md flex flex-col">
             <CartTicketPanel
               onOpenCustomerModal={() => setCustomerModalOpen(true)}
               onUpdateQuantity={updateItemQuantity}
@@ -175,7 +176,7 @@ export const PosView: React.FC = () => {
               onCheckout={handleCheckout}
               onClearCart={clearCart}
             />
-          </div>
+          </Card>
         </div>
       </div>
 

@@ -42,17 +42,17 @@
 
 ## Fase 3: Adopción Piloto en el Módulo POS
 
-- [ ] **[T-06] Migración en Barra de Hardware: `PosHardwareBar.tsx`**
+- [x] **[T-06] Migración en Barra de Hardware: `PosHardwareBar.tsx`**
   - **Archivos a modificar:** `src/features/pos/components/PosHardwareBar.tsx`
   - **Descripción:** Sustituir los estilos ad-hoc del banner efímero por `<AlertBanner>`, las etiquetas de balanza y lector por `<Badge>`, el botón de Tara por `<Button>` y el input del lector USB por `<Input ref={barcodeInputRef} />` verificando que el flujo no controlado permanezca idéntico y sin re-renders ante ráfagas.
   - **Hecho cuando:** `PosHardwareBar` consume primitivas desde `src/components/ui/` y pasa `pnpm run typecheck` sin romper el foco de escaneo.
 
-- [ ] **[T-07] Migración en Panel de Cobro y Modales: `CheckoutPanel.tsx`, `WeighProductModal.tsx` y `CustomerSelectModal.tsx`**
+- [x] **[T-07] Migración en Panel de Cobro y Modales: `CheckoutPanel.tsx`, `WeighProductModal.tsx` y `CustomerSelectModal.tsx`**
   - **Archivos a modificar:** `src/features/pos/components/CheckoutPanel.tsx`, `src/features/pos/components/WeighProductModal.tsx`, `src/features/pos/components/CustomerSelectModal.tsx`
   - **Descripción:** Reemplazar los avisos de caja cerrada, error de cobro y exceso de límite de crédito en `CheckoutPanel` por `<AlertBanner>`, y los botones de medios de pago y cobro por `<Button>`. Migrar botones e inputs de `WeighProductModal` y `CustomerSelectModal` hacia `<Button>` e `<Input>`.
   - **Hecho cuando:** Los tres componentes utilizan las primitivas del Design System y pasan `pnpm run typecheck`.
 
-- [ ] **[T-08] Migración en Ítems Memorizados y Estados Vacíos: `ProductCard.tsx`, `CartItemRow.tsx`, `CartTicketPanel.tsx` y `ProductCatalogPanel.tsx`**
+- [x] **[T-08] Migración en Ítems Memorizados y Estados Vacíos: `ProductCard.tsx`, `CartItemRow.tsx`, `CartTicketPanel.tsx` y `ProductCatalogPanel.tsx`**
   - **Archivos a modificar:** `src/features/pos/components/ProductCard.tsx`, `src/features/pos/components/CartItemRow.tsx`, `src/features/pos/components/CartTicketPanel.tsx`, `src/features/pos/components/ProductCatalogPanel.tsx`
   - **Descripción:** Reemplazar badges y botones en `ProductCard` y `CartItemRow` asegurando que la envoltura en `React.memo` se mantenga intacta. Reemplazar los contenedores de carrito vacío y búsqueda sin resultados en `CartTicketPanel` y `ProductCatalogPanel` por `<EmptyState>`.
   - **Hecho cuando:** Todos los subcomponentes del POS compilan con 0 errores de tipos y `pnpm test` ejecuta los 210+ tests en verde.

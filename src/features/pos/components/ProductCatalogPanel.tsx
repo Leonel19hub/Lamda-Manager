@@ -2,6 +2,7 @@ import React, { useMemo } from 'react'
 import { Search, Package } from 'lucide-react'
 import { usePosStore } from '@/stores/usePosStore'
 import { useInventoryStore } from '@/stores/useInventoryStore'
+import { Input, Button, Card, EmptyState } from '@/components/ui'
 import type { Product } from '@/types'
 import { ProductCard } from './ProductCard'
 
@@ -51,26 +52,24 @@ export const ProductCatalogPanel: React.FC<ProductCatalogPanelProps> = ({
   return (
     <div className="flex flex-col gap-4">
       {/* Top Operational Control Surface */}
-      <div className="bg-surface-container-lowest p-4 rounded-xl shadow-xs border border-slate-200 flex flex-col gap-3">
+      <Card padding="md" className="flex flex-col gap-3">
         {headerControl}
 
         {/* Quick Filter & PLU search line */}
-        <div className="relative w-full">
-          <div className="absolute left-3 top-3 flex items-center pointer-events-none text-outline">
-            <Search className="w-4 h-4" />
-          </div>
-          <input
-            ref={searchInputRef}
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Buscar por nombre o código PLU (ej: 101, Tomate, Aceite)..."
-            className="w-full h-10 pl-9 pr-24 bg-surface text-on-surface text-xs rounded-lg border border-slate-200 focus:outline-none focus:ring-1 focus:ring-emerald-500 placeholder:text-outline"
-          />
-          <span className="absolute right-3 top-2 text-[10px] uppercase font-bold bg-surface-container px-2 py-0.5 rounded text-outline border border-slate-200">
-            F2
-          </span>
-        </div>
+        <Input
+          ref={searchInputRef}
+          type="text"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder="Buscar por nombre o código PLU (ej: 101, Tomate, Aceite)..."
+          leftIcon={<Search className="w-4 h-4 text-outline" />}
+          rightElement={
+            <span className="text-[10px] uppercase font-bold bg-surface-container px-2 py-0.5 rounded text-outline border border-slate-200">
+              F2
+            </span>
+          }
+          className="h-10 text-xs pl-9 pr-20"
+        />
 
         {/* Category Filter Pills (ADR-4) */}
         <div className="flex items-center gap-2 overflow-x-auto pb-1 pt-0.5">
@@ -79,22 +78,24 @@ export const ProductCatalogPanel: React.FC<ProductCatalogPanelProps> = ({
             const isSelected = (!selectedCategory && isAllCategory) || selectedCategory === cat.id
 
             return (
-              <button
+              <Button
                 key={cat.id}
                 type="button"
+                variant={isSelected ? 'primary' : 'outline'}
+                size="sm"
                 onClick={() => setSelectedCategory(isAllCategory ? null : cat.id)}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold shrink-0 transition-all border ${
+                className={`shrink-0 text-xs font-semibold ${
                   isSelected
-                    ? 'bg-primary-container text-on-primary-container border-emerald-600 shadow-xs'
-                    : 'bg-surface-container-low hover:bg-surface-container-high text-on-surface border-slate-200'
+                    ? 'shadow-xs'
+                    : 'bg-surface-container-low hover:bg-surface-container text-on-surface border-slate-200'
                 }`}
               >
-                <span>{cat.name}</span>
-              </button>
+                {cat.name}
+              </Button>
             )
           })}
         </div>
-      </div>
+      </Card>
 
       {/* Product Catalog Grid (3 columns) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -108,10 +109,12 @@ export const ProductCatalogPanel: React.FC<ProductCatalogPanelProps> = ({
         ))}
 
         {filteredProducts.length === 0 && (
-          <div className="col-span-full py-12 text-center text-outline">
-            <Package className="w-10 h-10 mx-auto mb-2 opacity-30" />
-            <span className="text-sm font-medium">No se encontraron productos</span>
-          </div>
+          <EmptyState
+            icon={Package}
+            title="No se encontraron productos"
+            description="Intente con otro término de búsqueda o categoría"
+            className="col-span-full py-12"
+          />
         )}
       </div>
     </div>

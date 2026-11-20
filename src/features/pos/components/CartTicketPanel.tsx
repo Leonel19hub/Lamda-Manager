@@ -8,6 +8,7 @@ import {
 } from 'lucide-react'
 import { usePosStore } from '@/stores/usePosStore'
 import { formatCurrency } from '@/lib/utils'
+import { EmptyState, Card } from '@/components/ui'
 import { CartItemRow } from './CartItemRow'
 
 export interface CartTicketPanelProps {
@@ -43,7 +44,7 @@ export const CartTicketPanel: React.FC<CartTicketPanelProps> = ({
       <div className="pb-3 border-b border-slate-100 flex flex-col gap-2">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Receipt className="w-5 h-5 text-emerald-700" />
+            <Receipt className="w-5 h-5 text-primary" />
             <span className="font-bold text-base text-on-surface tracking-tight">
               Ticket #{ticketNumber}
             </span>
@@ -57,7 +58,7 @@ export const CartTicketPanel: React.FC<CartTicketPanelProps> = ({
         <button
           type="button"
           onClick={onOpenCustomerModal}
-          className="flex items-center justify-between p-2 rounded-lg bg-surface-container-low border border-slate-200 hover:bg-surface-container transition-colors text-left"
+          className="flex items-center justify-between p-2 rounded-lg bg-surface-container-low border border-slate-200 hover:bg-surface-container transition-colors text-left cursor-pointer"
         >
           <div className="flex items-center gap-2 min-w-0">
             <UserIcon className="w-4 h-4 text-secondary shrink-0" />
@@ -72,7 +73,7 @@ export const CartTicketPanel: React.FC<CartTicketPanelProps> = ({
               </span>
             </div>
           </div>
-          <span className="text-emerald-700 text-xs font-bold flex items-center gap-0.5">
+          <span className="text-primary text-xs font-bold flex items-center gap-0.5">
             Cambiar
             <ChevronsUpDown className="w-3.5 h-3.5" />
           </span>
@@ -82,11 +83,12 @@ export const CartTicketPanel: React.FC<CartTicketPanelProps> = ({
       {/* Scrollable Ticket Line Items */}
       <div className="py-3 flex flex-col gap-2 max-h-[280px] overflow-y-auto pr-1">
         {items.length === 0 ? (
-          <div className="py-10 text-center flex flex-col items-center justify-center text-outline">
-            <Package className="w-10 h-10 mb-2 opacity-30" />
-            <span className="text-sm font-medium">Ticket vacío</span>
-            <span className="text-xs mt-0.5">Escanea o selecciona productos del catálogo</span>
-          </div>
+          <EmptyState
+            icon={Package}
+            title="Ticket vacío"
+            description="Escanea o selecciona productos del catálogo"
+            className="py-10"
+          />
         ) : (
           items.map((item) => (
             <CartItemRow
@@ -100,7 +102,10 @@ export const CartTicketPanel: React.FC<CartTicketPanelProps> = ({
       </div>
 
       {/* Financial Breakdown */}
-      <div className="pt-2 flex flex-col gap-1.5 bg-surface-container-low/60 p-2.5 rounded-lg my-1 border border-slate-200">
+      <Card
+        padding="sm"
+        className="pt-2 flex flex-col gap-1.5 bg-surface-container-low/60 my-1"
+      >
         <div className="flex items-center justify-between text-xs">
           <span className="text-outline">Subtotal bruto</span>
           <span className="font-mono font-semibold text-on-surface">
@@ -111,25 +116,25 @@ export const CartTicketPanel: React.FC<CartTicketPanelProps> = ({
           <span>Redondeo en caja (ley redondeo)</span>
           <span
             className={`font-mono font-semibold ${
-              roundingAmount !== 0 ? 'text-emerald-700' : 'text-outline'
+              roundingAmount !== 0 ? 'text-primary' : 'text-outline'
             }`}
           >
             {formatCurrency(roundingAmount)}
           </span>
         </div>
-      </div>
+      </Card>
 
-      {/* High-contrast TOTAL box (Emerald) */}
+      {/* High-contrast TOTAL box (Emerald/Primary) */}
       <div className="mt-1 p-3.5 rounded-xl bg-primary text-on-primary flex items-center justify-between shadow-md">
         <div className="flex flex-col">
-          <span className="text-[10px] uppercase tracking-wider text-emerald-200 font-bold">
+          <span className="text-[10px] uppercase tracking-wider text-primary-fixed-dim font-bold">
             Importe Final a Cobrar {paymentMethod === 'efectivo' ? '(Efectivo)' : ''}
           </span>
           <span className="font-mono font-bold text-2xl tracking-tight">
             {formatCurrency(totalAmount)}
           </span>
         </div>
-        <CheckCircle2 className="w-8 h-8 text-emerald-300" />
+        <CheckCircle2 className="w-8 h-8 text-primary-fixed" />
       </div>
     </div>
   )

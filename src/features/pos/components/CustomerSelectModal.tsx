@@ -1,5 +1,5 @@
 import React from 'react'
-import { Modal } from '@/components/ui/Modal'
+import { Modal, Badge } from '@/components/ui'
 import { formatCurrency } from '@/lib/utils'
 import type { Customer } from '@/types'
 
@@ -36,13 +36,15 @@ export const CustomerSelectModal: React.FC<CustomerSelectModalProps> = ({
             onSelectCustomer(null)
             onClose()
           }}
-          className="p-3 rounded-lg border border-slate-200 hover:border-emerald-500 hover:bg-emerald-50 transition-colors flex items-center justify-between text-left"
+          className="p-3 rounded-lg border border-slate-200 hover:border-primary hover:bg-surface-container-low transition-colors flex items-center justify-between text-left cursor-pointer"
         >
           <div>
             <span className="font-bold text-sm text-on-surface">Consumidor Final (Genérico)</span>
             <p className="text-xs text-outline">Sin cuenta corriente ni límite de fiado</p>
           </div>
-          <span className="text-xs font-mono font-bold text-outline">00-00000000-0</span>
+          <Badge variant="neutral" size="sm" className="font-mono">
+            00-00000000-0
+          </Badge>
         </button>
 
         <div className="text-[10px] font-bold uppercase tracking-wider text-outline mt-2">
@@ -57,7 +59,7 @@ export const CustomerSelectModal: React.FC<CustomerSelectModalProps> = ({
               onSelectCustomer(c)
               onClose()
             }}
-            className="p-3 rounded-lg border border-slate-200 hover:border-emerald-500 hover:bg-emerald-50 transition-colors flex items-center justify-between text-left"
+            className="p-3 rounded-lg border border-slate-200 hover:border-primary hover:bg-surface-container-low transition-colors flex items-center justify-between text-left cursor-pointer"
           >
             <div>
               <span className="font-bold text-sm text-on-surface">{c.fullName}</span>
@@ -65,13 +67,13 @@ export const CustomerSelectModal: React.FC<CustomerSelectModalProps> = ({
                 {c.address} · DNI {c.dni || c.dniCuit}
               </p>
             </div>
-            <div className="text-right">
-              <span className="font-mono text-xs font-bold text-red-600">
+            <div className="text-right flex flex-col items-end gap-1">
+              <span className="font-mono text-xs font-bold text-error">
                 Debe: {formatCurrency(c.currentBalance || 0)}
               </span>
-              <p className="text-[10px] text-outline font-mono">
+              <span className="text-[10px] text-outline font-mono">
                 Límite: {formatCurrency(c.creditLimit)}
-              </p>
+              </span>
             </div>
           </button>
         ))}

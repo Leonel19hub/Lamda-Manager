@@ -2,6 +2,7 @@ import React from 'react'
 import { Scale, Plus } from 'lucide-react'
 import type { Product } from '@/types'
 import { formatCurrency, formatWeight } from '@/lib/utils'
+import { Card, Badge, Button } from '@/components/ui'
 
 export interface ProductCardProps {
   product: Product
@@ -21,24 +22,27 @@ export const ProductCard: React.FC<ProductCardProps> = React.memo(
     const isLowStock = currentStock <= minStock
 
     return (
-      <div className="bg-surface-container-lowest p-4 rounded-xl shadow-xs border border-slate-200 flex flex-col justify-between group hover:shadow-md hover:border-slate-300 transition-all">
+      <Card
+        padding="md"
+        className="flex flex-col justify-between group hover:shadow-md hover:border-slate-300 transition-all"
+      >
         <div>
           {/* Top Tag & Stock indicator */}
           <div className="flex items-start justify-between gap-2 mb-2">
             {isWeighed ? (
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-emerald-50 border border-emerald-200 text-emerald-800 text-[10px] font-bold">
-                <Scale className="w-3 h-3 text-emerald-600" />
+              <Badge variant="success" size="sm">
+                <Scale className="w-3 h-3 text-primary shrink-0" />
                 PESO / PLU {product.pluCode}
-              </span>
+              </Badge>
             ) : (
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-slate-100 text-slate-700 text-[10px] font-bold border border-slate-200">
+              <Badge variant="neutral" size="sm">
                 {product.barcode || 'UNIDAD'}
-              </span>
+              </Badge>
             )}
 
             <span
               className={`font-mono text-xs ${
-                isLowStock ? 'text-red-600 font-bold' : 'text-outline'
+                isLowStock ? 'text-error font-bold' : 'text-outline'
               }`}
             >
               {isWeighed ? formatWeight(currentStock) : `${currentStock} un.`}
@@ -59,7 +63,7 @@ export const ProductCard: React.FC<ProductCardProps> = React.memo(
               <span className="text-xs text-on-surface-variant truncate mt-0.5">
                 {product.description}
               </span>
-              <span className="font-mono font-bold text-base text-emerald-700 mt-1">
+              <span className="font-mono font-bold text-base text-primary mt-1">
                 {formatCurrency(product.sellPrice)}{' '}
                 <span className="text-xs text-outline font-normal">
                   /{isWeighed ? 'kg' : 'un'}
@@ -72,26 +76,30 @@ export const ProductCard: React.FC<ProductCardProps> = React.memo(
         {/* Action bottom area */}
         <div className="mt-4 pt-3 border-t border-slate-100">
           {isWeighed ? (
-            <button
+            <Button
               type="button"
+              variant="outline"
+              size="md"
               onClick={() => onWeigh(product)}
-              className="w-full h-10 px-3 bg-emerald-50 hover:bg-primary-container text-emerald-800 hover:text-on-primary-container text-xs font-bold rounded-lg border border-emerald-300 flex items-center justify-center gap-1.5 transition-all shadow-xs"
+              leftIcon={<Scale className="w-4 h-4 text-primary" />}
+              className="w-full text-xs font-bold border-primary/40 text-on-surface hover:bg-primary hover:text-on-primary transition-all shadow-xs"
             >
-              <Scale className="w-4 h-4" />
-              <span>Pesar en Balanza</span>
-            </button>
+              Pesar en Balanza
+            </Button>
           ) : (
-            <button
+            <Button
               type="button"
+              variant="secondary"
+              size="md"
               onClick={() => onAddUnit(product)}
-              className="w-full h-10 px-3 bg-surface-container hover:bg-emerald-600 hover:text-white text-on-surface text-xs font-semibold rounded-lg border border-slate-200 flex items-center justify-center gap-1.5 transition-all shadow-xs"
+              leftIcon={<Plus className="w-4 h-4" />}
+              className="w-full text-xs font-semibold hover:bg-primary hover:text-on-primary transition-all shadow-xs"
             >
-              <Plus className="w-4 h-4" />
-              <span>+ Agregar Unidad</span>
-            </button>
+              + Agregar Unidad
+            </Button>
           )}
         </div>
-      </div>
+      </Card>
     )
   }
 )

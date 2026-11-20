@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Scale } from 'lucide-react'
-import { Modal } from '@/components/ui/Modal'
+import { Modal, Button, Input, Card } from '@/components/ui'
 import { formatCurrency } from '@/lib/utils'
 import type { Product } from '@/types'
 
@@ -53,85 +53,95 @@ export const WeighProductModal: React.FC<WeighProductModalProps> = ({
       maxWidth="md"
     >
       <div className="flex flex-col gap-4">
-        <div className="p-4 bg-emerald-50 rounded-xl border border-emerald-200 flex items-center justify-between">
+        <Card
+          padding="md"
+          className="bg-surface-container-low border-primary/20 flex items-center justify-between"
+        >
           <div className="flex items-center gap-3">
-            <Scale className="w-8 h-8 text-emerald-700" />
+            <Scale className="w-8 h-8 text-primary" />
             <div>
-              <span className="text-xs uppercase font-bold text-emerald-900 tracking-wider">
+              <span className="text-xs uppercase font-bold text-on-surface tracking-wider">
                 Balanza Digital
               </span>
-              <p className="text-xs text-emerald-700">Ingrese el peso en kilogramos</p>
+              <p className="text-xs text-outline">Ingrese el peso en kilogramos</p>
             </div>
           </div>
-          <span className="font-mono text-2xl font-bold text-emerald-800">
+          <span className="font-mono text-2xl font-bold text-primary">
             {modalWeight} kg
           </span>
-        </div>
+        </Card>
 
-        <div>
-          <label className="block text-xs font-bold text-on-surface uppercase mb-1">
-            Kilogramos (kg):
-          </label>
-          <input
-            type="number"
-            step="0.005"
-            autoFocus
-            value={modalWeight}
-            onChange={(e) => setModalWeight(e.target.value)}
-            className="w-full h-12 px-3 text-right bg-white font-mono text-lg font-bold rounded-lg border-2 border-emerald-500 focus:outline-none"
-          />
-        </div>
+        <Input
+          type="number"
+          step="0.005"
+          autoFocus
+          label="KILOGRAMOS (KG):"
+          value={modalWeight}
+          onChange={(e) => setModalWeight(e.target.value)}
+          className="h-12 text-right font-mono text-lg font-bold border-2 border-primary/50 focus:border-primary"
+        />
 
         {/* Live scale button if scale has weight */}
         {scaleWeight > 0 && (
-          <button
+          <Button
             type="button"
+            variant="outline"
+            size="sm"
             onClick={() => setModalWeight(scaleWeight.toFixed(3))}
-            className="py-2 px-3 rounded-lg border border-emerald-300 bg-emerald-50 text-emerald-900 text-xs font-bold flex items-center justify-center gap-2 hover:bg-emerald-100 transition-colors shadow-xs"
+            leftIcon={<Scale className="w-4 h-4 text-primary" />}
+            className="w-full text-xs font-bold border-primary/30 text-on-surface"
           >
-            <Scale className="w-4 h-4 text-emerald-700" />
-            <span>Usar peso de balanza en vivo ({scaleWeight.toFixed(3)} kg)</span>
-          </button>
+            Usar peso de balanza en vivo ({scaleWeight.toFixed(3)} kg)
+          </Button>
         )}
 
         {/* Quick preset weight buttons */}
         <div className="grid grid-cols-4 gap-2">
           {['0.250', '0.500', '1.000', '2.000'].map((w) => (
-            <button
+            <Button
               key={w}
               type="button"
+              variant="outline"
+              size="sm"
               onClick={() => setModalWeight(w)}
-              className="py-1.5 rounded-lg border border-slate-200 bg-surface text-xs font-mono font-bold hover:bg-emerald-50 hover:border-emerald-300 transition-colors"
+              className="py-1.5 font-mono text-xs font-bold"
             >
               {w} kg
-            </button>
+            </Button>
           ))}
         </div>
 
         {/* Subtotal preview */}
-        <div className="flex items-center justify-between p-3 bg-surface-container-low rounded-lg border border-slate-200 text-sm">
+        <Card
+          padding="sm"
+          className="flex items-center justify-between bg-surface-container-low text-sm"
+        >
           <span className="text-outline font-medium">Subtotal a sumar:</span>
-          <span className="font-mono font-bold text-emerald-700 text-base">
+          <span className="font-mono font-bold text-primary text-base">
             {formatCurrency(weightKg * product.sellPrice)}
           </span>
-        </div>
+        </Card>
 
         <div className="flex gap-2 pt-2">
-          <button
+          <Button
             type="button"
+            variant="outline"
+            size="md"
             onClick={onClose}
-            className="flex-1 py-2.5 rounded-lg border border-slate-300 text-slate-700 text-xs font-bold hover:bg-slate-50"
+            className="flex-1 text-xs font-bold"
           >
             Cancelar
-          </button>
-          <button
+          </Button>
+          <Button
             type="button"
+            variant="primary"
+            size="md"
             onClick={handleConfirm}
             disabled={weightKg <= 0}
-            className="flex-1 py-2.5 bg-primary-container hover:bg-emerald-600 text-on-primary-container hover:text-white rounded-lg text-xs font-bold shadow-xs transition-colors disabled:opacity-40"
+            className="flex-1 text-xs font-bold shadow-xs"
           >
             Confirmar y Sumar
-          </button>
+          </Button>
         </div>
       </div>
     </Modal>
