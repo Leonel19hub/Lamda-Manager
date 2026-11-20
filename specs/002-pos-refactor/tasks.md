@@ -60,7 +60,7 @@
 
 ## Fase 4: Verificación Integral (Zero-Defect Gate)
 
-- [ ] **[T-09] Verificación Integral, Gate de Calidad y Registro en Memoria**
+- [x] **[T-09] Verificación Integral, Gate de Calidad y Registro en Memoria**
   - **Archivos a modificar:** `MEMORY.md`
   - **Descripción:** Ejecutar la suite completa de verificación del proyecto (`pnpm run typecheck && pnpm run lint && pnpm test && pnpm run build`). Comprobar que los 172 tests preexistentes más los nuevos tests pasen al 100% en verde. Actualizar `MEMORY.md` con los logros alcanzados de SPEC-002.
   - **Hecho cuando:** Pipeline 100% verde con 0 errores y 0 advertencias críticas, y `MEMORY.md` actualizado.

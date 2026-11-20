@@ -1,6 +1,6 @@
 # SPEC-002: Punto de Venta, Orquestación de Cobro y Rendimiento en Mostrador
 
-- **Estado:** Aprobada
+- **Estado:** Completada
 - **Fecha:** 2026-11-20
 - **Área:** Punto de Venta (POS) / Operaciones de Mostrador
 - **Autores:** Analista Funcional SDD & Arquitecto de Software
