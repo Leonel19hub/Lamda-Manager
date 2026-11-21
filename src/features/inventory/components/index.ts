@@ -1,4 +1,8 @@
 export { InventoryView } from './InventoryView'
+export { ProductCatalogTab, type ProductCatalogTabProps } from './ProductCatalogTab'
+export { ProductTableRow, type ProductTableRowProps } from './ProductTableRow'
+export { WasteLogsTab } from './WasteLogsTab'
+export { TransfersTab, type TransfersTabProps } from './TransfersTab'
 export { ProductFormModal, type ProductFormModalProps } from './ProductFormModal'
 export { WasteModal, type WasteModalProps } from './WasteModal'
 export { TransferModal, type TransferModalProps } from './TransferModal'

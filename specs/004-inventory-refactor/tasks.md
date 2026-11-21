@@ -42,22 +42,22 @@
 
 ## Fase 3: Descomposición de Pestañas, Optimización y Ensamblado
 
-- [ ] **[T-06] Implementar `ProductTableRow.tsx` memorizada (`React.memo`)**
+- [x] **[T-06] Implementar `ProductTableRow.tsx` memorizada (`React.memo`)**
   - **Archivos a crear:** `src/features/inventory/components/ProductTableRow.tsx`
   - **Descripción:** Implementar la fila de producto envuelta en `React.memo` para optimizar el rendimiento en PCs de mostrador. Integrar `<Badge>` para stock (`ok` -> success, `low` -> warning, `critical` -> danger) y tipo de venta. Utilizar `<Button size="sm" variant="outline">` para las acciones de edición y registro de merma.
   - **Hecho cuando:** El componente compila limpiamente y solo se re-renderiza si sus props individuales cambian.
 
-- [ ] **[T-07] Implementar `ProductCatalogTab.tsx` con suscripciones atómicas y `useMemo`**
+- [x] **[T-07] Implementar `ProductCatalogTab.tsx` con suscripciones atómicas y `useMemo`**
   - **Archivos a crear:** `src/features/inventory/components/ProductCatalogTab.tsx`
   - **Descripción:** Crear `ProductCatalogTab` suscripto atómicamente a `products` y `categories` en `useInventoryStore`. Utilizar `useMemo` para `filteredProducts` y `criticalProductsCount` mediante `filterProducts` y `countCriticalProducts`. Implementar barra de búsqueda con `<Input leftIcon={<Search />} />`, selector de categoría con `null` ("Todas"), selector de stock y renderizado de tabla con `<Card>` y `<EmptyState>`.
   - **Hecho cuando:** La pestaña compila sin errores, filtra fluidamente y no produce re-renders globales fuera de su árbol.
 
-- [ ] **[T-08] Implementar `WasteLogsTab.tsx` y `TransfersTab.tsx`**
+- [x] **[T-08] Implementar `WasteLogsTab.tsx` y `TransfersTab.tsx`**
   - **Archivos a crear:** `src/features/inventory/components/WasteLogsTab.tsx`, `src/features/inventory/components/TransfersTab.tsx`
   - **Descripción:** Implementar `WasteLogsTab` con suscripción atómica a `wasteLogs`, tabla formateada y `<EmptyState>`. Implementar `TransfersTab` con suscripción a `transfers`, `branches` y `activeBranch`. Si `availableDestinationBranches.length === 0`, mostrar `<AlertBanner variant="info">` y deshabilitar "Nuevo Traslado". Renderizar badges de estado (`received` vs `in_transit`), botón "Confirmar Recepción" (`receiveTransfer`) y `<EmptyState>`.
   - **Hecho cuando:** Ambas pestañas compilan limpiamente y consumen exclusivamente sus respectivos slices de estado.
 
-- [ ] **[T-09] Ensamblado y reducción de `InventoryView.tsx` y barrel `components/index.ts`**
+- [x] **[T-09] Ensamblado y reducción de `InventoryView.tsx` y barrel `components/index.ts`**
   - **Archivos a modificar/crear:** `src/features/inventory/components/InventoryView.tsx`, `src/features/inventory/components/index.ts`
   - **Descripción:** Rediseñar `InventoryView.tsx` como orquestador ligero (~130 líneas). Gestionar tabs ('products', 'waste', 'transfers') y visibilidad de los 3 modales. Eliminar por completo la importación de `mockCategories` y selectores globales de store. Crear barrel `components/index.ts` exportando todos los componentes.
   - **Hecho cuando:** `InventoryView.tsx` se reduce a ~130 líneas, no importa mocks y compila con 0 errores de TypeScript.
