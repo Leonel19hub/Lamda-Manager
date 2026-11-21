@@ -23,17 +23,17 @@
 
 ## Fase 2: Extracción de los 3 Modales con Estado Aislado
 
-- [ ] **[T-03] Implementar `ProductFormModal.tsx` con estado local aislado y primitivas UI**
+- [x] **[T-03] Implementar `ProductFormModal.tsx` con estado local aislado y primitivas UI**
   - **Archivos a crear:** `src/features/inventory/components/ProductFormModal.tsx`
   - **Descripción:** Crear `ProductFormModal` encapsulando los 14 estados locales del formulario de producto. Integrar cálculo bidireccional reactivo de costo/margen/precio mediante `calculateSellPrice` y `calculateMargin`. Si `categories.length === 0`, mostrar `<AlertBanner variant="warning">` y deshabilitar guardado. En edición, incluir `helperText` en el `<Input label="Stock Actual">`. Utilizar `<Modal>`, `<Input>`, `<Select>`, `<Button>` y `<AlertBanner>`.
   - **Hecho cuando:** `ProductFormModal.tsx` compila en TypeScript estricto sin errores de tipos y valida altas y ediciones con `validateProductForm`.
 
-- [ ] **[T-04] Implementar `WasteModal.tsx` con estado local aislado**
+- [x] **[T-04] Implementar `WasteModal.tsx` con estado local aislado**
   - **Archivos a crear:** `src/features/inventory/components/WasteModal.tsx`
   - **Descripción:** Crear `WasteModal` encapsulando los estados de cantidad, motivo, notas y error. Inicializar cantidades sugeridas según `saleType` (peso vs unidad). Integrar con `recordWaste` de `useInventoryStore` y manejar errores con `<AlertBanner variant="error">` y primitivas de UI.
   - **Hecho cuando:** El modal compila limpiamente, valida la merma y no re-renderiza componentes ajenos a su ciclo de vida.
 
-- [ ] **[T-05] Implementar `TransferModal.tsx` con cálculo reactivo de sucursales destino**
+- [x] **[T-05] Implementar `TransferModal.tsx` con cálculo reactivo de sucursales destino**
   - **Archivos a crear:** `src/features/inventory/components/TransferModal.tsx`
   - **Descripción:** Crear `TransferModal` encapsulando estados de producto, sucursal destino, cantidad y notas. Utilizar `getAvailableDestinationBranches` para listar exclusivamente destinos válidos diferentes a `activeBranch`. Validar existencias con `validateTransfer` e invocar `createTransfer`.
   - **Hecho cuando:** El modal compila limpiamente y no permite emitir traslados hacia la misma sucursal de origen ni cantidades superiores al stock disponible.
