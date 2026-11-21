@@ -1,6 +1,6 @@
 # SPEC-004: Modularización y Refactor de Inventario (`InventoryView`)
 
-- **Estado:** Aprobado
+- **Estado:** Completada
 - **Fecha:** 2026-11-20
 - **Área:** Gestión de Inventario / Catálogo (`src/features/inventory/`)
 - **Autores:** Analista Funcional SDD & Arquitecto de Software

@@ -2,7 +2,7 @@
 
 - **Especificación:** [SPEC-004: specs/004-inventory-refactor/spec.md](file:///c:/Users/leone.DESKTOP-BM9FAGB/Desktop/Leonel/Lamda-Manager/specs/004-inventory-refactor/spec.md)
 - **Plan Técnico:** [PLAN-004: specs/004-inventory-refactor/plan.md](file:///c:/Users/leone.DESKTOP-BM9FAGB/Desktop/Leonel/Lamda-Manager/specs/004-inventory-refactor/plan.md)
-- **Estado:** Pendiente
+- **Estado:** Completada
 - **Modalidad:** Ejecución por Fase Completa
 
 ---
@@ -66,7 +66,7 @@
 
 ## Fase 4: Verificación Integral y Cierre
 
-- [ ] **[T-10] Verificación del Zero-Defect Gate y Actualización de `MEMORY.md`**
+- [x] **[T-10] Verificación del Zero-Defect Gate y Actualización de `MEMORY.md`**
   - **Archivos a modificar:** `MEMORY.md`
   - **Descripción:** Ejecutar la suite completa de calidad: `pnpm run typecheck && pnpm run lint && pnpm test && pnpm run build`. Verificar 100% de tests en verde y 0 advertencias. Actualizar `MEMORY.md` registrando el cierre de SPEC-004, las decisiones de arquitectura aplicadas y el estado actualizado del proyecto.
   - **Hecho cuando:** Todos los checks del pipeline son 100% verdes y `MEMORY.md` refleja el estado final actualizado respetando el límite de ~50 líneas.

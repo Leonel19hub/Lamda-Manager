@@ -1,7 +1,7 @@
 # PLAN-004: Modularización y Refactor de Inventario (`InventoryView`)
 
 - **Especificación:** [SPEC-004: specs/004-inventory-refactor/spec.md](file:///c:/Users/leone.DESKTOP-BM9FAGB/Desktop/Leonel/Lamda-Manager/specs/004-inventory-refactor/spec.md)
-- **Estado:** Aprobado
+- **Estado:** Completado
 - **Fecha:** 2026-11-20
 - **Objetivo:** Descomponer el componente monolítico `InventoryView.tsx` (1.197 líneas) en un orquestador ligero (~130 líneas), 3 pestañas especializadas, 3 modales con estado local aislado y 1 fila de tabla memorizada, extrayendo lógica de filtrado y contratos a funciones de dominio puro en `domain/stockRules.ts`, adoptando el Design System (`src/components/ui/`) y eliminando el acoplamiento a mocks.
 
