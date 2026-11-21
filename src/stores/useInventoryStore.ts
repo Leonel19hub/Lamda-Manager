@@ -86,13 +86,20 @@ export const useInventoryStore = create<InventoryState>()(
         }
 
         const now = new Date().toISOString()
+        const productId = `prod-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`
         const newProduct: Product = {
           ...productData,
-          id: `prod-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
+          id: productId,
           sku: productData.sku || productData.pluCode || productData.barcode || `SKU-${Date.now()}`,
           isActive: true,
           createdAt: now,
           updatedAt: now,
+          stock: productData.stock
+            ? {
+                ...productData.stock,
+                productId,
+              }
+            : undefined,
         }
 
         set((state) => ({ products: [newProduct, ...state.products] }))

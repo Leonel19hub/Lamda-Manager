@@ -1,4 +1,12 @@
-import { ok, fail, type Result, type ValidationError } from '@/types'
+import {
+  ok,
+  fail,
+  type Result,
+  type ValidationError,
+  type Product,
+  type Branch,
+  type Category,
+} from '@/types'
 
 export type StockStatus = 'ok' | 'low' | 'critical'
 
@@ -163,4 +171,67 @@ export function validateProductForm(
   }
 
   return ok(true)
+}
+
+export interface ProductFilters {
+  searchQuery?: string
+  categoryId?: string | null
+  stockFilter?: 'all' | 'critical'
+}
+
+/**
+ * Filters the product catalog by search query (name, sku, barcode, pluCode),
+ * category (or all if null or 'all'), and stock status.
+ */
+export function filterProducts(products: Product[], filters: ProductFilters): Product[] {
+  const query = filters.searchQuery?.trim().toLowerCase() || ''
+  const cat = filters.categoryId
+  const stockFilter = filters.stockFilter || 'all'
+
+  return products.filter((p) => {
+    // 1. Category match
+    const matchesCat = !cat || cat === 'all' || p.categoryId === cat
+
+    // 2. Search match
+    const matchesSearch =
+      !query ||
+      p.name.toLowerCase().includes(query) ||
+      (p.pluCode?.toLowerCase().includes(query) ?? false) ||
+      (p.barcode?.toLowerCase().includes(query) ?? false) ||
+      (p.sku?.toLowerCase().includes(query) ?? false)
+
+    // 3. Stock status match
+    const matchesStock =
+      stockFilter === 'all' ||
+      getStockStatus(p.stock?.currentStock ?? 0, p.stock?.minStock ?? 0) !== 'ok'
+
+    return matchesCat && matchesSearch && matchesStock
+  })
+}
+
+/**
+ * Counts the number of products with critical or low stock status.
+ */
+export function countCriticalProducts(products: Product[]): number {
+  return products.filter(
+    (p) => getStockStatus(p.stock?.currentStock ?? 0, p.stock?.minStock ?? 0) !== 'ok'
+  ).length
+}
+
+/**
+ * Returns available destination branches for transfers, excluding active branch.
+ */
+export function getAvailableDestinationBranches(
+  branches: Branch[],
+  activeBranchId?: string
+): Branch[] {
+  if (!activeBranchId) return branches
+  return branches.filter((b) => b.id !== activeBranchId)
+}
+
+/**
+ * Returns the default category id for new product creation (first available category).
+ */
+export function getDefaultCategoryId(categories: Category[]): string | undefined {
+  return categories[0]?.id
 }

@@ -5,7 +5,12 @@ import {
   addStock,
   validateTransfer,
   validateProductForm,
+  filterProducts,
+  countCriticalProducts,
+  getAvailableDestinationBranches,
+  getDefaultCategoryId,
 } from './stockRules'
+import type { Product, Branch, Category } from '@/types'
 
 describe('inventory/domain/stockRules', () => {
   describe('getStockStatus', () => {
@@ -247,6 +252,303 @@ describe('inventory/domain/stockRules', () => {
           unitsPerPack: -10,
         })?.success
       ).toBe(false)
+    })
+  })
+
+  describe('filterProducts', () => {
+    const mockProductsList: Product[] = [
+      {
+        id: 'p1',
+        name: 'Tomate Redondo',
+        sku: 'TOM-01',
+        barcode: '7791234567890',
+        pluCode: '4011',
+        categoryId: 'cat-veg',
+        saleType: 'weight',
+        costPrice: 500,
+        sellPrice: 900,
+        unitsPerPack: 1,
+        isActive: true,
+        createdAt: '2026-01-01',
+        updatedAt: '2026-01-01',
+        stock: {
+          id: 's1',
+          productId: 'p1',
+          branchId: 'b1',
+          currentStock: 25,
+          minStock: 10,
+          updatedAt: '2026-01-01',
+        },
+      },
+      {
+        id: 'p2',
+        name: 'Manzana Gala',
+        sku: 'MANZ-02',
+        barcode: '7799876543210',
+        pluCode: '4131',
+        categoryId: 'cat-fruit',
+        saleType: 'weight',
+        costPrice: 800,
+        sellPrice: 1400,
+        unitsPerPack: 1,
+        isActive: true,
+        createdAt: '2026-01-01',
+        updatedAt: '2026-01-01',
+        stock: {
+          id: 's2',
+          productId: 'p2',
+          branchId: 'b1',
+          currentStock: 5,
+          minStock: 10,
+          updatedAt: '2026-01-01',
+        },
+      },
+      {
+        id: 'p3',
+        name: 'Leche Entera 1L',
+        sku: 'LECH-03',
+        barcode: '7791111222233',
+        categoryId: 'cat-dairy',
+        saleType: 'unit',
+        costPrice: 1000,
+        sellPrice: 1500,
+        unitsPerPack: 12,
+        isActive: true,
+        createdAt: '2026-01-01',
+        updatedAt: '2026-01-01',
+        stock: {
+          id: 's3',
+          productId: 'p3',
+          branchId: 'b1',
+          currentStock: 0,
+          minStock: 15,
+          updatedAt: '2026-01-01',
+        },
+      },
+      {
+        id: 'p4',
+        name: 'Aceite de Girasol 900ml',
+        sku: 'ACE-04',
+        categoryId: 'cat-almacen',
+        saleType: 'unit',
+        costPrice: 1200,
+        sellPrice: 1800,
+        unitsPerPack: 6,
+        isActive: true,
+        createdAt: '2026-01-01',
+        updatedAt: '2026-01-01',
+      },
+      {
+        id: 'p5',
+        name: 'Producto Sin Codigos',
+        categoryId: 'cat-almacen',
+        saleType: 'unit',
+        costPrice: 100,
+        sellPrice: 200,
+        unitsPerPack: 1,
+        isActive: true,
+        createdAt: '2026-01-01',
+        updatedAt: '2026-01-01',
+      },
+    ]
+
+    it('returns empty array when product list is empty', () => {
+      expect(filterProducts([], {})).toEqual([])
+    })
+
+    it('returns all products when no filters or empty filters are passed', () => {
+      expect(filterProducts(mockProductsList, {})).toHaveLength(5)
+      expect(filterProducts(mockProductsList, { searchQuery: '  ' })).toHaveLength(5)
+    })
+
+    it('filters by searchQuery matching name case-insensitively', () => {
+      const result = filterProducts(mockProductsList, { searchQuery: 'tomate' })
+      expect(result).toHaveLength(1)
+      expect(result[0].id).toBe('p1')
+    })
+
+    it('filters by searchQuery matching SKU', () => {
+      const result = filterProducts(mockProductsList, { searchQuery: 'MANZ-02' })
+      expect(result).toHaveLength(1)
+      expect(result[0].id).toBe('p2')
+    })
+
+    it('filters by searchQuery matching barcode', () => {
+      const result = filterProducts(mockProductsList, { searchQuery: '7791111222233' })
+      expect(result).toHaveLength(1)
+      expect(result[0].id).toBe('p3')
+    })
+
+    it('filters by searchQuery matching pluCode', () => {
+      const result = filterProducts(mockProductsList, { searchQuery: '4131' })
+      expect(result).toHaveLength(1)
+      expect(result[0].id).toBe('p2')
+    })
+
+    it('returns empty array when search query matches nothing', () => {
+      const result = filterProducts(mockProductsList, { searchQuery: 'inexistente' })
+      expect(result).toHaveLength(0)
+    })
+
+    it('filters by categoryId (null or "all" matches all categories)', () => {
+      expect(filterProducts(mockProductsList, { categoryId: null })).toHaveLength(5)
+      expect(filterProducts(mockProductsList, { categoryId: 'all' })).toHaveLength(5)
+
+      const result = filterProducts(mockProductsList, { categoryId: 'cat-veg' })
+      expect(result).toHaveLength(1)
+      expect(result[0].id).toBe('p1')
+    })
+
+    it('filters by stockFilter ("critical" returns low and critical items)', () => {
+      expect(filterProducts(mockProductsList, { stockFilter: 'all' })).toHaveLength(5)
+
+      const result = filterProducts(mockProductsList, { stockFilter: 'critical' })
+      // p1 is ok (25 > 10)
+      // p2 is low (5 <= 10) -> critical filter match
+      // p3 is critical (0 <= 0) -> critical filter match
+      // p4 has no stock (treated as 0 <= 0 -> critical) -> critical filter match
+      // p5 has no stock (treated as 0 <= 0 -> critical) -> critical filter match
+      expect(result).toHaveLength(4)
+      expect(result.map((p) => p.id)).toEqual(['p2', 'p3', 'p4', 'p5'])
+    })
+
+    it('combines searchQuery, categoryId, and stockFilter accurately', () => {
+      const result = filterProducts(mockProductsList, {
+        searchQuery: 'Manzana',
+        categoryId: 'cat-fruit',
+        stockFilter: 'critical',
+      })
+      expect(result).toHaveLength(1)
+      expect(result[0].id).toBe('p2')
+
+      const noResult = filterProducts(mockProductsList, {
+        searchQuery: 'Tomate',
+        categoryId: 'cat-veg',
+        stockFilter: 'critical', // Tomate has stock 25/10 (ok), so should be excluded
+      })
+      expect(noResult).toHaveLength(0)
+    })
+  })
+
+  describe('countCriticalProducts', () => {
+    it('returns 0 for empty product list', () => {
+      expect(countCriticalProducts([])).toBe(0)
+    })
+
+    it('returns 0 when all products have ok stock', () => {
+      const products: Product[] = [
+        {
+          id: 'p1',
+          name: 'P1',
+          saleType: 'unit',
+          costPrice: 10,
+          sellPrice: 20,
+          unitsPerPack: 1,
+          isActive: true,
+          createdAt: '',
+          updatedAt: '',
+          stock: { id: 's1', productId: 'p1', branchId: 'b1', currentStock: 50, minStock: 10, updatedAt: '' },
+        },
+      ]
+      expect(countCriticalProducts(products)).toBe(0)
+    })
+
+    it('correctly counts products with low, zero, or missing stock', () => {
+      const products: Product[] = [
+        {
+          id: 'p1',
+          name: 'Ok',
+          saleType: 'unit',
+          costPrice: 10,
+          sellPrice: 20,
+          unitsPerPack: 1,
+          isActive: true,
+          createdAt: '',
+          updatedAt: '',
+          stock: { id: 's1', productId: 'p1', branchId: 'b1', currentStock: 50, minStock: 10, updatedAt: '' },
+        },
+        {
+          id: 'p2',
+          name: 'Low',
+          saleType: 'unit',
+          costPrice: 10,
+          sellPrice: 20,
+          unitsPerPack: 1,
+          isActive: true,
+          createdAt: '',
+          updatedAt: '',
+          stock: { id: 's2', productId: 'p2', branchId: 'b1', currentStock: 5, minStock: 10, updatedAt: '' },
+        },
+        {
+          id: 'p3',
+          name: 'Zero',
+          saleType: 'unit',
+          costPrice: 10,
+          sellPrice: 20,
+          unitsPerPack: 1,
+          isActive: true,
+          createdAt: '',
+          updatedAt: '',
+          stock: { id: 's3', productId: 'p3', branchId: 'b1', currentStock: 0, minStock: 5, updatedAt: '' },
+        },
+        {
+          id: 'p4',
+          name: 'No stock obj',
+          saleType: 'unit',
+          costPrice: 10,
+          sellPrice: 20,
+          unitsPerPack: 1,
+          isActive: true,
+          createdAt: '',
+          updatedAt: '',
+        },
+      ]
+      expect(countCriticalProducts(products)).toBe(3)
+    })
+  })
+
+  describe('getAvailableDestinationBranches', () => {
+    const branches: Branch[] = [
+      { id: 'b1', name: 'Sucursal Centro', isActive: true, createdAt: '', updatedAt: '' },
+      { id: 'b2', name: 'Sucursal Norte', isActive: true, createdAt: '', updatedAt: '' },
+      { id: 'b3', name: 'Sucursal Sur', isActive: true, createdAt: '', updatedAt: '' },
+    ]
+
+    it('returns all other branches excluding the active branch', () => {
+      const result = getAvailableDestinationBranches(branches, 'b1')
+      expect(result).toHaveLength(2)
+      expect(result.map((b) => b.id)).toEqual(['b2', 'b3'])
+    })
+
+    it('returns all branches if activeBranchId is undefined', () => {
+      const result = getAvailableDestinationBranches(branches, undefined)
+      expect(result).toHaveLength(3)
+    })
+
+    it('returns empty array if only the active branch exists in branches', () => {
+      const singleBranch: Branch[] = [
+        { id: 'b1', name: 'Sucursal Unica', isActive: true, createdAt: '', updatedAt: '' },
+      ]
+      const result = getAvailableDestinationBranches(singleBranch, 'b1')
+      expect(result).toEqual([])
+    })
+
+    it('returns empty array if branches array is empty', () => {
+      expect(getAvailableDestinationBranches([], 'b1')).toEqual([])
+    })
+  })
+
+  describe('getDefaultCategoryId', () => {
+    it('returns the id of the first category in array', () => {
+      const categories: Category[] = [
+        { id: 'cat-veg', name: 'Verdulería', sortOrder: 1, isActive: true },
+        { id: 'cat-fruit', name: 'Frutería', sortOrder: 2, isActive: true },
+      ]
+      expect(getDefaultCategoryId(categories)).toBe('cat-veg')
+    })
+
+    it('returns undefined if categories array is empty', () => {
+      expect(getDefaultCategoryId([])).toBeUndefined()
     })
   })
 })
