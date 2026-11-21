@@ -1,6 +1,6 @@
 # SPEC-003: Design System Mínimo y Primitivas de Interfaz
 
-- **Estado:** Aprobada
+- **Estado:** Completada
 - **Fecha:** 2026-11-20
 - **Área:** Core UI / Design System (`src/components/ui/`)
 - **Autores:** Analista Funcional SDD & Arquitecto de Software
